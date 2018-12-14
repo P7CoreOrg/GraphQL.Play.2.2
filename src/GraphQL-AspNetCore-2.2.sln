@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7.Core", "P7.Core22\P7.Core.csproj", "{5F720209-A3E6-4ED1-A953-0C21121F8939}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7.Core", "P7.Core\P7.Core.csproj", "{5F720209-A3E6-4ED1-A953-0C21121F8939}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7.GraphQLCore", "P7.GraphQLCore\P7.GraphQLCore.csproj", "{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}"
 EndProject
