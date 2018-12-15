@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using P7.Core.Cache;
+using P7.GraphQLCore;
 using P7.GraphQLCore.Extensions;
 using P7.GraphQLCore.Stores;
 using TheApp.Services;
@@ -30,12 +31,15 @@ namespace TheApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public IConfiguration Configuration { get; set; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
-            Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
+            StartupConfiguration(configuration);
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -52,6 +56,8 @@ namespace TheApp
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
+            services.RegisterGraphQLCoreConfigurationServices(Configuration);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -152,6 +158,22 @@ namespace TheApp
             app.UseCookiePolicy();
 
             app.UseMvc();
+        }
+        private void StartupConfiguration(IConfiguration configuration)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(_hostingEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.graphql.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{_hostingEnvironment.EnvironmentName}.json", optional: true);
+
+            if (_hostingEnvironment.IsDevelopment())
+            {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets<Startup>();
+            }
+            builder.AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
     }
 }
