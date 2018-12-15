@@ -1,6 +1,6 @@
 ﻿using GraphQL.Types;
 
-namespace CustomerLoyalyStore.GraphQL
+namespace IdentityTokenExchange.GraphQL
 {
     public class IdentityModelType : ObjectGraphType<Models.IdentityModel>
     {

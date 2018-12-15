@@ -1,4 +1,4 @@
-﻿namespace CustomerLoyalyStore.GraphQL.Models
+﻿namespace IdentityTokenExchange.GraphQL.Models
 {
     public class ClaimModel
     {

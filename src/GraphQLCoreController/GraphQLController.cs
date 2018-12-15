@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Http;
@@ -12,13 +13,20 @@ using GraphQL.Validation;
 using GraphQL.Validation.Complexity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using P7.GraphQLCore;
 using P7.GraphQLCore.Validators;
 
 namespace GraphQLCoreController
 {
+
+
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
     public class GraphQLController : Controller
@@ -47,25 +55,29 @@ namespace GraphQLCoreController
             _schema = schema;
             _namedQueries = new Dictionary<string, string>
             {
-                ["a-query"] = @"query foo { hero { name } }"
+               
             };
             _pluginValidationRules = pluginValidationRules.ToList();
         }
-        [HttpPost]
-        public async Task<IActionResult> PostAsync()
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync(
+            [FromQuery] string operationName,
+            [FromQuery] string query,
+            [FromQuery] string variables)
         {
-
-            string body;
-            using (var streamReader = new StreamReader(Request.Body))
+            return await ProcessQueryAsync(new GraphQLQuery
             {
-                body = await streamReader.ReadToEndAsync().ConfigureAwait(true);
-            }
+                Query = query,
+                OperationName = operationName,
+                Variables = variables == null ? new JObject() : JsonConvert.DeserializeObject<JObject>(variables)
+            });
+        }
 
-            var query = JsonConvert.DeserializeObject<GraphQLQuery>(body);
-
+        private async Task<IActionResult> ProcessQueryAsync(GraphQLQuery query)
+        {
             var inputs = query.Variables.ToInputs();
             var queryToExecute = query.Query;
-
             var result = await _executer.ExecuteAsync(_ =>
             {
                 _.UserContext = new GraphQLUserContext(_httpContextAccessor);
@@ -86,8 +98,21 @@ namespace GraphQLCoreController
             var json = _writer.Write(result);
             dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
 
-            var rr = new ObjectResult(obj) { StatusCode = (int)httpResult };
-            return rr;
+            var objectResult = new ObjectResult(obj) { StatusCode = (int)httpResult };
+            return objectResult;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostAsync()
+        {
+            string body;
+            using (var streamReader = new StreamReader(Request.Body))
+            {
+                body = await streamReader.ReadToEndAsync().ConfigureAwait(true);
+            }
+
+            var query = JsonConvert.DeserializeObject<GraphQLQuery>(body);
+            return await ProcessQueryAsync(query);
         }
     }
 }

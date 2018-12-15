@@ -1,7 +1,7 @@
-﻿using CustomerLoyalyStore.GraphQL.Models;
-using GraphQL.Types;
+﻿using GraphQL.Types;
+using IdentityTokenExchange.GraphQL.Models;
 
-namespace CustomerLoyalyStore.GraphQL
+namespace IdentityTokenExchange.GraphQL
 {
     public class ClaimModelType : ObjectGraphType<ClaimModel>
     {

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using CustomerLoyalyStore.GraphQL.Models;
 using GraphQL;
+using IdentityTokenExchange.GraphQL.Models;
 using P7.GraphQLCore;
 
-namespace CustomerLoyalyStore.GraphQL.Query
+namespace IdentityTokenExchange.GraphQL.Query
 {
     public class AuthRequiredQuery : IQueryFieldRecordRegistration
     {

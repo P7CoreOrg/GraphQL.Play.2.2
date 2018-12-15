@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CustomerLoyalyStore.GraphQL.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
+using IdentityTokenExchange.GraphQL.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -55,6 +56,7 @@ namespace TheApp
 
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();
+            services.AddGraphQLIdentityTokenExchangeTypes();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
 

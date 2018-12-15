@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CustomerLoyalyStore.GraphQL.Models
+namespace IdentityTokenExchange.GraphQL.Models
 {
     public class IdentityModel
     {
