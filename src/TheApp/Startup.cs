@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CustomerLoyalyStore.GraphQL.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,9 +18,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using P7.Core.Cache;
+using P7.GraphQLCore.Extensions;
+using P7.GraphQLCore.Stores;
 using TheApp.Services;
 
 namespace TheApp
@@ -45,6 +49,9 @@ namespace TheApp
             services.AddScoped<IJsonFileLoader, JsonFileLoader>();
             services.AddScoped<IRemoteJsonFileLoader, RemoteJsonFileLoader>();
 
+            services.AddGraphQLCoreTypes();
+            services.AddGraphQLCoreCustomLoyaltyTypes();
+            services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",

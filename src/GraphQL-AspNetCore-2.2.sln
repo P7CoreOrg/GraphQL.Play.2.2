@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModelExtras", "Iden
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerLoyaltyStore", "UserEntitlementStore\CustomerLoyaltyStore.csproj", "{EDA9AE97-9DB7-45A3-8977-8FC754A84C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerLoyalyStore.GraphQL", "CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj", "{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{EDA9AE97-9DB7-45A3-8977-8FC754A84C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDA9AE97-9DB7-45A3-8977-8FC754A84C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDA9AE97-9DB7-45A3-8977-8FC754A84C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
