@@ -13,4 +13,5 @@ namespace IdentityTokenExchange.GraphQL
             Field(x => x.Value).Description("value of claim.");
         }
     }
+     
 }
