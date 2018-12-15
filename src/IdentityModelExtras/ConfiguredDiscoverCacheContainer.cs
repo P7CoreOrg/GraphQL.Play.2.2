@@ -64,10 +64,13 @@ namespace IdentityModelExtras
                                 select item;
                     var record = query.FirstOrDefault();
 
-                    DiscoveryPolicy discoveryPolicy = null;
+                    DiscoveryPolicy discoveryPolicy = new DiscoveryPolicy()
+                    {
+                        ValidateIssuerName = false,
+                        ValidateEndpoints = false,
+                    };
                     if (record.AdditionalEndpointBaseAddresses != null && record.AdditionalEndpointBaseAddresses.Any())
                     {
-                        discoveryPolicy = new DiscoveryPolicy();
                         foreach (var additionalEndpointBaseAddress in record.AdditionalEndpointBaseAddresses)
                         {
                             discoveryPolicy.AdditionalEndpointBaseAddresses.Add(additionalEndpointBaseAddress);
