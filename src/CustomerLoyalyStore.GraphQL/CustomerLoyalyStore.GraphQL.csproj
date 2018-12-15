@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CustomerLoyaltyStore\CustomerLoyaltyStore.csproj" />
     <ProjectReference Include="..\P7.GraphQLCore\P7.GraphQLCore.csproj" />
-    <ProjectReference Include="..\UserEntitlementStore\CustomerLoyaltyStore.csproj" />
   </ItemGroup>
 
 </Project>
