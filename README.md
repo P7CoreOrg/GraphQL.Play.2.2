@@ -158,6 +158,9 @@ Produces...
 }
 ```
 
+![oidc-js Home Page](./docs/home.png)  
+![UserManager Sample with IdentityServer with code flow](./docs/oidc-signin.png)  
+
 # Bind
 ```
 query q($input: bind!) {
