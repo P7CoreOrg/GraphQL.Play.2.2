@@ -76,32 +76,67 @@ namespace GraphQLCoreController
 
         private async Task<IActionResult> ProcessQueryAsync(GraphQLQuery query)
         {
-            var inputs = query.Variables.ToInputs();
-            var queryToExecute = query.Query;
-            var result = await _executer.ExecuteAsync(_ =>
+            try
             {
-                _.UserContext = new GraphQLUserContext(_httpContextAccessor);
-                _.Schema = _schema;
-                _.Query = queryToExecute;
-                _.OperationName = query.OperationName;
-                _.Inputs = inputs;
-                _.ComplexityConfiguration = new ComplexityConfiguration { MaxDepth = 15 };
-                _.FieldMiddleware.Use<InstrumentFieldsMiddleware>();
-                _.ValidationRules = _pluginValidationRules.Concat(DocumentValidator.CoreRules());
+                var inputs = query.Variables.ToInputs();
+                var queryToExecute = query.Query;
+                var result = await _executer.ExecuteAsync(_ =>
+                {
+                    _.UserContext = new GraphQLUserContext(_httpContextAccessor);
+                    _.Schema = _schema;
+                    _.Query = queryToExecute;
+                    _.OperationName = query.OperationName;
+                    _.Inputs = inputs;
+                    _.ComplexityConfiguration = new ComplexityConfiguration { MaxDepth = 15 };
+                    _.FieldMiddleware.Use<InstrumentFieldsMiddleware>();
+                    _.ValidationRules = _pluginValidationRules.Concat(DocumentValidator.CoreRules());
 
-            }).ConfigureAwait(false);
+                }).ConfigureAwait(false);
 
-            var httpResult = result.Errors?.Count > 0
-                ? HttpStatusCode.BadRequest
-                : HttpStatusCode.OK;
+                var httpResult = result.Errors?.Count > 0
+                    ? HttpStatusCode.BadRequest
+                    : HttpStatusCode.OK;
 
-            var json = _writer.Write(result);
-            dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
+                var json = _writer.Write(result);
+                dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
 
-            var objectResult = new ObjectResult(obj) { StatusCode = (int)httpResult };
-            return objectResult;
+                var objectResult = new ObjectResult(obj) { StatusCode = (int)httpResult };
+                return objectResult;
+
+            }
+            catch (Exception e)
+            {
+                return MakeObjectResult("Unhandled GraphQL Exception", HttpStatusCode.InternalServerError);
+            }
         }
+        public static ObjectResult MakeObjectResult(string msg, HttpStatusCode httpStatusCode)
+        {
+            var errorResult = new ExecutionResult
+            {
+                Errors = new ExecutionErrors()
+            };
+            errorResult.Errors.Add(new ExecutionError(msg));
+            return new ObjectResult(errorResult) { StatusCode = (int)httpStatusCode };
+        }
+        HttpStatusCode HttpStatusCodeFromResult(ExecutionResult result)
+        {
+            var httpStatusCode = HttpStatusCode.OK;
+            if ((result?.Errors?.Count ?? 0) == 0)
+            {
+                return httpStatusCode;
+            }
 
+            httpStatusCode = HttpStatusCode.BadRequest;
+            foreach (var error in result.Errors)
+            {
+                var exception = error.InnerException;
+                while (exception != null)
+                {
+                    exception = exception.InnerException;
+                }
+            }
+            return httpStatusCode;
+        }
         [HttpPost]
         public async Task<IActionResult> PostAsync()
         {

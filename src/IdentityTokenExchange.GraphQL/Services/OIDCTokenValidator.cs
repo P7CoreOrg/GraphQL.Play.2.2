@@ -33,11 +33,20 @@ namespace IdentityTokenExchange.GraphQL.Services
                 throw new ArgumentException($"The OIDC AuthorityKey:{nameof(tokenDescriptor.AuthorityKey)} is not supported");
             }
             var providerValidator = new ProviderValidator(discoveryContainer, _memoryCache);
-            var principal = await providerValidator.ValidateToken(tokenDescriptor.Token, new TokenValidationParameters()
+            try
             {
-                ValidateAudience = false
-            });
-            return principal;
+                var principal = await providerValidator.ValidateToken(tokenDescriptor.Token,
+                    new TokenValidationParameters()
+                    {
+                        ValidateAudience = false
+                    });
+                return principal;
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Invalid Binding Token",e);
+            }
         }
     }
 }

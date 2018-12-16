@@ -48,11 +48,12 @@ namespace IdentityTokenExchange.GraphQL.Query
             return subject;
 
         }
+
         public void AddGraphTypeFields(QueryCore queryCore)
         {
             queryCore.FieldAsync<BindResultType>(name: "bind",
                 description: $"Given a proper ingres token, returns an OAuth2 payload for downstream authorized calls.",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<BindInput>> { Name = "input" }),
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<BindInput>> {Name = "input"}),
                 resolve: async context =>
                 {
                     try
@@ -105,14 +106,23 @@ namespace IdentityTokenExchange.GraphQL.Query
                         });
                         if (response.IsError)
                             throw new Exception(response.Error);
-  
-                        var bindResult = new BindResultModel
+
+                        var authorizationResultModel = new AuthorizationResultModel()
                         {
                             access_token = response.AccessToken,
                             refresh_token = response.RefreshToken,
                             expires_in = response.ExpiresIn,
                             token_type = response.TokenType,
-                            authority = discoveryResponse.Issuer
+                            authority = discoveryResponse.Issuer,
+                            HttpHeaders = new List<HttpHeader>
+                            {
+                                new HttpHeader() {Name = "x-authScheme", Value = "One"}
+                            }
+
+                        };
+                        var bindResult = new BindResultModel
+                        {
+                            Authorization = authorizationResultModel
                         };
                         return bindResult;
                     }
@@ -120,6 +130,7 @@ namespace IdentityTokenExchange.GraphQL.Query
                     {
                         context.Errors.Add(new ExecutionError("Unable to process request", e));
                     }
+
                     return null;
                 },
                 deprecationReason: null);
