@@ -1,5 +1,10 @@
 # GraphQL.Play.2.2
 
+This GraphQL demo app implements the following use cases;  
+[AuthUseCases](https://github.com/AuthUseCases/Flows)  
+
+
+
 3 IDP's are currently supported  
 
 [demoidentityserverio](https://demo.identityserver.io/Account/Login)  
