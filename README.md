@@ -162,11 +162,17 @@ Produces...
 ```
 query q($input: bind!) {
   bind(input: $input){
-    access_token
-    authority
-    expires_in
-    refresh_token
-    token_type
+    authorization{
+      access_token
+    	authority
+    	expires_in
+   	  refresh_token
+   	  token_type
+      httpHeaders{
+        name
+        value
+      }
+    }
   }
 }
 
@@ -174,9 +180,9 @@ query q($input: bind!) {
 ```
 {
   "input": {
-    "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ4YWRlZDAxMzAwYzY0ZDQwOTBiYTM4ZmExZTY4YTkyIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NDQ4OTMzMjYsImV4cCI6MTU0NDg5MzYyNiwiaXNzIjoiaHR0cHM6Ly9kZW1vLmlkZW50aXR5c2VydmVyLmlvIiwiYXVkIjoiaW1wbGljaXQiLCJub25jZSI6IjMzZjM4Mjg2OTlhNjQ4ODY5OTU0NjIwNTA1NzNkYWJmIiwiaWF0IjoxNTQ0ODkzMzI2LCJhdF9oYXNoIjoiWHlUSy1IZnZ1Z0hXQnZiclpWUDlsZyIsInNpZCI6IjJhMjg4ZjM0NGJkYzZjYjMxMDE2MmUzMDlhNWNhMWNmIiwic3ViIjoiZjU1MzVkMjE5MGE5ZGM1NDY3MjcwOGM2NDVmNTY4NGY3MWUwZjhjZDE4MzMzNWZiODI3ZDM5YzRlMmE3NTg5YyIsImF1dGhfdGltZSI6MTU0NDg5MTM0OSwiaWRwIjoiR29vZ2xlIiwiYW1yIjpbImV4dGVybmFsIl19.JEXtBGaqTgrG0xHlogebITvzWtFG6caEQYMNiW5fuYa8cdxWbijhQko7fslhf6X3gN2WnIUVyXxkPSkAZISkaU8nbQxsDR1NdwxZ9ZUykLr6IPTd5gZ0p5KaTdk7stP-Su5PriwxA_tbgruD2tLhfkXOvCVSclos76r9deFH0G-bSd8iA19BnydcFwcOMKWrN4XYTtfjXZvwE_VSQeA5wQfm1RSnBy1AbYBwc-OcCBTwENkZmBRtEF6Vaso5egFxCjef5R3NeUpPfXkdX5e-9svqHZ2n2FpWms0nvRTwKIMe_ktcjDXBknmBymXjz8mvlxy9SHvuKPaFUwYBfEqA2g",
+    "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ4YWRlZDAxMzAwYzY0ZDQwOTBiYTM4ZmExZTY4YTkyIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NDQ5ODU4NDQsImV4cCI6MTU0NDk4NjE0NCwiaXNzIjoiaHR0cHM6Ly9kZW1vLmlkZW50aXR5c2VydmVyLmlvIiwiYXVkIjoibmF0aXZlLmNvZGUiLCJpYXQiOjE1NDQ5ODU4NDQsImF0X2hhc2giOiJ6QXB5SFhZS0twbExfTGNzWldyQXhBIiwic2lkIjoiM2IxM2IxZGFkZDk2ODE3OTU5YTBhMmI2MzA2NzQxMDgiLCJzdWIiOiJmNTUzNWQyMTkwYTlkYzU0NjcyNzA4YzY0NWY1Njg0ZjcxZTBmOGNkMTgzMzM1ZmI4MjdkMzljNGUyYTc1ODljIiwiYXV0aF90aW1lIjoxNTQ0OTg1ODEyLCJpZHAiOiJHb29nbGUiLCJhbXIiOlsiZXh0ZXJuYWwiXX0.G-cioXZffb0MA6GbyhPQ8l6c3Xt1IeDDV-TWaQh085CozccDzRZc5PgPididf5kwx4fq0vSUE9ZtPBqEd15lG_y1PH2xU8MMp3zE8-RqFO1ECpo5QIjOujp5aNmmnTTs6roG2rO126MDfAJTXqQUDwL-87X11g_H71zq1aOg6-M6ciBWEBnFWRfyjX-qwVFZCQ0eIrXlQmo76va6cNy77ktQpR7Z7ADmTjj34fJ1mAoh0OQj7YaI4f7ejL-yEh8e1spJfdt_30ea_Qsu3tg42OdFWtP4m1PB763Ldq5gLo-QvN43XofRLiY7At_ky7AF8P_Plp3fDpP7DsqN3TihOA",
     "tokenScheme": "oidc",
-    "authorityKey": "demoidentityserverio"
+  "authorityKey": "demoidentityserverio"
   }
 }
 ```
@@ -185,11 +191,19 @@ Produces...
 {
   "data": {
     "bind": {
-      "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHBzOi8vcDdrZXl2YWx1dC52YXVsdC5henVyZS5uZXQva2V5cy9QN0lkZW50aXR5U2VydmVyNFNlbGZTaWduZWQvOGJkZDYxODA3NWQwNGEwZDgzZTk4NmI4YWE5NGQ3YjIiLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE1NDQ4OTM0MTcsImV4cCI6MTU0NDg5NzAxNywiaXNzIjoiaHR0cHM6Ly9wN2lkZW50aXR5c2VydmVyNC5henVyZXdlYnNpdGVzLm5ldCIsImF1ZCI6WyJodHRwczovL3A3aWRlbnRpdHlzZXJ2ZXI0LmF6dXJld2Vic2l0ZXMubmV0L3Jlc291cmNlcyIsImdyYXBoUUxQbGF5Il0sImNsaWVudF9pZCI6ImFyYml0cmFyeS1yZXNvdXJjZS1vd25lci1jbGllbnQiLCJzdWIiOiJmNTUzNWQyMTkwYTlkYzU0NjcyNzA4YzY0NWY1Njg0ZjcxZTBmOGNkMTgzMzM1ZmI4MjdkMzljNGUyYTc1ODljIiwiYXV0aF90aW1lIjoxNTQ0ODkzNDE3LCJpZHAiOiJsb2NhbCIsInJvbGUiOlsiYXBwbGljYXRpb24iLCJsaW1pdGVkIl0sImNsaWVudF9uYW1lc3BhY2UiOiJEYWZmeSBEdWNrIiwic2NvcGUiOlsiZ3JhcGhRTFBsYXkiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsiYXJiaXRyYXJ5X3Jlc291cmNlX293bmVyIl19.PjWNxp_RXwiKxF4y6JsiPg3UmkWeCcFpjjZeiv3p-tdmzZOVm0NZW3BIKRckLp_TO65rnk_390H1lMZoc-Igk3vdSetBCz2x-raLeLqKO74nzR9dH3pZIa54qCZsSBzZA-yZtzejO-tH9xrOTiNDrK1ZwBN6vHmLC7x97-gqhC7U2IYJgKensX-B9FYQLfP64tUPGIYuTqDfhLHo5bkBIz8Zdh58UWtcBnGAFflYC-Rs-a1XruJ1DNjfj7pk75ymY3-KadbCbnLOC6LsmushvXhJV7fMW-7AjCXi6lghEuWH9eWh601_uh0BwDiseoR4agak1f0xK4-XUc6kz7Jt9w",
-      "authority": "https://p7identityserver4.azurewebsites.net",
-      "expires_in": 3600,
-      "refresh_token": "CfDJ8MVlmnGGAk1Ah5xhnpEOsbGjS_lAysG7wiGjsqFbiE9wbtxrUja5gymiGLCjN8oL1B0ZGGRIgS2wxZO-x81V08sGNEGgQXRczin_mhN9s2DT7pBrYcmvwMsrqyWOQWjUKDFhjwN43Dd13RbqbWvt-rujBd89QwSgZGPJjdHSU5xB4ocfujRIrX80pfjhAaOqmPWAOajghn4iGYYEalL8nBU",
-      "token_type": "Bearer"
+      "authorization": {
+        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHBzOi8vcDdrZXl2YWx1dC52YXVsdC5henVyZS5uZXQva2V5cy9QN0lkZW50aXR5U2VydmVyNFNlbGZTaWduZWQvOGJkZDYxODA3NWQwNGEwZDgzZTk4NmI4YWE5NGQ3YjIiLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE1NDQ5ODU4NzksImV4cCI6MTU0NDk4OTQ3OSwiaXNzIjoiaHR0cHM6Ly9wN2lkZW50aXR5c2VydmVyNC5henVyZXdlYnNpdGVzLm5ldCIsImF1ZCI6WyJodHRwczovL3A3aWRlbnRpdHlzZXJ2ZXI0LmF6dXJld2Vic2l0ZXMubmV0L3Jlc291cmNlcyIsImdyYXBoUUxQbGF5Il0sImNsaWVudF9pZCI6ImFyYml0cmFyeS1yZXNvdXJjZS1vd25lci1jbGllbnQiLCJzdWIiOiJmNTUzNWQyMTkwYTlkYzU0NjcyNzA4YzY0NWY1Njg0ZjcxZTBmOGNkMTgzMzM1ZmI4MjdkMzljNGUyYTc1ODljIiwiYXV0aF90aW1lIjoxNTQ0OTg1ODc5LCJpZHAiOiJsb2NhbCIsInJvbGUiOlsiYXBwbGljYXRpb24iLCJsaW1pdGVkIl0sImNsaWVudF9uYW1lc3BhY2UiOiJEYWZmeSBEdWNrIiwic2NvcGUiOlsiZ3JhcGhRTFBsYXkiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsiYXJiaXRyYXJ5X3Jlc291cmNlX293bmVyIl19.I8gLLigReBIMOduzORGair4gXG--j-9_Y_ILkFO4xHI4keOUtmRoLxqbuw02nqea59C44JYRvXB9qrcZDOQeTNbF3T3v2kckTfxfpH9WAt4KFTZNue1rh0qlb0i5oxrQxWIYkBCfH7N8TqSRrLVLddxL9ffrO-a48226p-kZXaQYrS5InJN6wtsOqKBPZmghf54C4kDex6dxSzVMXw2aJdUbgB_zjDpqvTuiHHMn-OnLgqb6M_Jgxjs2cROpQDmPWwgAPsPqzpFi5vWKsYUwC91b7A_-922Ggnua1avWIQf0nU9czrlvnDCv3g9Xv8SJI8HNUJn-vvmyjnFBx92hxg",
+        "authority": "https://p7identityserver4.azurewebsites.net",
+        "expires_in": 3600,
+        "refresh_token": "CfDJ8MVlmnGGAk1Ah5xhnpEOsbFmTNqkpv_BleVL8kk39Y_HfCVi6c4NI65r_6HKeZq6pD7zpBcpo-RIR6k16vKYd-6Kfl6GOQ0IVKaLDKPLkuNcHUL9E4sH08-nwf1ljvQtENbeFyapA6B4yjYsIVgawmJOAbTAlMo-AsHaK8bCsKOMGQ7gIRHbTWFekvgfUc3JQ4vWbxg1VdF2GlUJQLU2i-E",
+        "token_type": "Bearer",
+        "httpHeaders": [
+          {
+            "name": "x-authScheme",
+            "value": "One"
+          }
+        ]
+      }
     }
   }
 }
