@@ -57,19 +57,25 @@ namespace CustomerLoyaltyStore
             return customers.FirstOrDefault();
         }
 
-        public Task<Customer> DepositEarnedLoyaltyPointsAsync(string id, int points)
+        public async Task<Customer> DepositEarnedLoyaltyPointsAsync(string id, int points)
         {
-            throw new NotImplementedException();
+            var engine = await GetCustomerLoyaltyDBEngineAsync();
+            var customer = await engine.Execute(new EarnPoints(id, points));
+            return customer;
         }
 
-        public Task<Customer> DebitEarnedLoyaltyPointsAsync(string id, int points)
+        public async Task<Customer> DebitEarnedLoyaltyPointsAsync(string id, int points)
         {
-            throw new NotImplementedException();
+            var engine = await GetCustomerLoyaltyDBEngineAsync();
+            var customer = await engine.Execute(new SpendPoints(id, points));
+            return customer;
         }
 
-        public Task<Customer> TransferLoyaltyPointsAsync(string idSource, string idTarget, int points)
+        public async Task<TransferPointsResult> TransferLoyaltyPointsAsync(string senderId, string recieverId, int points)
         {
-            throw new NotImplementedException();
+            var engine = await GetCustomerLoyaltyDBEngineAsync();
+            var result = await engine.Execute(new TransferPoints(senderId, recieverId,points));
+            return result;
         }
     }
 }

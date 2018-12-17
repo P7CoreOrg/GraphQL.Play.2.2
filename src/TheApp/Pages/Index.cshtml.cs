@@ -19,6 +19,7 @@ namespace TheApp.Pages
         public async Task OnGetAsync()
         {
             var customer = await _customerLoyaltyStore.GetCustomerAsync("PorkyPig");
+            customer = await _customerLoyaltyStore.DepositEarnedLoyaltyPointsAsync("PorkyPig", 10);
         }
     }
 }
