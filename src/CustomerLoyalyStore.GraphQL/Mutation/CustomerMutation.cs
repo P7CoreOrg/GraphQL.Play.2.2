@@ -8,9 +8,11 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
 {
     public class CustomerMutation : IMutationFieldRecordRegistration
     {
-        public CustomerMutation()
-        {
+        private ICustomerLoyaltyStore _customerLoyaltyStore;
 
+        public CustomerMutation(ICustomerLoyaltyStore customerLoyaltyStore)
+        {
+            _customerLoyaltyStore = customerLoyaltyStore;
         }
         public void AddGraphTypeFields(MutationCore mutationCore)
         {
@@ -23,6 +25,8 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
                     {
                         var customer = context.GetArgument<Customer>("input");
                         var userContext = context.UserContext.As<GraphQLUserContext>();
+                        customer = await _customerLoyaltyStore.DepositEarnedLoyaltyPointsAsync(customer.ID,
+                            customer.LoyaltyPointBalance);
                         /*
                         var blog = context.GetArgument<SimpleDocument<Blog>>("input");
 

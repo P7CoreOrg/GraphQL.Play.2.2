@@ -9,8 +9,8 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
         public CustomerMutationInput()
         {
             Name = "customerMutationInput";
-            Field<NonNullGraphType<IntGraphType>>("customerId");
-            Field<NonNullGraphType<IntGraphType>>("points");
+            Field<NonNullGraphType<StringGraphType>>("ID");
+            Field<NonNullGraphType<IntGraphType>>("LoyaltyPointBalance");
 
         }
     }

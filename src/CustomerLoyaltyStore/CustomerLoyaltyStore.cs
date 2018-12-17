@@ -44,7 +44,7 @@ namespace CustomerLoyaltyStore
                 _customerLoyaltyDBEngine = await Engine.Start<LoyaltyDB>();
                 foreach (var customer in Customers)
                 {
-                    await _customerLoyaltyDBEngine.Execute(new InitCustomer(customer.ID, customer.LoyaltyPointBalance));
+                    await _customerLoyaltyDBEngine.Execute(new UpsertCustomer(customer.ID, customer.LoyaltyPointBalance));
                 }
             }
             return _customerLoyaltyDBEngine;
@@ -60,14 +60,14 @@ namespace CustomerLoyaltyStore
         public async Task<Customer> DepositEarnedLoyaltyPointsAsync(string id, int points)
         {
             var engine = await GetCustomerLoyaltyDBEngineAsync();
-            var customer = await engine.Execute(new EarnPoints(id, points));
+            var customer = await engine.Execute(new UpsertCustomer(id, points));
             return customer;
         }
 
         public async Task<Customer> DebitEarnedLoyaltyPointsAsync(string id, int points)
         {
             var engine = await GetCustomerLoyaltyDBEngineAsync();
-            var customer = await engine.Execute(new SpendPoints(id, points));
+            var customer = await engine.Execute(new DebitPoints(id, points));
             return customer;
         }
 

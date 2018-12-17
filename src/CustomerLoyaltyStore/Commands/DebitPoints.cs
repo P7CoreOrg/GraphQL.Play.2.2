@@ -2,9 +2,9 @@
 
 namespace CustomerLoyaltyStore.Commands
 {
-    public class SpendPoints : Command<LoyaltyDB, Customer>
+    public class DebitPoints : Command<LoyaltyDB, Customer>
     {
-        public SpendPoints(string customerId, int points)
+        public DebitPoints(string customerId, int points)
         {
             CustomerId = customerId;
             Points = points;

@@ -176,23 +176,27 @@ namespace P7.GraphQLCore.Validators
                             select c).ToList();
                         canAccess = requiredClaims.Value.All(x =>
                         {
-                            var result = false;
                             foreach (var ce in user.Claims)
                             {
                                 if (ce.Type == x.Type)
                                 {
                                     if (string.IsNullOrEmpty(x.Value))
                                     {
-                                        result = true;
+                                        if (string.IsNullOrEmpty(ce.Value))
+                                        {
+                                            return true;
+                                        }
                                     }
                                     else
                                     {
-                                        result = x.Value == ce.Value;
+                                        if (x.Value == ce.Value)
+                                        {
+                                            return true;
+                                        }
                                     }
                                 }
                             }
-
-                            return result;
+                            return false;
                         });
                     }
 

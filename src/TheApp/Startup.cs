@@ -10,6 +10,7 @@ using CustomerLoyalyStore.GraphQL.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using IdentityTokenExchange.GraphQL.Extensions;
+using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -163,6 +164,8 @@ namespace TheApp
             app.UseCookiePolicy();
 
             app.UseMvc();
+            //MEMSTATE Journal stays in memory
+            Config.Current.UseInMemoryFileSystem();
         }
          
     }
