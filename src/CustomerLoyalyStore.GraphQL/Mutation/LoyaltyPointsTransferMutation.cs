@@ -7,34 +7,37 @@ using P7.GraphQLCore;
 
 namespace CustomerLoyalyStore.GraphQL.Mutation
 {
-    public class CustomerMutation : IMutationFieldRecordRegistration
+    public class LoyaltyPointsTransferMutation : IMutationFieldRecordRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
 
-        public CustomerMutation(ICustomerLoyaltyStore customerLoyaltyStore)
+        public LoyaltyPointsTransferMutation(ICustomerLoyaltyStore customerLoyaltyStore)
         {
             _customerLoyaltyStore = customerLoyaltyStore;
         }
         public void AddGraphTypeFields(MutationCore mutationCore)
         {
-            mutationCore.FieldAsync<CustomerType>(name: "customer",
+            mutationCore.FieldAsync<LoyaltyPointsTransferType>(name: "loyaltyPointsTransfer",
                 description: null,
-                arguments: new QueryArguments(new QueryArgument<CustomerMutationInput> { Name = "input" }),
+                arguments: new QueryArguments(new QueryArgument<LoyaltyPointsTransferMutationInput> { Name = "input" }),
                 resolve: async context =>
                 {
                     try
                     {
-                        var customer = context.GetArgument<Customer>("input");
+                        var loyaltyPointsTransfer = context.GetArgument<LoyaltyPointsTransfer>("input");
                         var userContext = context.UserContext.As<GraphQLUserContext>();
-                        customer = await _customerLoyaltyStore.DepositEarnedLoyaltyPointsAsync(customer.ID,
-                            customer.LoyaltyPointBalance);
+                        var result = await _customerLoyaltyStore.TransferLoyaltyPointsAsync(
+                            loyaltyPointsTransfer.SenderId,
+                            loyaltyPointsTransfer.ReceiverId,
+                            loyaltyPointsTransfer.Points);
+                      
                         /*
                         var blog = context.GetArgument<SimpleDocument<Blog>>("input");
 
                         blog.TenantId = await _blogStore.GetTenantIdAsync();
                         await _blogStore.InsertAsync(blog);
                         */
-                        return customer;
+                        return result;
                     }
                     catch (Exception e)
                     {

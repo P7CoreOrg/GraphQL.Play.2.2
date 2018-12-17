@@ -1,7 +1,11 @@
-﻿namespace CustomerLoyaltyStore.Commands
+﻿namespace CustomerLoyaltyStore.Models
 {
     public class TransferPointsResult
     {
+        public TransferPointsResult()
+        {
+        }
+
         public TransferPointsResult(Customer sender, Customer recipient, int points)
         {
             Sender = sender;

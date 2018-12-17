@@ -1,4 +1,4 @@
-﻿namespace CustomerLoyaltyStore
+﻿namespace CustomerLoyaltyStore.Models
 {
     public class Customer
     {

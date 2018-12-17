@@ -1,4 +1,5 @@
-﻿using Memstate;
+﻿using CustomerLoyaltyStore.Models;
+using Memstate;
 
 namespace CustomerLoyaltyStore.Commands
 {

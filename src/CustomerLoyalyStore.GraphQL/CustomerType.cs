@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomerLoyaltyStore;
+using CustomerLoyaltyStore.Models;
 using GraphQL.Types;
 
 namespace CustomerLoyalyStore.GraphQL

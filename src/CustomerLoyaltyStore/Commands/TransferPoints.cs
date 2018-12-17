@@ -1,17 +1,18 @@
-﻿using Memstate;
+﻿using CustomerLoyaltyStore.Models;
+using Memstate;
 
 namespace CustomerLoyaltyStore.Commands
 {
     public class TransferPoints : Command<LoyaltyDB, TransferPointsResult>
     {
-        public TransferPoints(string senderId, string recieverId, int points)
+        public TransferPoints(string senderId, string receiverId, int points)
         {
             SenderId = senderId;
-            RecieverId = recieverId;
+            ReceiverId = receiverId;
             Points = points;
         }
 
-        public string RecieverId { get; set; }
+        public string ReceiverId { get; set; }
 
         public string SenderId { get; set; }
 
@@ -21,11 +22,11 @@ namespace CustomerLoyaltyStore.Commands
         public override TransferPointsResult Execute(LoyaltyDB model)
         {
             var sender = model.Customers[SenderId];
-            var receiver = model.Customers[RecieverId];
+            var receiver = model.Customers[ReceiverId];
             var newSender = new Customer(sender.ID, sender.LoyaltyPointBalance - Points);
             var newReceiver = new Customer(receiver.ID, receiver.LoyaltyPointBalance + Points);
             model.Customers[SenderId] = newSender;
-            model.Customers[RecieverId] = newReceiver;
+            model.Customers[ReceiverId] = newReceiver;
             return new TransferPointsResult(newSender, newReceiver, Points);
         }
     }

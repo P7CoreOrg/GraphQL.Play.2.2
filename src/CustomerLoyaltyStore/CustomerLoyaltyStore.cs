@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CustomerLoyaltyStore.Commands;
 using CustomerLoyaltyStore.Extensions;
+using CustomerLoyaltyStore.Models;
 using CustomerLoyaltyStore.Queries;
 using Memstate;
 using Microsoft.Extensions.Configuration;

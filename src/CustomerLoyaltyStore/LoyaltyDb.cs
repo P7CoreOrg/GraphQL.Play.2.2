@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CustomerLoyaltyStore.Models;
 
 namespace CustomerLoyaltyStore
 {

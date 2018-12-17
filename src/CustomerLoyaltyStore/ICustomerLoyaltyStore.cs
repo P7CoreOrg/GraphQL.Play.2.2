@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using CustomerLoyaltyStore.Commands;
+using CustomerLoyaltyStore.Models;
 
 namespace CustomerLoyaltyStore
 {
