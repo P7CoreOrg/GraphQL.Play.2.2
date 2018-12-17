@@ -1,10 +1,17 @@
 # GraphQL.Play.2.2
 
+This GraphQL demo app implements the following use cases;  
+[AuthUseCases](https://github.com/AuthUseCases/Flows)  
+
+
+
 3 IDP's are currently supported  
 
 [demoidentityserverio](https://demo.identityserver.io/Account/Login)  
 To get an id_token, run the following client app.
 [oidc-client-js](https://github.com/IdentityModel/oidc-client-js)  
+![oidc-js Home Page](./docs/home.png)  
+![UserManager Sample with IdentityServer with code flow](./docs/oidc-signin.png)  
 
 [p7identityserver4](https://p7identityserver4.azurewebsites.net/)  
 To get an id_token, follow the following [instructions](https://p7identityserver4.azurewebsites.net/docs/arbitrary_identity.md)  
@@ -157,6 +164,7 @@ Produces...
   }
 }
 ```
+
 
 # Bind
 ```
