@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
@@ -38,7 +39,7 @@ namespace TheApp
         public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
-            StartupConfiguration(configuration);
+            Configuration = configuration;
         }
 
 
@@ -137,6 +138,8 @@ namespace TheApp
                 .AddMultiAuthorityAuthentication(schemeRecords);
             
             services.AddHttpContextAccessor(); services.AddHttpContextAccessor();
+            services.AddCustomerLoyalty();
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -161,21 +164,6 @@ namespace TheApp
 
             app.UseMvc();
         }
-        private void StartupConfiguration(IConfiguration configuration)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(_hostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.graphql.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{_hostingEnvironment.EnvironmentName}.json", optional: true);
-
-            if (_hostingEnvironment.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
-        }
+         
     }
 }

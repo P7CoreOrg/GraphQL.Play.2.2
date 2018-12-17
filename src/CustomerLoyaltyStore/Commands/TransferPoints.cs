@@ -4,16 +4,16 @@ namespace CustomerLoyaltyStore.Commands
 {
     public class TransferPoints : Command<LoyaltyDB, TransferPointsResult>
     {
-        public TransferPoints(int senderId, int recieverId, int points)
+        public TransferPoints(string senderId, string recieverId, int points)
         {
             SenderId = senderId;
             RecieverId = recieverId;
             Points = points;
         }
 
-        public int RecieverId { get; set; }
+        public string RecieverId { get; set; }
 
-        public int SenderId { get; set; }
+        public string SenderId { get; set; }
 
         public int Points { get; set; }
 

@@ -4,13 +4,13 @@ namespace CustomerLoyaltyStore.Commands
 {
     public class EarnPoints : Command<LoyaltyDB, Customer>
     {
-        public EarnPoints(int customerId, int points)
+        public EarnPoints(string customerId, int points)
         {
             CustomerId = customerId;
             Points = points;
         }
 
-        public int CustomerId { get; }
+        public string CustomerId { get; }
         public int Points { get; }
 
         // it is safe to return a live customer object linked to the Model because

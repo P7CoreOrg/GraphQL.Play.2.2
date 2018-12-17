@@ -4,8 +4,8 @@ using Memstate;
 
 namespace CustomerLoyaltyStore.Queries
 {
-    public class GetCustomers : Query<LoyaltyDB, IDictionary<int, Customer>>
+    public class GetCustomers : Query<LoyaltyDB, IDictionary<string, Customer>>
     {
-        public override IDictionary<int, Customer> Execute(LoyaltyDB db) => new Dictionary<int, Customer>(db.Customers);
+        public override IDictionary<string, Customer> Execute(LoyaltyDB db) => new Dictionary<string, Customer>(db.Customers);
     }
 }

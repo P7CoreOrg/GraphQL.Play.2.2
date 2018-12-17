@@ -19,6 +19,11 @@ namespace TheApp
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        config.AddJsonFile("appsettings.CustomerLoyalty.json", optional: false, reloadOnChange: true)
+                            .AddJsonFile("appsettings.graphql.json", optional: false, reloadOnChange: true);
+                    })
                 .UseStartup<Startup>();
     }
 }

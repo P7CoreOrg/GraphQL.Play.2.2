@@ -2,15 +2,19 @@
 {
     public class Customer
     {
-        public Customer(int id, int loyaltyPointBalance)
+        public Customer()
+        {
+        }
+
+        public Customer(string id, int loyaltyPointBalance)
         {
             ID = id;
             LoyaltyPointBalance = loyaltyPointBalance;
         }
 
-        public int ID { get; }
+        public string ID { get; set; }
 
-        public int LoyaltyPointBalance { get; }
+        public int LoyaltyPointBalance { get; set; }
 
         public override string ToString() => $"Customer[{ID}] balance {LoyaltyPointBalance} points.";
     }

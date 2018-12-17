@@ -4,13 +4,13 @@ namespace CustomerLoyaltyStore.Commands
 {
     public class InitCustomer : Command<LoyaltyDB, Customer>
     {
-        public InitCustomer(int customerId, int points)
+        public InitCustomer(string customerId, int points)
         {
             CustomerId = customerId;
             Points = points;
         }
 
-        public int CustomerId { get; }
+        public string CustomerId { get; }
 
         public int Points { get; }
 
