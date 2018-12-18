@@ -8,8 +8,8 @@ namespace CustomerLoyalyStore.GraphQL
         public LoyaltyPointsTransferType()
         {
             Name = "loyaltyPointsTransfer";
-            Field<CustomerType>("Recipient", "The Receiver Customer");
-            Field<CustomerType>("Sender", "The Sender Customer");
+            Field<CustomerResultType>("Recipient", "The Receiver Customer");
+            Field<CustomerResultType>("Sender", "The Sender Customer");
             Field(x => x.Points).Description("The points that were transferred.");
         }
     }

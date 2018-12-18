@@ -34,7 +34,20 @@ namespace CustomerLoyaltyStore
                 return _customers;
             }
         }
+        private List<Prize> _prizes;
 
+        private List<Prize> Prizes
+        {
+            get
+            {
+                if (_prizes == null)
+                {
+                    _prizes = _configuration.LoadLoyaltyPrizesFromSettings();
+                }
+
+                return _prizes;
+            }
+        }
         private Engine<LoyaltyDB> _customerLoyaltyDBEngine;
 
         private async Task<Engine<LoyaltyDB>> GetCustomerLoyaltyDBEngineAsync()
@@ -46,6 +59,10 @@ namespace CustomerLoyaltyStore
                 foreach (var customer in Customers)
                 {
                     await _customerLoyaltyDBEngine.Execute(new UpsertCustomer(customer.ID, customer.LoyaltyPointBalance));
+                }
+                foreach (var prize in Prizes)
+                {
+                    await _customerLoyaltyDBEngine.Execute(new InsertPrize(prize.ID, prize.LoyaltyPointsCost));
                 }
             }
             return _customerLoyaltyDBEngine;
@@ -77,6 +94,21 @@ namespace CustomerLoyaltyStore
             var engine = await GetCustomerLoyaltyDBEngineAsync();
             var result = await engine.Execute(new TransferPoints(senderId, recieverId,points));
             return result;
+        }
+
+        public async Task<Prize> GetPrizeAsync(string id)
+        {
+            var engine = await GetCustomerLoyaltyDBEngineAsync();
+            var result = await engine.Execute(new GetPrize(id));
+            return result.FirstOrDefault();
+
+        }
+
+        public async Task<List<Prize>> GetAvailablePrizesAsync(int loyaltyPointsCost)
+        {
+            var engine = await GetCustomerLoyaltyDBEngineAsync();
+            var result = await engine.Execute(new GetAvailablePrizes(loyaltyPointsCost));
+            return new List<Prize>(result);
         }
     }
 }

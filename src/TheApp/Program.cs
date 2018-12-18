@@ -21,7 +21,9 @@ namespace TheApp
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                     {
-                        config.AddJsonFile("appsettings.CustomerLoyalty.json", optional: false, reloadOnChange: true)
+                        config
+                            .AddJsonFile("appsettings.CustomerLoyalty.json", optional: false, reloadOnChange: true)
+                            .AddJsonFile("appsettings.LoyaltyPrizes.json", optional: false, reloadOnChange: true)
                             .AddJsonFile("appsettings.graphql.json", optional: false, reloadOnChange: true);
                     })
                 .UseStartup<Startup>();

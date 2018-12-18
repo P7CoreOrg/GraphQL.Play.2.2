@@ -13,7 +13,8 @@ namespace CustomerLoyalyStore.GraphQL.Extensions
         public static void AddGraphQLCoreCustomLoyaltyTypes(this IServiceCollection services)
         {
             services.AddTransient<CustomerMutationInput>();
-            services.AddTransient<CustomerType>();
+            services.AddTransient<CustomerResultType>();
+            services.AddTransient<PrizeType>();
             services.AddTransient<IMutationFieldRecordRegistration, CustomerMutation>();
 
             services.AddTransient<LoyaltyPointsTransferMutationInput>();

@@ -5,14 +5,14 @@ using GraphQL.Types;
 
 namespace CustomerLoyalyStore.GraphQL
 {
-    public class CustomerType : ObjectGraphType<Customer>
+    public class CustomerResultType : ObjectGraphType<CustomerResult>
     {
-        public CustomerType()
+        public CustomerResultType()
         {
             Name = "customer";
-
             Field(x => x.ID).Description("customer Id.");
             Field(x => x.LoyaltyPointBalance).Description("Customers loyalty points balance.");
+            Field<ListGraphType<PrizeType>>("prizes", "Loyalty Prize available to you.");
         }
     }
 }

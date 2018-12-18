@@ -12,19 +12,38 @@ namespace CustomerLoyaltyStore.Extensions
         public static List<Customer> LoadCustomerLoyaltyFromSettings(this IConfiguration configuration)
         {
             IConfigurationSection section = configuration.GetSection("customerLoyalty");
-            var customerRecords = new Dictionary<string, Customer>();
+            var records = new Dictionary<string, Customer>();
 
-            section.Bind(customerRecords);
-            foreach (var customerRecord in customerRecords)
+            section.Bind(records);
+            foreach (var record in records)
             {
                 var guid = new Guid(
                     System.Security.Cryptography.SHA256.Create()
-                        .ComputeHash(Encoding.UTF8.GetBytes(customerRecord.Key)).Take(16).ToArray());
-                customerRecord.Value.ID = customerRecord.Key;
+                        .ComputeHash(Encoding.UTF8.GetBytes(record.Key)).Take(16).ToArray());
+                record.Value.ID = record.Key;
             }
 
-            var query = from item in customerRecords
-                select item.Value;
+            var query = from item in records
+                        select item.Value;
+            return query.ToList();
+
+        }
+        public static List<Prize> LoadLoyaltyPrizesFromSettings(this IConfiguration configuration)
+        {
+            IConfigurationSection section = configuration.GetSection("loyaltyPrizes");
+            var records = new Dictionary<string, Prize>();
+
+            section.Bind(records);
+            foreach (var record in records)
+            {
+                var guid = new Guid(
+                    System.Security.Cryptography.SHA256.Create()
+                        .ComputeHash(Encoding.UTF8.GetBytes(record.Key)).Take(16).ToArray());
+                record.Value.ID = record.Key;
+            }
+
+            var query = from item in records
+                        select item.Value;
             return query.ToList();
 
         }

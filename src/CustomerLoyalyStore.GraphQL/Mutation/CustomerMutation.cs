@@ -17,7 +17,7 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
         }
         public void AddGraphTypeFields(MutationCore mutationCore)
         {
-            mutationCore.FieldAsync<CustomerType>(name: "customer",
+            mutationCore.FieldAsync<CustomerResultType>(name: "customer",
                 description: null,
                 arguments: new QueryArguments(new QueryArgument<CustomerMutationInput> { Name = "input" }),
                 resolve: async context =>
@@ -34,7 +34,12 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
                         blog.TenantId = await _blogStore.GetTenantIdAsync();
                         await _blogStore.InsertAsync(blog);
                         */
-                        return customer;
+                        return new CustomerResult()
+                        {
+                            ID = customer.ID,
+                            LoyaltyPointBalance = customer.LoyaltyPointBalance
+                        };
+                       
                     }
                     catch (Exception e)
                     {
