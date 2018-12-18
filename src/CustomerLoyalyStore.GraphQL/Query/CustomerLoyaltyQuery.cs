@@ -4,11 +4,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using CustomerLoyaltyStore;
+using CustomerLoyalyStore.GraphQL;
+using CustomerLoyalyStore.GraphQL.Query;
 using GraphQL;
+using GraphQL.Language.AST;
+using GraphQL.Types;
 using P7.GraphQLCore;
 
 namespace CustomerLoyalyStore.GraphQL.Query
 {
+
     public class CustomerLoyaltyQuery : IQueryFieldRecordRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
@@ -26,6 +31,13 @@ namespace CustomerLoyalyStore.GraphQL.Query
                 {
                     try
                     {
+                        var startQuery = context?.Operation?
+                            .SelectionSet?
+                            .Selections
+                            .Select(x => x as Field)
+                            .FirstOrDefault();
+
+
                         var userContext = context.UserContext.As<GraphQLUserContext>();
                         var user = userContext.HttpContextAccessor.HttpContext.User;
                         var query = from item in user.Claims
