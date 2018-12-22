@@ -21,8 +21,9 @@ namespace P7.GraphQLCore.Extensions
     {
         public static void AddGraphQLCoreTypes(this IServiceCollection services)
         {
-            services.AddSingleton< IQueryFieldRecordRegistrationStore,QueryFieldRecordRegistrationStore>();
-            services.AddSingleton<IMutationFieldRecordRegistrationStore, MutationFieldRecordRegistrationStore>();
+            services.AddTransient<IQueryFieldRecordRegistrationStore,QueryFieldRecordRegistrationStore>();
+            services.AddTransient<IMutationFieldRecordRegistrationStore, MutationFieldRecordRegistrationStore>();
+            services.AddTransient<ISubscriptionFieldRecordRegistrationStore, SubscriptionFieldRecordRegistrationStore>();
 
             services.AddTransient<IDocumentBuilder, GraphQLDocumentBuilder>();
             services.AddTransient<IDocumentValidator, DocumentValidator>();
@@ -55,7 +56,7 @@ namespace P7.GraphQLCore.Extensions
 
             services.AddTransient<QueryCore>();
             services.AddTransient<MutationCore>();
-            services.AddSingleton<ISchema, SchemaCore>();
+            services.AddTransient<ISchema, SchemaCore>();
             services.TryAddTransient<Func<Type, GraphType>>(
                 x =>
                 {

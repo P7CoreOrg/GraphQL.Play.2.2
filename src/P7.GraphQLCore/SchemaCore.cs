@@ -10,13 +10,11 @@ namespace P7.GraphQLCore
         {
             Query = (QueryCore) resolveType(typeof(QueryCore));
             Mutation = (MutationCore) resolveType(typeof(MutationCore));
+            Subscription = (SubscriptionCore)resolveType(typeof(SubscriptionCore));
 
             var resolvedInterfaces = Query.ResolvedInterfaces;
             var fields = Query.Fields;
             var interfaces = Query.Interfaces;
-           
-
-
         }
     }
 }

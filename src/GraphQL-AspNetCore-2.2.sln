@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerLoyalyStore.GraphQL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerLoyaltyStore", "CustomerLoyaltyStore\CustomerLoyaltyStore.csproj", "{CBA449A9-0844-4B0E-B6C4-1F1692ADF992}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityTokenExchange.GraphQL", "IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj", "{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityTokenExchange.GraphQL", "IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj", "{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders", "Orders\Orders.csproj", "{038C3A55-4B90-46B4-8617-68760BCE0C88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

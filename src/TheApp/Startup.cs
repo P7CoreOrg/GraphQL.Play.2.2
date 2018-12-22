@@ -24,6 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
+using Orders.Extensions;
 using P7.Core.Cache;
 using P7.GraphQLCore;
 using P7.GraphQLCore.Extensions;
@@ -58,6 +59,8 @@ namespace TheApp
 
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();
+            services.AddGraphQLOrders();
+            
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
