@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7.Core", "P7.Core\P7.Core.csproj", "{5F720209-A3E6-4ED1-A953-0C21121F8939}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7.GraphQLCore", "P7.GraphQLCore\P7.GraphQLCore.csproj", "{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLCoreController", "GraphQLCoreController\GraphQLCoreController.csproj", "{F6B496E1-1BD8-4B93-9A7B-E942D51FB31C}"
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5F720209-A3E6-4ED1-A953-0C21121F8939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F720209-A3E6-4ED1-A953-0C21121F8939}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F720209-A3E6-4ED1-A953-0C21121F8939}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F720209-A3E6-4ED1-A953-0C21121F8939}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU

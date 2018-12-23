@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using P7.Core.Writers;
+using P7Core.Writers;
 
 namespace P7.GraphQLCore
 {

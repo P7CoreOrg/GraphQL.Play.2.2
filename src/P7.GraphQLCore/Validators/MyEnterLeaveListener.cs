@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using P7.Core.Reflection;
+using P7Core.Reflection;
 using System.Text;
 using GraphQL;
 using GraphQL.Language.AST;
 using GraphQL.Validation;
-using P7.Core.Utils;
+using P7Core.Utils;
 
 namespace P7.GraphQLCore.Validators
 {

@@ -8,13 +8,7 @@ using GraphQL;
 using GraphQL.Language.AST;
 using GraphQL.Types;
 using GraphQL.Validation;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using P7.Core.Settings;
+ 
 using P7.GraphQLCore.Stores;
 
 namespace P7.GraphQLCore.Validators

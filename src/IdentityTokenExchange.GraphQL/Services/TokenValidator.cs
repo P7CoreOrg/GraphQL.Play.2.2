@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using P7.Core.Utils;
+using P7Core.Utils;
 
 namespace IdentityTokenExchange.GraphQL.Services
 {

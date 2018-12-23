@@ -11,7 +11,6 @@ using IdentityModelExtras;
 using IdentityTokenExchange.GraphQL.Models;
 using IdentityTokenExchange.GraphQL.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;

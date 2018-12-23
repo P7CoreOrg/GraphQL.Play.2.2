@@ -25,10 +25,10 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using Orders.Extensions;
-using P7.Core.Cache;
 using P7.GraphQLCore;
 using P7.GraphQLCore.Extensions;
 using P7.GraphQLCore.Stores;
+using P7Core.ObjectContainers.Extensions;
 using TheApp.Services;
 
 namespace TheApp
@@ -48,14 +48,13 @@ namespace TheApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddObjectCache();  // use this vs a static to cache class data.
+            services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
 
             services.AddMemoryCache();
             services.AddIdentityModelExtrasTypes();
             services.AddSingleton<ConfiguredDiscoverCacheContainerFactory>();
             services.AddScoped<IJsonFileLoader, JsonFileLoader>();
-            services.AddScoped<IRemoteJsonFileLoader, RemoteJsonFileLoader>();
 
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();

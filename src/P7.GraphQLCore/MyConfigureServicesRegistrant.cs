@@ -3,8 +3,6 @@ using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using P7.Core.Settings;
-
 using P7.GraphQLCore.Stores;
 
 

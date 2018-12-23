@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GraphQL.Http;
-using P7.Core.Writers;
+using P7Core.Writers;
 
 namespace P7.GraphQLCore
 {
