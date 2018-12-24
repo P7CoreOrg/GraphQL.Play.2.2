@@ -10,13 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="P7Core.ObjectContainers" Version="1.0.44" />
+    <PackageReference Include="P7Core.GraphQLCore.Controllers" Version="1.0.3" />
+    <PackageReference Include="P7Core.ObjectContainers" Version="1.0.46" />
   </ItemGroup>
 
 
   <ItemGroup>
     <ProjectReference Include="..\CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj" />
-    <ProjectReference Include="..\GraphQLCoreController\GraphQLCoreController.csproj" />
     <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
     <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
