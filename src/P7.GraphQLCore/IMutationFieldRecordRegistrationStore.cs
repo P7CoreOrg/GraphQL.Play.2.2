@@ -6,6 +6,7 @@ namespace P7.GraphQLCore
 {
     public interface IMutationFieldRecordRegistrationStore
     {
+        int Count { get; }
         void AddGraphTypeFields(MutationCore mutationCore);
     }
 }

@@ -75,8 +75,8 @@ namespace P7.GraphQLCore.Extensions
             services.AddSingleton<IGraphQLClaimsAuthorizationCheck, OptOutGraphQLClaimsAuthorizationCheck>();
 
             services.AddTransient<DynamicType>();
-            services.AddTransient<IMutationFieldRecordRegistration, PlaceHolderMutation>();
-            services.AddTransient<ISubscriptionFieldRegistration, PlaceHolderSubscription>();
+        //    services.AddTransient<IMutationFieldRecordRegistration, PlaceHolderMutation>();
+         //   services.AddTransient<ISubscriptionFieldRegistration, PlaceHolderSubscription>();
    
             services.AddSingleton<IDependencyResolver>(
                    c => new FuncDependencyResolver(type => c.GetRequiredService(type)));

@@ -11,9 +11,20 @@ namespace P7.GraphQLCore
             SubscriptionCore subscription, 
             IDependencyResolver resolver)
         {
-            Query = query;
-            Mutation = mutation;
-            Subscription = subscription;
+            
+            if (query.RegistrationCount > 0)
+            {
+                Query = query;
+            }
+            if (mutation.RegistrationCount > 0)
+            {
+                Mutation = mutation;
+            }
+            if (subscription.RegistrationCount > 0)
+            {
+                Subscription = subscription;
+            }
+            
             DependencyResolver = resolver;
         }
     }

@@ -8,11 +8,14 @@ namespace P7.GraphQLCore
 {
     public class QueryFieldRecordRegistrationStore : IQueryFieldRecordRegistrationStore
     {
-        private IEnumerable<IQueryFieldRecordRegistration> _fieldRecordRegistrations;
+        private List<IQueryFieldRecordRegistration> _fieldRecordRegistrations;
+
         public QueryFieldRecordRegistrationStore(IEnumerable<IQueryFieldRecordRegistration> fieldRecordRegistrations)
         {
-            _fieldRecordRegistrations = fieldRecordRegistrations;
+            _fieldRecordRegistrations = fieldRecordRegistrations.ToList();
         }
+
+        public int Count => _fieldRecordRegistrations.Count;
 
         public void AddGraphTypeFields(QueryCore queryCore)
         {

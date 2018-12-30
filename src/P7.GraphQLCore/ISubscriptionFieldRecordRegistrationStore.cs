@@ -2,6 +2,7 @@
 {
     public interface ISubscriptionFieldRecordRegistrationStore
     {
+        int Count { get; }
         void AddGraphTypeFields(SubscriptionCore subscriptionCore);
     }
 }

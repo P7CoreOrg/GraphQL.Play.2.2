@@ -14,6 +14,8 @@ namespace P7.GraphQLCore
             _fieldRecordRegistrations = fieldRecordRegistrations.ToList();
         }
 
+        public int Count => _fieldRecordRegistrations.Count;
+
         public void AddGraphTypeFields(SubscriptionCore subscriptionCore)
         {
             foreach (var item in _fieldRecordRegistrations)

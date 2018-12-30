@@ -5,6 +5,8 @@ namespace P7.GraphQLCore
 {
     public class QueryCore : ObjectGraphType<object>
     {
+        private int _count;
+
         public QueryCore()
         {
             
@@ -13,7 +15,10 @@ namespace P7.GraphQLCore
         {
             Name = "query";
             fieldStore.AddGraphTypeFields(this);
+            _count = fieldStore.Count;
         }
+
+        public int RegistrationCount => _count;
     }
 }
 
