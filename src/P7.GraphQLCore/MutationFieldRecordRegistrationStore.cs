@@ -4,12 +4,12 @@ using System.Linq;
 namespace P7.GraphQLCore
 {
     public class MutationFieldRecordRegistrationStore :
-        IMutationFieldRecordRegistrationStore
+        IMutationFieldRegistrationStore
     {
-        private List<IMutationFieldRecordRegistration> _fieldRecordRegistrations;
+        private List<IMutationFieldRegistration> _fieldRecordRegistrations;
 
         public MutationFieldRecordRegistrationStore(
-            IEnumerable<IMutationFieldRecordRegistration> fieldRecordRegistrations)
+            IEnumerable<IMutationFieldRegistration> fieldRecordRegistrations)
         {
             _fieldRecordRegistrations = fieldRecordRegistrations.ToList();
         }

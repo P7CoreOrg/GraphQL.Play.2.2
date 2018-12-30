@@ -19,7 +19,7 @@ namespace CustomerLoyalyStore.GraphQL.Query
         public static bool EqualsNoCase(this string str1, string str2) =>
             string.Equals(str1, str2, StringComparison.InvariantCultureIgnoreCase);
     }
-    public class CustomerLoyaltyQuery : IQueryFieldRecordRegistration
+    public class CustomerLoyaltyQuery : IQueryFieldRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
 

@@ -6,7 +6,7 @@ namespace P7.GraphQLCore
     {
         private int _count;
 
-        public SubscriptionCore(ISubscriptionFieldRecordRegistrationStore fieldStore)
+        public SubscriptionCore(ISubscriptionFieldRegistrationStore fieldStore)
         {
             Name = "subscription";
             fieldStore.AddGraphTypeFields(this);

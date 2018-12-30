@@ -1,28 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using P7.GraphQLCore.Models;
 using P7.GraphQLCore.Stores;
 
 
-namespace P7.GraphQLCore
+namespace P7.GraphQLCore.Extensions
 {
-
-    public class MutationConfig
-    {
-        public List<string> OptOut { get; set; }
-    }
-    public class QueryConfig
-    {
-        public List<string> OptOut { get; set; }
-    }
-    public class GraphQLAuthenticationConfig
-    {
-        public const string WellKnown_SectionName = "graphQLAuthentication";
-        public MutationConfig Mutation { get; set; }
-        public QueryConfig Query { get; set; }
-    }
     public static class ConfigurationServicesExtension
     {
         public static void RegisterGraphQLCoreConfigurationServices(this IServiceCollection services, IConfiguration configuration)

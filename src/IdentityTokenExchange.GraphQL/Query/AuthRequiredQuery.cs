@@ -6,7 +6,7 @@ using P7.GraphQLCore;
 
 namespace IdentityTokenExchange.GraphQL.Query
 {
-    public class AuthRequiredQuery : IQueryFieldRecordRegistration
+    public class AuthRequiredQuery : IQueryFieldRegistration
     {
         public AuthRequiredQuery()
         {

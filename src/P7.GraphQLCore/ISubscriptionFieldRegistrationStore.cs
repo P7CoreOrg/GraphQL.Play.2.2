@@ -1,6 +1,6 @@
 ﻿namespace P7.GraphQLCore
 {
-    public interface ISubscriptionFieldRecordRegistrationStore
+    public interface ISubscriptionFieldRegistrationStore
     {
         int Count { get; }
         void AddGraphTypeFields(SubscriptionCore subscriptionCore);

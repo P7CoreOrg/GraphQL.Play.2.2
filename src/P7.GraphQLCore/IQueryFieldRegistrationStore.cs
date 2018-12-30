@@ -1,6 +1,6 @@
 ﻿namespace P7.GraphQLCore
 {
-    public interface IQueryFieldRecordRegistrationStore
+    public interface IQueryFieldRegistrationStore
     {
         int Count { get; }
         void AddGraphTypeFields(QueryCore queryCore);

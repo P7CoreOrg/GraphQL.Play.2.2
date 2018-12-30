@@ -18,7 +18,7 @@ using P7.GraphQLCore;
 
 namespace IdentityTokenExchange.GraphQL.Query
 {
-    public class BindQuery : IQueryFieldRecordRegistration
+    public class BindQuery : IQueryFieldRegistration
     {
         private ITokenValidator _tokenValidator;
         private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;

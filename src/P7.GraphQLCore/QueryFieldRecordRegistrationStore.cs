@@ -6,11 +6,11 @@ using GraphQL.Types;
 
 namespace P7.GraphQLCore
 {
-    public class QueryFieldRecordRegistrationStore : IQueryFieldRecordRegistrationStore
+    public class QueryFieldRecordRegistrationStore : IQueryFieldRegistrationStore
     {
-        private List<IQueryFieldRecordRegistration> _fieldRecordRegistrations;
+        private List<IQueryFieldRegistration> _fieldRecordRegistrations;
 
-        public QueryFieldRecordRegistrationStore(IEnumerable<IQueryFieldRecordRegistration> fieldRecordRegistrations)
+        public QueryFieldRecordRegistrationStore(IEnumerable<IQueryFieldRegistration> fieldRecordRegistrations)
         {
             _fieldRecordRegistrations = fieldRecordRegistrations.ToList();
         }

@@ -4,7 +4,7 @@ using System.Linq;
 namespace P7.GraphQLCore
 {
     public class SubscriptionFieldRecordRegistrationStore :
-        ISubscriptionFieldRecordRegistrationStore
+        ISubscriptionFieldRegistrationStore
     {
         private List<ISubscriptionFieldRegistration> _fieldRecordRegistrations;
 

@@ -4,7 +4,7 @@ using GraphQL.Language.AST;
 
 namespace P7.GraphQLCore
 {
-    public interface IQueryFieldRecordRegistration
+    public interface IQueryFieldRegistration
     {
         void AddGraphTypeFields(QueryCore queryCore);
     }

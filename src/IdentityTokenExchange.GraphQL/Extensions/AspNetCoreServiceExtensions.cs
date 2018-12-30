@@ -15,7 +15,7 @@ namespace IdentityTokenExchange.GraphQL.Extensions
             // AuthRequired Query
             services.AddTransient<IdentityModelType>();
             services.AddTransient<ClaimModelType>();
-            services.AddTransient<IQueryFieldRecordRegistration, AuthRequiredQuery>();
+            services.AddTransient<IQueryFieldRegistration, AuthRequiredQuery>();
 
 
             // Bind Query
@@ -24,7 +24,7 @@ namespace IdentityTokenExchange.GraphQL.Extensions
             services.AddTransient<BindInput>();
             services.AddTransient<BindResultType>();
             services.AddTransient<AuthorizationResultType>();
-            services.AddTransient<IQueryFieldRecordRegistration, BindQuery>();
+            services.AddTransient<IQueryFieldRegistration, BindQuery>();
 
         }
     }

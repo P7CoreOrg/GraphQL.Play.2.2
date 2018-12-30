@@ -11,7 +11,7 @@ namespace P7.GraphQLCore
         {
             
         }
-        public QueryCore(IQueryFieldRecordRegistrationStore fieldStore)
+        public QueryCore(IQueryFieldRegistrationStore fieldStore)
         {
             Name = "query";
             fieldStore.AddGraphTypeFields(this);

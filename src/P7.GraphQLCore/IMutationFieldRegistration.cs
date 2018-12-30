@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using GraphQL.Types;
 
 namespace P7.GraphQLCore
 {
-    public interface IMutationFieldRecordRegistrationStore
+    public interface IMutationFieldRegistration
     {
-        int Count { get; }
         void AddGraphTypeFields(MutationCore mutationCore);
     }
+    
 }
-

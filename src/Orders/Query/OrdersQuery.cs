@@ -6,7 +6,7 @@ using P7.GraphQLCore;
 
 namespace Orders.Query
 {
-    public class OrdersQuery : IQueryFieldRecordRegistration
+    public class OrdersQuery : IQueryFieldRegistration
     {
         private ICustomerService _customers;
         private IOrderService _orders;

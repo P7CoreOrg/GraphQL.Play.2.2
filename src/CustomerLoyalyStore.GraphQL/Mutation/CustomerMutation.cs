@@ -7,7 +7,7 @@ using P7.GraphQLCore;
 
 namespace CustomerLoyalyStore.GraphQL.Mutation
 {
-    public class CustomerMutation : IMutationFieldRecordRegistration
+    public class CustomerMutation : IMutationFieldRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
 

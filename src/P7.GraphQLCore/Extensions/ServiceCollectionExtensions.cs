@@ -15,13 +15,13 @@ using P7.GraphQLCore.Validators;
 
 namespace P7.GraphQLCore.Extensions
 {
-    public static class AspNetCoreServiceExtensions
+    public static class ServiceCollectionExtensions
     {
         public static void AddGraphQLCoreTypes(this IServiceCollection services)
         {
-            services.AddTransient<IQueryFieldRecordRegistrationStore,QueryFieldRecordRegistrationStore>();
-            services.AddTransient<IMutationFieldRecordRegistrationStore, MutationFieldRecordRegistrationStore>();
-            services.AddTransient<ISubscriptionFieldRecordRegistrationStore, SubscriptionFieldRecordRegistrationStore>();
+            services.AddTransient<IQueryFieldRegistrationStore,QueryFieldRecordRegistrationStore>();
+            services.AddTransient<IMutationFieldRegistrationStore, MutationFieldRecordRegistrationStore>();
+            services.AddTransient<ISubscriptionFieldRegistrationStore, SubscriptionFieldRecordRegistrationStore>();
 
             services.AddTransient<IDocumentBuilder, GraphQLDocumentBuilder>();
             services.AddTransient<IDocumentValidator, DocumentValidator>();

@@ -15,14 +15,14 @@ namespace CustomerLoyalyStore.GraphQL.Extensions
             services.AddTransient<CustomerMutationInput>();
             services.AddTransient<CustomerResultType>();
             services.AddTransient<PrizeType>();
-            services.AddTransient<IMutationFieldRecordRegistration, CustomerMutation>();
+            services.AddTransient<IMutationFieldRegistration, CustomerMutation>();
 
             services.AddTransient<LoyaltyPointsTransferMutationInput>();
             services.AddTransient<LoyaltyPointsTransferType>();
            
-            services.AddTransient<IMutationFieldRecordRegistration, LoyaltyPointsTransferMutation>();
+            services.AddTransient<IMutationFieldRegistration, LoyaltyPointsTransferMutation>();
 
-            services.AddTransient<IQueryFieldRecordRegistration, CustomerLoyaltyQuery>();
+            services.AddTransient<IQueryFieldRegistration, CustomerLoyaltyQuery>();
 
             
         }

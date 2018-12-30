@@ -7,7 +7,7 @@ using P7.GraphQLCore;
 
 namespace Orders.Mutation
 {
-    public class OrdersMutation : IMutationFieldRecordRegistration
+    public class OrdersMutation : IMutationFieldRegistration
     {
         private IOrderService _orders;
 

@@ -19,8 +19,8 @@ namespace Orders.Extensions
             services.AddTransient<OrderStatusesEnum>();
             services.AddTransient<OrderType>();
 
-            services.AddTransient<IMutationFieldRecordRegistration, OrdersMutation>();
-            services.AddTransient<IQueryFieldRecordRegistration, OrdersQuery>();
+            services.AddTransient<IMutationFieldRegistration, OrdersMutation>();
+            services.AddTransient<IQueryFieldRegistration, OrdersQuery>();
             services.AddTransient<ISubscriptionFieldRegistration, OrdersSubscription>();
 
 
