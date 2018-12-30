@@ -3,7 +3,7 @@ using GraphQL;
 using GraphQL.Types;
 using P7.GraphQLCore;
 
-namespace AuthHandler.GraphQL
+namespace P7.GraphQLCore.Mutation
 {
     public class PlaceHolderMutation : IMutationFieldRecordRegistration
     {

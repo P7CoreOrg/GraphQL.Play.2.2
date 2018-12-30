@@ -3,6 +3,7 @@ using Orders.Mutation;
 using Orders.Query;
 using Orders.Schema;
 using Orders.Services;
+using Orders.Subscription;
 using P7.GraphQLCore;
 
 namespace Orders.Extensions
@@ -14,12 +15,14 @@ namespace Orders.Extensions
             services.AddTransient<CustomerType>();
             services.AddTransient<OrderCreateInputType>();
             services.AddTransient<OrderEventType>();
-            services.AddTransient<OrdersSubscription>();
+ 
             services.AddTransient<OrderStatusesEnum>();
             services.AddTransient<OrderType>();
 
             services.AddTransient<IMutationFieldRecordRegistration, OrdersMutation>();
             services.AddTransient<IQueryFieldRecordRegistration, OrdersQuery>();
+            services.AddTransient<ISubscriptionFieldRegistration, OrdersSubscription>();
+
 
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<IOrderEventService, OrderEventService>();

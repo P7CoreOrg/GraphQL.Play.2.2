@@ -1,20 +1,20 @@
 using System;
+using GraphQL;
 using GraphQL.Types;
 
 namespace P7.GraphQLCore
 {
     public class SchemaCore : Schema
     {
-        public SchemaCore(Func<Type, GraphType> resolveType)
-            : base(resolveType)
+        public SchemaCore(QueryCore query,
+            MutationCore mutation,
+            SubscriptionCore subscription, 
+            IDependencyResolver resolver)
         {
-            Query = (QueryCore) resolveType(typeof(QueryCore));
-            Mutation = (MutationCore) resolveType(typeof(MutationCore));
-            Subscription = (SubscriptionCore)resolveType(typeof(SubscriptionCore));
-
-            var resolvedInterfaces = Query.ResolvedInterfaces;
-            var fields = Query.Fields;
-            var interfaces = Query.Interfaces;
+            Query = query;
+            Mutation = mutation;
+            Subscription = subscription;
+            DependencyResolver = resolver;
         }
     }
 }

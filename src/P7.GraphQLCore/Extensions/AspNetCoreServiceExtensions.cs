@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AuthHandler.GraphQL;
- 
 using GraphQL;
 using GraphQL.Execution;
 using GraphQL.Http;
@@ -12,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using P7.GraphQLCore.Mutation;
+using P7.GraphQLCore.Subscription;
 using P7.GraphQLCore.Types;
 using P7.GraphQLCore.Validators;
 
@@ -56,6 +56,8 @@ namespace P7.GraphQLCore.Extensions
 
             services.AddTransient<QueryCore>();
             services.AddTransient<MutationCore>();
+            services.AddTransient<SubscriptionCore>();
+            
             services.AddTransient<ISchema, SchemaCore>();
             services.TryAddTransient<Func<Type, GraphType>>(
                 x =>
@@ -74,6 +76,10 @@ namespace P7.GraphQLCore.Extensions
 
             services.AddTransient<DynamicType>();
             services.AddTransient<IMutationFieldRecordRegistration, PlaceHolderMutation>();
+            services.AddTransient<ISubscriptionFieldRegistration, PlaceHolderSubscription>();
+   
+            services.AddSingleton<IDependencyResolver>(
+                   c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
         }
     }
 }

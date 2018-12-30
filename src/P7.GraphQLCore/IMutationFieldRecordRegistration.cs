@@ -7,4 +7,5 @@ namespace P7.GraphQLCore
     {
         void AddGraphTypeFields(MutationCore mutationCore);
     }
+    
 }

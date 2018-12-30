@@ -59,7 +59,9 @@ namespace TheApp
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.AddGraphQLOrders();
-            
+         //   services.AddGraphQLOrdersOriginal();
+
+
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
