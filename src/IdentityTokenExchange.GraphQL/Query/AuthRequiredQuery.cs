@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GraphQL;
 using IdentityTokenExchange.GraphQL.Models;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace IdentityTokenExchange.GraphQL.Query
 {

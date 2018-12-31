@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomerLoyaltyStore\CustomerLoyaltyStore.csproj" />
-    <ProjectReference Include="..\P7.GraphQLCore\P7.GraphQLCore.csproj" />
+    <ProjectReference Include="..\P7Core.GraphQLCore\P7Core.GraphQLCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

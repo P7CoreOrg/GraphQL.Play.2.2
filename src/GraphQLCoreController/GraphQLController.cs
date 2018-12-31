@@ -20,8 +20,8 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using P7.GraphQLCore;
-using P7.GraphQLCore.Validators;
+using P7Core.GraphQLCore;
+using P7Core.GraphQLCore.Validators;
 
 namespace GraphQLCoreController
 {

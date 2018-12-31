@@ -3,7 +3,7 @@ using CustomerLoyaltyStore;
 using CustomerLoyaltyStore.Models;
 using GraphQL;
 using GraphQL.Types;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace CustomerLoyalyStore.GraphQL.Mutation
 {

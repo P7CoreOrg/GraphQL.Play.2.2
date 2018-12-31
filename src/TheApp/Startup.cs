@@ -25,9 +25,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using Orders.Extensions;
-using P7.GraphQLCore;
-using P7.GraphQLCore.Extensions;
-using P7.GraphQLCore.Stores;
+using P7Core.GraphQLCore;
+using P7Core.GraphQLCore.Extensions;
+using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using TheApp.Services;
 

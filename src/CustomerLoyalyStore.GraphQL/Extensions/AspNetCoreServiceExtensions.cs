@@ -4,7 +4,7 @@ using System.Text;
 using CustomerLoyalyStore.GraphQL.Mutation;
 using CustomerLoyalyStore.GraphQL.Query;
 using Microsoft.Extensions.DependencyInjection;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace CustomerLoyalyStore.GraphQL.Extensions
 {

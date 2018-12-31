@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reactive.Linq;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 using Orders.Schema;
 
 namespace Orders.Subscription

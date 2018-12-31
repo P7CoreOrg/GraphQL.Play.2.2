@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace IdentityTokenExchange.GraphQL.Query
 {

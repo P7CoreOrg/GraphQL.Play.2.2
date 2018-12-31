@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7.GraphQLCore", "P7.GraphQLCore\P7.GraphQLCore.csproj", "{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLCoreController", "GraphQLCoreController\GraphQLCoreController.csproj", "{F6B496E1-1BD8-4B93-9A7B-E942D51FB31C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheApp", "TheApp\TheApp.csproj", "{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiAuthority.AccessTokenValidation", "MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj", "{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}"
@@ -26,20 +22,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\appveyor.yaml = ..\appveyor.yaml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.GraphQLCore.Controllers", "P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj", "{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.GraphQLCore", "P7Core.GraphQLCore\P7Core.GraphQLCore.csproj", "{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F85D1E3C-4108-4BD2-9479-76B6F5EB0AE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6B496E1-1BD8-4B93-9A7B-E942D51FB31C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6B496E1-1BD8-4B93-9A7B-E942D51FB31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6B496E1-1BD8-4B93-9A7B-E942D51FB31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6B496E1-1BD8-4B93-9A7B-E942D51FB31C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,6 +60,14 @@ Global
 		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

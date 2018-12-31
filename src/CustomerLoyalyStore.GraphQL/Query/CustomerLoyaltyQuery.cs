@@ -10,7 +10,7 @@ using CustomerLoyalyStore.GraphQL.Query;
 using GraphQL;
 using GraphQL.Language.AST;
 using GraphQL.Types;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace CustomerLoyalyStore.GraphQL.Query
 {

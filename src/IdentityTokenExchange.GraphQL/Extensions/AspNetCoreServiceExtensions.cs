@@ -1,7 +1,7 @@
 ﻿using IdentityTokenExchange.GraphQL.Query;
 using IdentityTokenExchange.GraphQL.Services;
 using Microsoft.Extensions.DependencyInjection;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace IdentityTokenExchange.GraphQL.Extensions
 {

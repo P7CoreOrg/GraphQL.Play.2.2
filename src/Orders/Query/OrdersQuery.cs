@@ -2,7 +2,7 @@
 using GraphQL.Types;
 using Orders.Schema;
 using Orders.Services;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace Orders.Query
 {

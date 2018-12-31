@@ -4,7 +4,7 @@ using Orders.Query;
 using Orders.Schema;
 using Orders.Services;
 using Orders.Subscription;
-using P7.GraphQLCore;
+using P7Core.GraphQLCore;
 
 namespace Orders.Extensions
 {

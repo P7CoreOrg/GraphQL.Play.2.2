@@ -8,9 +8,10 @@ using TheApp.Services;
 
 namespace TheApp.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
-  
+
     public class JsonFileController : ControllerBase
     {
         private IJsonFileLoader _jsonFileLoader;
@@ -24,7 +25,7 @@ namespace TheApp.Controllers
         // GET api/values
         [HttpGet]
         [Route("open")]
-        public async Task< ActionResult<object>> GetOpenJsonAsync(string file)
+        public async Task<ActionResult<object>> GetOpenJsonAsync(string file)
         {
             return await _jsonFileLoader.LoadAsync(file);
         } // GET api/values
@@ -34,8 +35,8 @@ namespace TheApp.Controllers
         public async Task<ActionResult<object>> GetClosedJsonAsync(string file)
         {
             var query = from item in _httpContextAccessor.HttpContext.User.Claims
-                where item.Type == ClaimTypes.NameIdentifier
-                select item;
+                        where item.Type == ClaimTypes.NameIdentifier
+                        select item;
             var nameClaim = query.FirstOrDefault();
 
             return await _jsonFileLoader.LoadAsync($"{nameClaim.Value}/{file}");
