@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerLoyaltyStore", "Cus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityTokenExchange.GraphQL", "IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj", "{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders", "Orders\Orders.csproj", "{038C3A55-4B90-46B4-8617-68760BCE0C88}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04D1C14D-65A8-41E4-8914-13631F9D1F32}"
 	ProjectSection(SolutionItems) = preProject
 		..\appveyor.yaml = ..\appveyor.yaml
@@ -25,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.GraphQLCore.Controllers", "P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj", "{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.GraphQLCore", "P7Core.GraphQLCore\P7Core.GraphQLCore.csproj", "{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders", "example-orders\Orders\Orders.csproj", "{10778785-3385-4CED-9B5E-59329D90F16E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,10 +56,6 @@ Global
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{038C3A55-4B90-46B4-8617-68760BCE0C88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -68,6 +64,10 @@ Global
 		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DDB2DDD-515F-4297-AD81-BAA16A1A700E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10778785-3385-4CED-9B5E-59329D90F16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10778785-3385-4CED-9B5E-59329D90F16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10778785-3385-4CED-9B5E-59329D90F16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10778785-3385-4CED-9B5E-59329D90F16E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
