@@ -1,9 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+   </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/ghstahl/GraphQL.Play.2.2</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ghstahl/GraphQL.Play.2.2</RepositoryUrl>
+    <Authors>Herb Stahl</Authors>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
-
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="GraphQL-Parser" Version="3.0.0" />

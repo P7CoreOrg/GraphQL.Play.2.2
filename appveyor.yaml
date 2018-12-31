@@ -1,0 +1,29 @@
+version: 1.0.{build}
+skip_branch_with_pr: true
+image: Visual Studio 2017
+ 
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+environment:
+  solution_version: 1.0.0
+
+install:
+- cmd: appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/v4.9.2/nuget.exe
+before_build:
+- cmd: >-
+    dotnet --version
+
+    dotnet restore ./src/GraphQL-AspNetCore-2.2.sln --verbosity m
+build:
+  verbosity: minimal
+after_build:
+- cmd: dotnet pack  ./src/GraphQL-AspNetCore-2.2.sln -c Release /p:PackageVersion=%APPVEYOR_BUILD_VERSION% --include-symbols
+artifacts:
+- path: '**\*.nupkg'
+  name: nuget
