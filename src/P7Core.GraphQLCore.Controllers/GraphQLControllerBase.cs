@@ -85,8 +85,11 @@ namespace P7Core.GraphQLCore.Controllers
                 var httpResult = result.Errors?.Count > 0
                     ? HttpStatusCode.BadRequest
                     : HttpStatusCode.OK;
-
-                var json = _writer.Write(result);
+                MemoryStream stream = new MemoryStream();
+                await _writer.WriteAsync(stream,result);
+                StreamReader reader = new StreamReader(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                string json = reader.ReadToEnd();
                 dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
 
                 var objectResult = new ObjectResult(obj) { StatusCode = (int)httpResult };
