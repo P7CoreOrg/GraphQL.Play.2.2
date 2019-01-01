@@ -1,4 +1,8 @@
 version: 1.0.{build}
+nuget:
+  account_feed: true
+  project_feed: true
+
 skip_branch_with_pr: true
 image: Visual Studio 2017
  
@@ -28,6 +32,3 @@ artifacts:
 - path: '**\*.nupkg'
   name: nuget
 
- nuget:
-  account_feed: true
-  project_feed: true
