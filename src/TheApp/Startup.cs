@@ -25,7 +25,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using Orders.Extensions;
-using P7Core.GraphQLCore;
+using P7Core.BurnerGraphQL.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
@@ -59,7 +59,7 @@ namespace TheApp
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.AddGraphQLOrders();
-         //   services.AddGraphQLOrdersOriginal();
+            services.AddBurnerGraphQL();
 
 
             services.AddGraphQLIdentityTokenExchangeTypes();

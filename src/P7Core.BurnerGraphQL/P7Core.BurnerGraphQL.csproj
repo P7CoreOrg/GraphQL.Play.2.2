@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+
+  </PropertyGroup>
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="P7Core.Burner" Version="1.0.10">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\P7Core.GraphQLCore\P7Core.GraphQLCore.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)..\tools\ILRepack 2.0.16\tools\ILRepack.exe&quot; /lib:$(TargetDir)   /internalize /ndebug /out:$(TargetDir)repack.dll $(TargetPath) $(TargetDir)P7Core.Burner.dll&#xD;&#xA;" />
+  </Target>
+
+</Project>

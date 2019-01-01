@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Burners", "Burners", "{4E85
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Core.Burner", "P7Core.Burner\P7Core.Burner.csproj", "{22983B80-6568-4A59-87A6-5B9BC6F99516}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Core.BurnerGraphQL", "P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj", "{5F507953-2B02-4D08-A838-777FCADF5676}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,12 +78,17 @@ Global
 		{22983B80-6568-4A59-87A6-5B9BC6F99516}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22983B80-6568-4A59-87A6-5B9BC6F99516}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22983B80-6568-4A59-87A6-5B9BC6F99516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F507953-2B02-4D08-A838-777FCADF5676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F507953-2B02-4D08-A838-777FCADF5676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F507953-2B02-4D08-A838-777FCADF5676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F507953-2B02-4D08-A838-777FCADF5676}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{22983B80-6568-4A59-87A6-5B9BC6F99516} = {4E85988C-332F-4B14-9351-EC78E99D218D}
+		{5F507953-2B02-4D08-A838-777FCADF5676} = {4E85988C-332F-4B14-9351-EC78E99D218D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}

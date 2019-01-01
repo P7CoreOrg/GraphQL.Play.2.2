@@ -20,6 +20,7 @@
     <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
     <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
+    <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore\P7Core.GraphQLCore.csproj" />
   </ItemGroup>
