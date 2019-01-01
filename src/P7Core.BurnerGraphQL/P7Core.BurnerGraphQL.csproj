@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(SolutionDir)..\tools\ILRepack 2.0.16\tools\ILRepack.exe&quot; /lib:$(TargetDir)   /internalize /ndebug /out:$(TargetDir)repack.dll $(TargetPath) $(TargetDir)P7Core.Burner.dll&#xD;&#xA;" />
+    <Exec Command="echo &quot;$(SolutionDir)..\tools\ILRepack 2.0.16\tools\ILRepack.exe&quot; /lib:$(TargetDir)   /internalize /ndebug /out:$(TargetDir)repack.dll $(TargetPath) $(TargetDir)P7Core.Burner.dll&#xD;&#xA;" />
   </Target>
 
 </Project>
