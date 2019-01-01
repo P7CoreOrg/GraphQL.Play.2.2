@@ -27,3 +27,7 @@ after_build:
 artifacts:
 - path: '**\*.nupkg'
   name: nuget
+
+ nuget:
+  account_feed: true
+  project_feed: true
