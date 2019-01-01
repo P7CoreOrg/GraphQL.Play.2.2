@@ -4,6 +4,6 @@ namespace P7Core.Burner
 {
     public class Dog
     {
-        public string Name => "Shelby";
+        public string Name => "Heidi";
     }
 }
