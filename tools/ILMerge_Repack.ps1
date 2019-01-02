@@ -4,28 +4,24 @@
 param (
     [string]$configJson = "config.json",
     [string]$targetDir = "targetDir",
-    [string]$rootDir = "rootDir",
-    [string]$projectDir = "projectDir"
+    [string]$rootDir = "rootDir"
  )
 
-write-output $configJson
-write-output $targetDir
-write-output $rootDir
-write-output $projectDir
+ write-output $configJson
+ write-output $targetDir
+ write-output $rootDir
 
-$ILRepackJson = $projectDir+"ILRepack.json"
-
-$jsonObj = (Get-Content $ILRepackJson) -join "`n" | ConvertFrom-Json
+$jsonObj = (Get-Content $configJson) -join "`n" | ConvertFrom-Json
 $outAssembly = $jsonObj.outputAssembly
 $outTarget = "$targetDir$outAssembly"
 $repackTarget = $targetDir+$jsonObj.outputAssembly
 
 
-$execFile = $rootDir+"tools\ILRepack 2.0.16\tools\ILRepack.exe"
+$execFile = $rootDir+"tools\ILMerge 3.0.21\tools\net452\ILMerge.exe"
 $listParams = New-Object System.Collections.Generic.List[System.Object]
 $listParams.Add("/lib:$targetDir")
 $listParams.Add("/internalize")
-#$listParams.Add("/ndebug")
+$listParams.Add("/ndebug")
 $listParams.Add("/out:"+$repackTarget)
 
 foreach($assembly in $jsonObj.assembliesToMerge){

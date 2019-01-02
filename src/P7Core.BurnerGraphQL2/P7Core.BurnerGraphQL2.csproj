@@ -7,6 +7,12 @@
   <PropertyGroup>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="P7Core.Burner" Version="1.0.11" />
   </ItemGroup>
@@ -16,7 +22,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -targetDir $(TargetDir)" />
+    <Exec Command="powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;echo powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\ILMerge_Repack.ps1 -rootDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -targetDir $(TargetDir) -projectDir $(ProjectDir)" />
   </Target>
 
 </Project>
