@@ -1,33 +1,33 @@
-#powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -projectDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -outDir $(TargetDir)
+#powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -targetDir $(TargetDir)
 
 
 param (
     [string]$configJson = "config.json",
-    [string]$outDir = "outDir",
-    [string]$projectDir = "projectDir"
+    [string]$targetDir = "targetDir",
+    [string]$rootDir = "rootDir"
  )
 
  write-output $configJson
- write-output $outDir
- write-output $projectDir
+ write-output $targetDir
+ write-output $rootDir
 
 $jsonObj = (Get-Content $configJson) -join "`n" | ConvertFrom-Json
 $outAssembly = $jsonObj.outputAssembly
-$outTarget = "$outDir$outAssembly"
-$repackTarget = $outDir+"repack\"+$jsonObj.outputAssembly
+$outTarget = "$targetDir$outAssembly"
+$repackTarget = $targetDir+"repack\"+$jsonObj.outputAssembly
 
-$arr = $jsonObj.assembliesToMerge | ForEach-Object { "$outDir$assembly" }
+$arr = $jsonObj.assembliesToMerge | ForEach-Object { "$targetDir$assembly" }
 
 
-$execFile = $projectDir+"tools\ILRepack 2.0.16\tools\ILRepack.exe"
+$execFile = $rootDir+"tools\ILRepack 2.0.16\tools\ILRepack.exe"
 $listParams = New-Object System.Collections.Generic.List[System.Object]
-$listParams.Add("/lib:$outDir")
+$listParams.Add("/lib:$targetDir")
 $listParams.Add("/internalize")
 $listParams.Add("/ndebug")
 $listParams.Add("/out:"+$repackTarget)
 
 foreach($assembly in $jsonObj.assembliesToMerge){
-    $listParams.Add($outDir+$assembly)
+    $listParams.Add($targetDir+$assembly)
 }
 $params = $listParams.ToArray()
 
@@ -38,7 +38,7 @@ if (-not $?)
     # Show error message
 }
 Remove-Item $outTarget
-Copy-Item $repackTarget -Destination $outDir
+Copy-Item $repackTarget -Destination $targetDir
 
 
 # "$(SolutionDir)..\tools\ILRepack 2.0.16\tools\ILRepack.exe" /lib:$(TargetDir)   /internalize /ndebug /out:$(TargetDir)\repack\$(TargetFileName) $(TargetPath) $(TargetDir)P7Core.Burner.dll

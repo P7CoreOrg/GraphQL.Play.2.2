@@ -1,0 +1,8 @@
+{
+  "outputAssembly": "P7Core.BurnerGraphQL.dll",
+  "assembliesToMerge": [
+    "P7Core.BurnerGraphQL.dll",
+    "P7Core.Burner.dll"
+
+  ]
+}
