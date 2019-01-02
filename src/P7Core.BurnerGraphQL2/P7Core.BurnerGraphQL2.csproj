@@ -8,9 +8,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="P7Core.Burner" Version="1.0.11">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="P7Core.Burner" Version="1.0.11" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +16,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&quot;$(SolutionDir)..\tools\ILRepack 2.0.16\tools\ILRepack.exe&quot; /lib:$(TargetDir)   /internalize /ndebug /out:$(TargetDir)\repack\$(TargetFileName) $(TargetPath) $(TargetDir)P7Core.Burner.dll&#xD;&#xA;del $(TargetPath)&#xD;&#xA;copy $(TargetDir)repack\$(TargetFileName) $(TargetPath)" />
+    <Exec Command="powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -projectDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -outDir $(TargetDir)" />
   </Target>
 
 </Project>
