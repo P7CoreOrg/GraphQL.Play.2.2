@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="P7Core.Burner" Version="1.0.11" />
+    <PackageReference Include="P7Core.Burner" Version="1.0.35" >
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

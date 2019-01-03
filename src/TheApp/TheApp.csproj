@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="P7Core.Burner" Version="1.0.35" />
     <PackageReference Include="P7Core.ObjectContainers" Version="1.0.46" />
   </ItemGroup>
 
