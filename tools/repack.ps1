@@ -1,48 +1,72 @@
-#powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -targetDir $(TargetDir)
+# $(SolutionDir)..\tools\Pdb2Pdb\tools\PDB2PDB.exe $(TargetPath) /pdb $(TargetDir)$(TargetName).pdb 
+# del $(TargetDir)$(TargetName).pdb 
+# copy $(TargetDir)$(TargetName).pdb2 $(TargetDir)$(TargetName).pdb 
 
+# powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)
 
 param (
-    [string]$targetDir = "targetDir",
     [string]$rootDir = "rootDir",
-    [string]$projectDir = "projectDir"
+    [string]$projectDir = "projectDir",
+    [string]$targetDir = "targetDir"
 )
-
- 
-
 
 write-output $rootDir
 write-output $projectDir
+write-output $targetDir
+
 
 $ILRepackJson = $projectDir + "ILRepack.json"
-
 $jsonObj = (Get-Content $ILRepackJson) -join "`n" | ConvertFrom-Json
 
-$assemblyPDB = $targetDir + $jsonObj.outputAssembly + ".pdb"
-$portablePDB = $targetDir + "portable\" + $jsonObj.outputAssembly + ".pdb"
-$repackTarget = $targetDir + $jsonObj.outputAssembly + ".dll"
+$targetPath = $targetDir + $jsonObj.outputAssembly + ".dll"
+$pdbPath = $targetDir + $jsonObj.outputAssembly + ".pdb"
+$portablePDBPath = $pdbPath + ".portable"
 
-$listParams = New-Object System.Collections.Generic.List[System.Object]
 $ILRepackCLI = $rootDir + "tools\ILRepack 2.0.16\tools\ILRepack.exe"
-$pdb2PDB = $rootDir + "tools\Pdb2Pdb\tools\Pdb2Pdb.exe"
-
-$listParams.Add("$repackTarget ")
-$listParams.Add("/pdb " + $assemblyPDB)
-#$listParams.Add("/out " + $portablePDB)
-$params = $listParams.ToArray()
+$pdb2PDBCLI = $rootDir + "tools\Pdb2Pdb\tools\Pdb2Pdb.exe"
 
 write-output "----------PDB2PDB---------------------"
-write-output $pdb2PDB $params
+# this works, but I can't get it to work with launching it &
+# $myarg = """$targetPath"" /pdb ""$pdbPath"" /out ""$portablePDBPath"""
+# Start-Process $pdb2PDBCLI -ArgumentList $myarg
 
- 
+foreach ($assembly in $jsonObj.assembliesToMerge) {
+    $assemblyPath = $targetDir + $assembly + ".dll"
+    $pdbPath = $targetDir + $assembly + ".pdb"
 
-$listParams.Clear();
+    if (!(Test-Path $assemblyPath) ) {
+        Write-Error "$assemblyPath absent"
+        $ExitCode = "-1"
+        Exit $ExitCode
+    }
+    if (!(Test-Path $pdbPath) ) {
+        Write-Warning "$pdbPath absent not a problem if you are merging a release package"
+    }
+    else {
+        & $pdb2PDBCLI $assemblyPath
+        if (-not $?) {
+            write-output "Something went wrong with pdb2pdb"
+            $ExitCode = "-1"
+            Exit $ExitCode
+        }
+        $portablePDBPath = $pdbPath + "2" #appends a 2
+        Remove-Item $pdbPath
+        Rename-Item -Path $portablePDBPath -NewName $pdbPath
+
+    }
+   
+}
+
+
+$listParams = New-Object System.Collections.Generic.List[System.Object]
 $listParams.Add("/lib:$targetDir")
 $listParams.Add("/internalize")
 #$listParams.Add("/ndebug")
-$listParams.Add("/out:" + $repackTarget)
+$listParams.Add("/out:" + $targetPath)
 
 foreach ($assembly in $jsonObj.assembliesToMerge) {
-    $listParams.Add($targetDir + $assembly + ".dll")
+    $assemblyPath = $targetDir + $assembly + ".dll"
+    $listParams.Add($assemblyPath)
 }
 $params = $listParams.ToArray()
 
@@ -50,11 +74,7 @@ $params = $listParams.ToArray()
 & $ILRepackCLI $params
 if (-not $?) {
     # Show error message
+    $ExitCode = "-1"
+    Exit $ExitCode
 }
-#Remove-Item $outTarget
-#Copy-Item $repackTarget -Destination $targetDir
-
-
-# "$(SolutionDir)..\tools\ILRepack 2.0.16\tools\ILRepack.exe" /lib:$(TargetDir)   /internalize /ndebug /out:$(TargetDir)\repack\$(TargetFileName) $(TargetPath) $(TargetDir)P7Core.Burner.dll
-# del $(TargetPath)
-# copy $(TargetDir)repack\$(TargetFileName) $(TargetPath)
+ 
