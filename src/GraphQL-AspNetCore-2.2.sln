@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04D1C14D-65A8-41E4-8914-13631F9D1F32}"
 	ProjectSection(SolutionItems) = preProject
 		..\appveyor.yml = ..\appveyor.yml
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.GraphQLCore.Controllers", "P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj", "{B9DB516C-B08B-4BC6-8325-43AE0F5F119C}"
@@ -28,11 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders", "example-orders\Or
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Burners", "Burners", "{4E85988C-332F-4B14-9351-EC78E99D218D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Core.Burner", "P7Core.Burner\P7Core.Burner.csproj", "{22983B80-6568-4A59-87A6-5B9BC6F99516}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.Burner", "P7Core.Burner\P7Core.Burner.csproj", "{22983B80-6568-4A59-87A6-5B9BC6F99516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Core.BurnerGraphQL", "P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj", "{5F507953-2B02-4D08-A838-777FCADF5676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.BurnerGraphQL", "P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj", "{5F507953-2B02-4D08-A838-777FCADF5676}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Core.BurnerGraphQL2", "P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj", "{19124FA1-70C0-4A7F-ADCE-8326A965642E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.BurnerGraphQL2", "P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj", "{19124FA1-70C0-4A7F-ADCE-8326A965642E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
