@@ -13,6 +13,7 @@
     <EmbeddedResource Remove="bin\**" />
     <None Remove="bin\**" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="P7Core.Burner" Version="1.0.11" />
   </ItemGroup>
@@ -22,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;echo powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\ILMerge_Repack.ps1 -rootDir $(SolutionDir)..\ -configJson $(ProjectDir)repackConfig.json  -targetDir $(TargetDir) -projectDir $(ProjectDir)" />
+    <Exec Command="$(SolutionDir)..\tools\Pdb2Pdb\tools\PDB2PDB.exe $(TargetPath) /pdb $(TargetDir)$(TargetName).pdb &#xD;&#xA;del $(TargetDir)$(TargetName).pdb &#xD;&#xA;copy $(TargetDir)$(TargetName).pdb2 $(TargetDir)$(TargetName).pdb &#xD;&#xA;&#xD;&#xA;powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;" />
   </Target>
 
 </Project>

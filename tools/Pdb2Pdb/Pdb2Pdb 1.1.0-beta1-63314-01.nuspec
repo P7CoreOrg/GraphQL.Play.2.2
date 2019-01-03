@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Pdb2Pdb</id>
+    <version>1.1.0-beta1-63314-01</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <developmentDependency>true</developmentDependency>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=529443</licenseUrl>
+    <projectUrl>https://github.com/dotnet/symreader-converter</projectUrl>
+    <description>Converter between Windows PDB and Portable PDB (standalone or embedded) file formats.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>DiaSymReader ISymUnmanagedReader Portable PDB debugging conversion tool</tags>
+    <serviceable>true</serviceable>
+    <repository type="git" url="https://github.com/dotnet/symreader-converter" commit="106d9556e641d96f944c0b999ae39b69191893d1" />
+  </metadata>
+  <files>
+    <file src="tools\cs\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\cs\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\cs\Pdb2Pdb.resources.dll" target="tools\cs\Pdb2Pdb.resources.dll" />
+    <file src="tools\de\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\de\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\de\Pdb2Pdb.resources.dll" target="tools\de\Pdb2Pdb.resources.dll" />
+    <file src="tools\es\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\es\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\es\Pdb2Pdb.resources.dll" target="tools\es\Pdb2Pdb.resources.dll" />
+    <file src="tools\fr\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\fr\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\fr\Pdb2Pdb.resources.dll" target="tools\fr\Pdb2Pdb.resources.dll" />
+    <file src="tools\it\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\it\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\it\Pdb2Pdb.resources.dll" target="tools\it\Pdb2Pdb.resources.dll" />
+    <file src="tools\ja\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\ja\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\ja\Pdb2Pdb.resources.dll" target="tools\ja\Pdb2Pdb.resources.dll" />
+    <file src="tools\ko\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\ko\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\ko\Pdb2Pdb.resources.dll" target="tools\ko\Pdb2Pdb.resources.dll" />
+    <file src="tools\pl\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\pl\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\pl\Pdb2Pdb.resources.dll" target="tools\pl\Pdb2Pdb.resources.dll" />
+    <file src="tools\pt-BR\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\pt-BR\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\pt-BR\Pdb2Pdb.resources.dll" target="tools\pt-BR\Pdb2Pdb.resources.dll" />
+    <file src="tools\ru\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\ru\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\ru\Pdb2Pdb.resources.dll" target="tools\ru\Pdb2Pdb.resources.dll" />
+    <file src="tools\tr\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\tr\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\tr\Pdb2Pdb.resources.dll" target="tools\tr\Pdb2Pdb.resources.dll" />
+    <file src="tools\zh-Hans\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\zh-Hans\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\zh-Hans\Pdb2Pdb.resources.dll" target="tools\zh-Hans\Pdb2Pdb.resources.dll" />
+    <file src="tools\zh-Hant\Microsoft.DiaSymReader.Converter.resources.dll" target="tools\zh-Hant\Microsoft.DiaSymReader.Converter.resources.dll" />
+    <file src="tools\zh-Hant\Pdb2Pdb.resources.dll" target="tools\zh-Hant\Pdb2Pdb.resources.dll" />
+    <file src="tools\Microsoft.DiaSymReader.Converter.dll" target="tools\Microsoft.DiaSymReader.Converter.dll" />
+    <file src="tools\Microsoft.DiaSymReader.dll" target="tools\Microsoft.DiaSymReader.dll" />
+    <file src="tools\Microsoft.DiaSymReader.Native.amd64.dll" target="tools\Microsoft.DiaSymReader.Native.amd64.dll" />
+    <file src="tools\Microsoft.DiaSymReader.Native.x86.dll" target="tools\Microsoft.DiaSymReader.Native.x86.dll" />
+    <file src="tools\Newtonsoft.Json.dll" target="tools\Newtonsoft.Json.dll" />
+    <file src="tools\Pdb2Pdb.exe" target="tools\Pdb2Pdb.exe" />
+    <file src="tools\System.Collections.Immutable.dll" target="tools\System.Collections.Immutable.dll" />
+    <file src="tools\System.Reflection.Metadata.dll" target="tools\System.Reflection.Metadata.dll" />
+  </files>
+</package>
