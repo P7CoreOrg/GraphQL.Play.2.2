@@ -7,9 +7,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Version>1.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="P7Core.Burner" Version="1.0.31" >
+    <PackageReference Include="P7Core.Burner" Version="1.0.31">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>

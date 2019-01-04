@@ -1,0 +1,285 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "1ff0e587aa9c3297bafd471a7a7d74db45b51b77"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "ilspycmd/3.5.0": {
+        "dependencies": {
+          "ICSharpCode.Decompiler": "4.0.0.4443-beta3",
+          "McMaster.Extensions.CommandLineUtils": "2.2.5",
+          "System.IO.FileSystem.Primitives": "4.3.0",
+          "System.Runtime.Handles": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0",
+          "System.Text.Encoding.Extensions": "4.3.0"
+        },
+        "runtime": {
+          "ilspycmd.dll": {}
+        }
+      },
+      "Humanizer.Core/2.2.0": {
+        "runtime": {
+          "lib/netstandard1.0/Humanizer.dll": {
+            "assemblyVersion": "2.2.0.0",
+            "fileVersion": "2.2.0.0"
+          }
+        }
+      },
+      "ICSharpCode.Decompiler/4.0.0.4443-beta3": {
+        "dependencies": {
+          "Humanizer.Core": "2.2.0",
+          "System.Collections.Immutable": "1.5.0",
+          "System.Reflection.Metadata": "1.6.0",
+          "System.ValueTuple": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/ICSharpCode.Decompiler.dll": {
+            "assemblyVersion": "4.0.0.4443",
+            "fileVersion": "4.0.0.4443"
+          }
+        }
+      },
+      "McMaster.Extensions.CommandLineUtils/2.2.5": {
+        "dependencies": {
+          "System.ComponentModel.Annotations": "4.4.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/McMaster.Extensions.CommandLineUtils.dll": {
+            "assemblyVersion": "2.2.5.0",
+            "fileVersion": "2.2.5.317"
+          }
+        }
+      },
+      "System.Collections/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Collections.Immutable/1.5.0": {},
+      "System.ComponentModel.Annotations/4.4.1": {},
+      "System.Globalization/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.IO/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0",
+          "System.Text.Encoding": "4.3.0",
+          "System.Threading.Tasks": "4.3.0"
+        }
+      },
+      "System.IO.FileSystem.Primitives/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Reflection/4.3.0": {
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Reflection.Metadata/1.6.0": {},
+      "System.Reflection.Primitives/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Resources.ResourceManager/4.3.0": {
+        "dependencies": {
+          "System.Globalization": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Runtime/4.3.0": {},
+      "System.Runtime.Handles/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Runtime.InteropServices/4.3.0": {
+        "dependencies": {
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Handles": "4.3.0"
+        }
+      },
+      "System.Text.Encoding/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Text.Encoding.Extensions/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0",
+          "System.Text.Encoding": "4.3.0"
+        }
+      },
+      "System.Threading.Tasks/4.3.0": {
+        "dependencies": {
+          "System.Runtime": "4.3.0"
+        }
+      },
+      "System.ValueTuple/4.3.0": {
+        "dependencies": {
+          "System.Collections": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0"
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ilspycmd/3.5.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Humanizer.Core/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rsYXB7+iUPP8AHgQ8JP2UZI2xK2KhjcdGr9E6zX3CsZaTLCaw8M35vaAJRo1rfxeaZEVMuXeaquLVCkZ7JcZ5Q==",
+      "path": "humanizer.core/2.2.0",
+      "hashPath": "humanizer.core.2.2.0.nupkg.sha512"
+    },
+    "ICSharpCode.Decompiler/4.0.0.4443-beta3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4ydNqGbT9bRhuFkbqba7UVQ3ab0FlMKXWSltnBQNct3PQSs9fzVt5V8jykQLDQkw00c1G5rEiR+bxEz+kz9BAQ==",
+      "path": "icsharpcode.decompiler/4.0.0.4443-beta3",
+      "hashPath": "icsharpcode.decompiler.4.0.0.4443-beta3.nupkg.sha512"
+    },
+    "McMaster.Extensions.CommandLineUtils/2.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Zbdiiu616SDIlBGeBZj2U1UZU/mdlT5szgfw+P+DUS8qX9ebMQIOq8vQzxPgNSDsvNqlHIAMeP74d2PTg/O5dw==",
+      "path": "mcmaster.extensions.commandlineutils/2.2.5",
+      "hashPath": "mcmaster.extensions.commandlineutils.2.2.5.nupkg.sha512"
+    },
+    "System.Collections/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kPr+B2vYvQ/X/2p2T1cAJCo4+vG652C8yGLHRVdiTxvBxotkZn0tz/YiCXPL/3P3GYlsFELaKOb6JrLp9t6LYw==",
+      "path": "system.collections/4.3.0",
+      "hashPath": "system.collections.4.3.0.nupkg.sha512"
+    },
+    "System.Collections.Immutable/1.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-EXKiDFsChZW0RjrZ4FYHu9aW6+P4MCgEDCklsVseRfhoO0F+dXeMSsMRAlVXIo06kGJ/zv+2w1a2uc2+kxxSaQ==",
+      "path": "system.collections.immutable/1.5.0",
+      "hashPath": "system.collections.immutable.1.5.0.nupkg.sha512"
+    },
+    "System.ComponentModel.Annotations/4.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ToiYqSCioqhtspq2O/jYKtyTC/T0uwWHBTYlzCi6PRbSSHArN1IaRWeHffDamvms5sye5FDUWCfNZgubQpNRsA==",
+      "path": "system.componentmodel.annotations/4.4.1",
+      "hashPath": "system.componentmodel.annotations.4.4.1.nupkg.sha512"
+    },
+    "System.Globalization/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FHplSrL711MTfXVLOSv1sBSNlN6oQPtN+VZTtgromd66D4i9eE3wQzx5cP67FLmI41EOGY3jtBthOU0FtypG3A==",
+      "path": "system.globalization/4.3.0",
+      "hashPath": "system.globalization.4.3.0.nupkg.sha512"
+    },
+    "System.IO/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JyHNdtWbUWu4+y5nF5V61HyI0/cyx3mkKwZo0v9hogGVfC9Abg9ujEpS1p0w4dQ15pRShrkOG+TCyGGeWuTSiA==",
+      "path": "system.io/4.3.0",
+      "hashPath": "system.io.4.3.0.nupkg.sha512"
+    },
+    "System.IO.FileSystem.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LSS6iAX4RvxNQOY1M8u7RkvMMK26B1OUydMxdqz8Y4Sk06QaXWOsp5k2DPViGIPjpHG2NN4/aF/yWqGhFhFDsg==",
+      "path": "system.io.filesystem.primitives/4.3.0",
+      "hashPath": "system.io.filesystem.primitives.4.3.0.nupkg.sha512"
+    },
+    "System.Reflection/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-O/VhlXxiYoiaVeQYOiCIM2NgxxZcrGZTxNDIQXH2k9vEZFImKJin9/wrsAfQNmWvt7+hs79dzp+Tah6L+0EBtg==",
+      "path": "system.reflection/4.3.0",
+      "hashPath": "system.reflection.4.3.0.nupkg.sha512"
+    },
+    "System.Reflection.Metadata/1.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-I4aWCii7N1bmn43vviRfJQYW6UAco1G/CcjJouvgGdb/sr2BRTSnddhaPMg2oxu9VHFn8T1z3dTLq0pna8zmtA==",
+      "path": "system.reflection.metadata/1.6.0",
+      "hashPath": "system.reflection.metadata.1.6.0.nupkg.sha512"
+    },
+    "System.Reflection.Primitives/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UI0iy/p+N/YXVA9lC77nTNHUWhnmun1u0ZIj2E27W51L4pLXBX0oRCyxYgIOA9PgK1Q4nuG04D7bHq86bRtaRg==",
+      "path": "system.reflection.primitives/4.3.0",
+      "hashPath": "system.reflection.primitives.4.3.0.nupkg.sha512"
+    },
+    "System.Resources.ResourceManager/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HfZHT1zFj/fxQjcbEw9f05mZlfvzgaQuFEHm24GTA/TtdjyJywgx3LmskIU1mqfpzaRr1uHDZLjFaZmueWUZUw==",
+      "path": "system.resources.resourcemanager/4.3.0",
+      "hashPath": "system.resources.resourcemanager.4.3.0.nupkg.sha512"
+    },
+    "System.Runtime/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DKLZ8kAm/UO6itbD3AM7uYypvuSw5bHbISiK0Bsu52McdK6iMxp6iQicj0mrP8YkdedyOxgEwJhIhRNZc8qIeg==",
+      "path": "system.runtime/4.3.0",
+      "hashPath": "system.runtime.4.3.0.nupkg.sha512"
+    },
+    "System.Runtime.Handles/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-B65n4kHii5FQhUh/zYdhRzGnQjAnxbpn7QybYA5hf6eA8Jm94OMnMiG+z1Rp1R36bUXj0pcfJxMLK8SWSGb2DA==",
+      "path": "system.runtime.handles/4.3.0",
+      "hashPath": "system.runtime.handles.4.3.0.nupkg.sha512"
+    },
+    "System.Runtime.InteropServices/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7C9tD/pJh6abhynzv9aiJbRXMuiizS+9N92E2dui/Pm7GO8o+RWcn2Ziy+meN6OFhug/NfaK51TFDYeXxZw07Q==",
+      "path": "system.runtime.interopservices/4.3.0",
+      "hashPath": "system.runtime.interopservices.4.3.0.nupkg.sha512"
+    },
+    "System.Text.Encoding/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HadwIyM5MLeNqwc4ihxDoSdvZK5oSC/okvqrPq5uWoVPa7vuFByb8X8T5mBtItEiKjuB+wc/zP6rH6paDoUdSg==",
+      "path": "system.text.encoding/4.3.0",
+      "hashPath": "system.text.encoding.4.3.0.nupkg.sha512"
+    },
+    "System.Text.Encoding.Extensions/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lBh7LBj1HIIIYA0/fkx1QBSMoGw9O8SeL4vnj7lBP6OxB/so4CSYWsVBJxrkA6eqvVWT8k3Iogtfnsfk3BZHdg==",
+      "path": "system.text.encoding.extensions/4.3.0",
+      "hashPath": "system.text.encoding.extensions.4.3.0.nupkg.sha512"
+    },
+    "System.Threading.Tasks/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lR3UYFH0sTxEO1c8AROGGdwtucIfJtfCZbt5N8jiufWGoRAJEvg6iAwqR3htH+r4qIkq2TfVmIUv/wv4MU4vFg==",
+      "path": "system.threading.tasks/4.3.0",
+      "hashPath": "system.threading.tasks.4.3.0.nupkg.sha512"
+    },
+    "System.ValueTuple/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-djN2X5k6n8mrfNh+m2ypuxPeNaMqk4dRl5BQk2lNTRiq0IN8qZg4fjNJWkBJW2TP+WecwXHnlbPf+jr9YWHz7Q==",
+      "path": "system.valuetuple/4.3.0",
+      "hashPath": "system.valuetuple.4.3.0.nupkg.sha512"
+    }
+  }
+}

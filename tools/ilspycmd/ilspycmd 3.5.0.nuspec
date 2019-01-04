@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ilspycmd</id>
+    <version>3.5.0</version>
+    <authors>ilspycmd</authors>
+    <owners>ilspycmd</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/icsharpcode/ILSpy/</projectUrl>
+    <iconUrl>https://ilspy.net/images/icon32.png</iconUrl>
+    <description>Command-line decompiler using the ILSpy decompilation engine</description>
+    <copyright>Copyright 2011-2018 AlphaSierraPapa</copyright>
+    <packageTypes>
+      <packageType name="DotnetTool" />
+    </packageTypes>
+  </metadata>
+  <files>
+    <file src="tools\netcoreapp2.1\any\DotnetToolSettings.xml" target="tools\netcoreapp2.1\any\DotnetToolSettings.xml" />
+    <file src="tools\netcoreapp2.1\any\Humanizer.dll" target="tools\netcoreapp2.1\any\Humanizer.dll" />
+    <file src="tools\netcoreapp2.1\any\ICSharpCode.Decompiler.dll" target="tools\netcoreapp2.1\any\ICSharpCode.Decompiler.dll" />
+    <file src="tools\netcoreapp2.1\any\ilspycmd.deps.json" target="tools\netcoreapp2.1\any\ilspycmd.deps.json" />
+    <file src="tools\netcoreapp2.1\any\ilspycmd.dll" target="tools\netcoreapp2.1\any\ilspycmd.dll" />
+    <file src="tools\netcoreapp2.1\any\ilspycmd.pdb" target="tools\netcoreapp2.1\any\ilspycmd.pdb" />
+    <file src="tools\netcoreapp2.1\any\ilspycmd.runtimeconfig.json" target="tools\netcoreapp2.1\any\ilspycmd.runtimeconfig.json" />
+    <file src="tools\netcoreapp2.1\any\McMaster.Extensions.CommandLineUtils.dll" target="tools\netcoreapp2.1\any\McMaster.Extensions.CommandLineUtils.dll" />
+  </files>
+</package>
