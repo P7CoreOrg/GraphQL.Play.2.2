@@ -30,10 +30,7 @@ write-output "----------PDB2PDB---------------------"
 # this works, but I can't get it to work with launching it &
 # $myarg = """$targetPath"" /pdb ""$pdbPath"" /out ""$portablePDBPath"""
 # Start-Process $pdb2PDBCLI -ArgumentList $myarg
-$tempDir = $targetDir + "temp\"
-If (!(test-path $tempDir)) {
-    New-Item -ItemType Directory -Force -Path $tempDir
-}
+
 $symbolsDir = $rootDir + "symbols\"
 If (!(test-path $symbolsDir)) {
     New-Item -ItemType Directory -Force -Path $symbolsDir
