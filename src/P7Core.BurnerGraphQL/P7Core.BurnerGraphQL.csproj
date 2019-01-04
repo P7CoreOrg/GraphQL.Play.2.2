@@ -10,7 +10,7 @@
     <Version>1.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="P7Core.Burner" Version="1.0.31">
+    <PackageReference Include="P7Core.Burner" Version="1.0.37">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
@@ -21,6 +21,10 @@
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)" />
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="rd /s /q &quot;$(TargetDir)&quot;" />
   </Target>
 
 </Project>

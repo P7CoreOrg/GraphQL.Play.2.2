@@ -25,24 +25,80 @@ $portablePDBPath = $pdbPath + ".portable"
 $ILRepackCLI = $rootDir + "tools\ILRepack 2.0.16\tools\ILRepack.exe"
 $pdb2PDBCLI = $rootDir + "tools\Pdb2Pdb\tools\Pdb2Pdb.exe"
 
+
 write-output "----------PDB2PDB---------------------"
 # this works, but I can't get it to work with launching it &
 # $myarg = """$targetPath"" /pdb ""$pdbPath"" /out ""$portablePDBPath"""
 # Start-Process $pdb2PDBCLI -ArgumentList $myarg
-
-foreach ($assembly in $jsonObj.assembliesToMerge) {
+$tempDir = $targetDir + "temp\"
+If (!(test-path $tempDir)) {
+    New-Item -ItemType Directory -Force -Path $tempDir
+}
+$symbolsDir = $rootDir + "symbols\"
+If (!(test-path $symbolsDir)) {
+    New-Item -ItemType Directory -Force -Path $symbolsDir
+}
+Add-Type -assembly "system.io.compression.filesystem"
+# Download symbols if needed
+foreach ($item in $jsonObj.assembliesToMerge) {
+    $assembly = $item.assembly;
     $assemblyPath = $targetDir + $assembly + ".dll"
-    $pdbPath = $targetDir + $assembly + ".pdb"
-
     if (!(Test-Path $assemblyPath) ) {
         Write-Error "$assemblyPath absent"
         $ExitCode = "-1"
         Exit $ExitCode
     }
-    if (!(Test-Path $pdbPath) ) {
-        Write-Warning "$pdbPath absent not a problem if you are merging a release package"
+    if (($item.symbols -eq $null) -or ($item.symbols.url -eq $null)) {
+        continue
     }
-    else {
+
+    $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
+    $symbolExtractPath = $symbolsDir + $assembly + "." + $version.ProductVersion + "\";
+    if (!(Test-Path $symbolExtractPath) ) {
+        New-Item -ItemType Directory -Force -Path $symbolExtractPath
+        $url = $item.symbols.url
+        $output = "$symbolExtractPath\symbols.nupkg"
+        $start_time = Get-Date
+
+        Invoke-WebRequest -Uri $url -OutFile $output
+        Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
+
+        [io.compression.zipfile]::ExtractToDirectory($output, $symbolExtractPath)
+
+    }
+}
+
+# ensure that all pdb's are copied over
+foreach ($item in $jsonObj.assembliesToMerge) {
+    $assembly = $item.assembly;
+    $assemblyPath = $targetDir + $assembly + ".dll"
+    $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
+    $pdbPath = $targetDir + $assembly + ".pdb"
+    if (!(Test-Path $pdbPath) ) {
+        # might be delivered via symbols
+        $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
+        $symbolExtractPath = $symbolsDir + $assembly + "." + $version.ProductVersion + "\";  
+        if ((Test-Path $symbolExtractPath) ) {
+            # we have symbols
+            $libPath = $symbolExtractPath + "lib\*.pdb"
+            $sourcefiles = Get-ChildItem -Path $libPath -Recurse
+            foreach ($file in $sourcefiles) {
+                Copy-Item -Path $file  -Destination $targetDir
+                break
+            }
+        } 
+    }
+}
+
+foreach ($item in $jsonObj.assembliesToMerge) {
+    $assembly = $item.assembly;
+    $assemblyPath = $targetDir + $assembly + ".dll"
+    $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
+  
+    $pdbPath = $targetDir + $assembly + ".pdb"
+  
+    if ((Test-Path $pdbPath) ) {
+
         & $pdb2PDBCLI $assemblyPath
         if (-not $?) {
             write-output "Something went wrong with pdb2pdb"
@@ -64,7 +120,8 @@ $listParams.Add("/internalize")
 #$listParams.Add("/ndebug")
 $listParams.Add("/out:" + $targetPath)
 
-foreach ($assembly in $jsonObj.assembliesToMerge) {
+foreach ($item in $jsonObj.assembliesToMerge) {
+    $assembly = $item.assembly;
     $assemblyPath = $targetDir + $assembly + ".dll"
     $listParams.Add($assemblyPath)
 }

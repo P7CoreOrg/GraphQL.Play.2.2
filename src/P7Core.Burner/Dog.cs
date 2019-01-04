@@ -22,7 +22,7 @@ namespace P7Core.Burner
             {
                 if (string.IsNullOrEmpty(_dog))
                 {
-                    _dog = "Zep";
+                    _dog = "Heidi";
                 }
 
                 return _dog;

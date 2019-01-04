@@ -1,8 +1,15 @@
 {
   "outputAssembly": "P7Core.BurnerGraphQL",
   "assembliesToMerge": [
-    "P7Core.BurnerGraphQL",
-    "P7Core.Burner"
-
+    {
+      "assembly": "P7Core.BurnerGraphQL",
+      "symbols": null
+    },
+    {
+      "assembly": "P7Core.Burner",
+      "symbols": {
+        "url": "https://www.myget.org/F/ghstahl-github/symbols/P7Core.Burner/1.0.37"
+      }
+    }
   ]
 }
