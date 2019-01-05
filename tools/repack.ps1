@@ -31,40 +31,6 @@ write-output "----------PDB2PDB---------------------"
 # $myarg = """$targetPath"" /pdb ""$pdbPath"" /out ""$portablePDBPath"""
 # Start-Process $pdb2PDBCLI -ArgumentList $myarg
 
-$symbolsDir = $rootDir + "symbols\"
-If (!(test-path $symbolsDir)) {
-    New-Item -ItemType Directory -Force -Path $symbolsDir
-}
-Add-Type -assembly "system.io.compression.filesystem"
-# Download symbols if needed
-foreach ($item in $jsonObj.assembliesToMerge) {
-    $assembly = $item.assembly;
-    $assemblyPath = $targetDir + $assembly + ".dll"
-    if (!(Test-Path $assemblyPath) ) {
-        Write-Error "$assemblyPath absent"
-        $ExitCode = "-1"
-        Exit $ExitCode
-    }
-    if (($item.symbols -eq $null) -or ($item.symbols.url -eq $null)) {
-        continue
-    }
-
-    $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
-    $symbolExtractPath = $symbolsDir + $assembly + "." + $version.ProductVersion + "\";
-    if (!(Test-Path $symbolExtractPath) ) {
-        New-Item -ItemType Directory -Force -Path $symbolExtractPath
-        $url = $item.symbols.url
-        $output = "$symbolExtractPath\symbols.nupkg"
-        $start_time = Get-Date
-
-        Invoke-WebRequest -Uri $url -OutFile $output
-        Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
-
-        [io.compression.zipfile]::ExtractToDirectory($output, $symbolExtractPath)
-
-    }
-}
-
 # ensure that all pdb's are copied over
 foreach ($item in $jsonObj.assembliesToMerge) {
     $assembly = $item.assembly;
