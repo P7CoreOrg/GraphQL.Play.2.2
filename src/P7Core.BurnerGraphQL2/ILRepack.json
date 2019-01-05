@@ -8,7 +8,7 @@
     {
       "assembly": "P7Core.Burner",
       "symbols": {
-        "url": "https://www.myget.org/F/ghstahl-github/symbols/P7Core.Burner/1.0.38"
+        "url": "https://www.myget.org/F/ghstahl-github/symbols/P7Core.Burner/{{VERSION}}"
       }
     }
   ]

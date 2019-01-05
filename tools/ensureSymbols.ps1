@@ -47,7 +47,8 @@ foreach ($item in $jsonObj.assembliesToMerge) {
     }
      
     New-Item -ItemType Directory -Force -Path $symbolExtractPath
-    $url = $item.symbols.url
+    $url = $item.symbols.url -replace "{{VERSION}}", $version.ProductVersion
+    
     Write-OutPut "Fetching symbols: $url"
     $output = "$symbolExtractPath\symbols.nupkg"
     $start_time = Get-Date
