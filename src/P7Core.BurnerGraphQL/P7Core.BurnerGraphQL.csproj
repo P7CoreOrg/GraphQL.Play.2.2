@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="echo -rootDir $(SolutionDir)..\ &#xD;&#xA;echo -targetDir $(TargetDir) &#xD;&#xA;echo -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\ensureSymbols.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1                -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;" />
+    <Exec Command="echo -rootDir $(SolutionDir)..\ &#xD;&#xA;echo -targetDir $(TargetDir) &#xD;&#xA;echo -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1                -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;" />
   </Target>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

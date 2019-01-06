@@ -4,8 +4,11 @@
 
 # powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1 -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)
 param (
+    [Parameter( Mandatory = $true)]
     [string]$rootDir = "rootDir",
+    [Parameter( Mandatory = $true)]
     [string]$projectDir = "projectDir",
+    [Parameter( Mandatory = $true)]
     [string]$targetDir = "targetDir"
 )
 Write-Output "=============== Ensure Symbols ======================"
@@ -37,7 +40,7 @@ foreach ($item in $jsonObj.assembliesToMerge) {
     if (($item.symbols -eq $null) -or ($item.symbols.url -eq $null)) {
         continue
     }
-    Write-Output "Processing "  $item.symbols.url
+   
     Write-Output $item
     $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
     $symbolExtractPath = $symbolsDir + $assembly + "." + $version.ProductVersion + "\";
@@ -48,7 +51,8 @@ foreach ($item in $jsonObj.assembliesToMerge) {
      
     New-Item -ItemType Directory -Force -Path $symbolExtractPath
     $url = $item.symbols.url -replace "{{VERSION}}", $version.ProductVersion
-    
+    Write-Output "Processing "  $url
+
     Write-OutPut "Fetching symbols: $url"
     $output = "$symbolExtractPath\symbols.nupkg"
     $start_time = Get-Date

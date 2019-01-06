@@ -29,14 +29,12 @@ if (-not $?) {
     Exit $ExitCode
 }
 
-
-
 $ILRepackJson = $projectDir + "ILRepack.json"
 $jsonObj = (Get-Content $ILRepackJson) -join "`n" | ConvertFrom-Json
 
 $targetPath = $targetDir + $jsonObj.outputAssembly + ".dll"
 
-$ILRepackCLI = $rootDir + "tools\ILRepack 2.0.16\tools\ILRepack.exe"
+$ILRepackCLI = $rootDir + "tools\ILMerge 3.0.21\tools\net452\ILMerge.exe"
 
 
 $listParams = New-Object System.Collections.Generic.List[System.Object]
