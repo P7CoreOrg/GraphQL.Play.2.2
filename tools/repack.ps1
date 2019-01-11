@@ -36,7 +36,7 @@ $jsonObj = (Get-Content $ILRepackJson) -join "`n" | ConvertFrom-Json
 
 $targetPath = $targetDir + $jsonObj.outputAssembly + ".dll"
 
-$ILRepackCLI = $rootDir + "tools\ILRepack 2.0.16\tools\ILRepack.exe"
+$ILRepackCLI = $rootDir + "tools\ILRepack.MSBuild.Task.2.0.0\tools\ILRepack.exe"
 
 
 $listParams = New-Object System.Collections.Generic.List[System.Object]

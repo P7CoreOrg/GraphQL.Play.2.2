@@ -52,27 +52,30 @@ foreach ($item in $jsonObj.assembliesToMerge) {
     }
 }
 
-foreach ($item in $jsonObj.assembliesToMerge) {
-    $assembly = $item.assembly;
-    $assemblyPath = $targetDir + $assembly + ".dll"
-    $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
+if ($false) {
+    
+    foreach ($item in $jsonObj.assembliesToMerge) {
+        $assembly = $item.assembly;
+        $assemblyPath = $targetDir + $assembly + ".dll"
+        $version = Get-ChildItem $assemblyPath | Select-Object -ExpandProperty VersionInfo
   
-    $pdbPath = $targetDir + $assembly + ".pdb"
+        $pdbPath = $targetDir + $assembly + ".pdb"
   
-    if ((Test-Path $pdbPath) ) {
+        if ((Test-Path $pdbPath) ) {
 
-        & $pdb2PDBCLI $assemblyPath
-        if (-not $?) {
-            write-output "Something went wrong with pdb2pdb"
-            $ExitCode = "-1"
-            Exit $ExitCode
+            & $pdb2PDBCLI $assemblyPath
+            if (-not $?) {
+                write-output "Something went wrong with pdb2pdb"
+                $ExitCode = "-1"
+                Exit $ExitCode
+            }
+            $portablePDBPath = $pdbPath + "2" #appends a 2
+            Remove-Item $pdbPath
+            Rename-Item -Path $portablePDBPath -NewName $pdbPath
+
         }
-        $portablePDBPath = $pdbPath + "2" #appends a 2
-        Remove-Item $pdbPath
-        Rename-Item -Path $portablePDBPath -NewName $pdbPath
-
-    }
    
+    }
 }
 
  

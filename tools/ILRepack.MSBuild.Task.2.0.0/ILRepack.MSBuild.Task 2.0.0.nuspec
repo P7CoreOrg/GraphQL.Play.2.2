@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>ILRepack.MSBuild.Task</id>
+    <version>2.0.0</version>
+    <title>ILRepack.MSBuild.Task</title>
+    <authors>Peter Rekdal Sunde</authors>
+    <owners>petersunde</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/peters/ILRepack.MSBuild.Task</projectUrl>
+    <description>A cross platform MSBUILD task for IL-merging .NET assemblies.</description>
+    <summary>A cross platform MSBUILD task for IL-merging .NET assemblies.</summary>
+    <copyright>Peter Rekdal Sunde</copyright>
+    <tags>MSBuild ILRepack</tags>
+  </metadata>
+  <files>
+    <file src="lib\net46\BamlParser.dll" target="lib\net46\BamlParser.dll" />
+    <file src="lib\net46\BamlParser.pdb" target="lib\net46\BamlParser.pdb" />
+    <file src="lib\net46\Fasterflect.Netstandard.dll" target="lib\net46\Fasterflect.Netstandard.dll" />
+    <file src="lib\net46\Fasterflect.Netstandard.pdb" target="lib\net46\Fasterflect.Netstandard.pdb" />
+    <file src="lib\net46\ILRepack.dll" target="lib\net46\ILRepack.dll" />
+    <file src="lib\net46\ILRepack.MSBuild.Task.dll" target="lib\net46\ILRepack.MSBuild.Task.dll" />
+    <file src="lib\net46\ILRepack.MSBuild.Task.pdb" target="lib\net46\ILRepack.MSBuild.Task.pdb" />
+    <file src="lib\net46\ILRepack.MSBuild.Task.targets" target="lib\net46\ILRepack.MSBuild.Task.targets" />
+    <file src="lib\net46\ILRepack.pdb" target="lib\net46\ILRepack.pdb" />
+    <file src="lib\net46\Microsoft.Build.Framework.dll" target="lib\net46\Microsoft.Build.Framework.dll" />
+    <file src="lib\net46\Microsoft.Build.Utilities.Core.dll" target="lib\net46\Microsoft.Build.Utilities.Core.dll" />
+    <file src="lib\net46\Microsoft.VisualStudio.Setup.Configuration.Interop.dll" target="lib\net46\Microsoft.VisualStudio.Setup.Configuration.Interop.dll" />
+    <file src="lib\net46\Mono.Cecil.dll" target="lib\net46\Mono.Cecil.dll" />
+    <file src="lib\net46\Mono.Cecil.pdb" target="lib\net46\Mono.Cecil.pdb" />
+    <file src="lib\net46\Mono.Posix.dll" target="lib\net46\Mono.Posix.dll" />
+    <file src="lib\net46\System.Collections.Immutable.dll" target="lib\net46\System.Collections.Immutable.dll" />
+    <file src="lib\net46\System.Runtime.InteropServices.RuntimeInformation.dll" target="lib\net46\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <file src="lib\netcoreapp2.0\BamlParser.dll" target="lib\netcoreapp2.0\BamlParser.dll" />
+    <file src="lib\netcoreapp2.0\BamlParser.pdb" target="lib\netcoreapp2.0\BamlParser.pdb" />
+    <file src="lib\netcoreapp2.0\Fasterflect.Netstandard.dll" target="lib\netcoreapp2.0\Fasterflect.Netstandard.dll" />
+    <file src="lib\netcoreapp2.0\Fasterflect.Netstandard.pdb" target="lib\netcoreapp2.0\Fasterflect.Netstandard.pdb" />
+    <file src="lib\netcoreapp2.0\ILRepack.dll" target="lib\netcoreapp2.0\ILRepack.dll" />
+    <file src="lib\netcoreapp2.0\ILRepack.MSBuild.Task.dll" target="lib\netcoreapp2.0\ILRepack.MSBuild.Task.dll" />
+    <file src="lib\netcoreapp2.0\ILRepack.MSBuild.Task.pdb" target="lib\netcoreapp2.0\ILRepack.MSBuild.Task.pdb" />
+    <file src="lib\netcoreapp2.0\ILRepack.MSBuild.Task.targets" target="lib\netcoreapp2.0\ILRepack.MSBuild.Task.targets" />
+    <file src="lib\netcoreapp2.0\ILRepack.pdb" target="lib\netcoreapp2.0\ILRepack.pdb" />
+    <file src="lib\netcoreapp2.0\Microsoft.Build.Framework.dll" target="lib\netcoreapp2.0\Microsoft.Build.Framework.dll" />
+    <file src="lib\netcoreapp2.0\Microsoft.Build.Utilities.Core.dll" target="lib\netcoreapp2.0\Microsoft.Build.Utilities.Core.dll" />
+    <file src="lib\netcoreapp2.0\Mono.Cecil.dll" target="lib\netcoreapp2.0\Mono.Cecil.dll" />
+    <file src="lib\netcoreapp2.0\Mono.Cecil.pdb" target="lib\netcoreapp2.0\Mono.Cecil.pdb" />
+    <file src="lib\netcoreapp2.0\System.Collections.Immutable.dll" target="lib\netcoreapp2.0\System.Collections.Immutable.dll" />
+    <file src="lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll" target="lib\netcoreapp2.0\System.Text.Encoding.CodePages.dll" />
+    <file src="lib\netstandard2.0\BamlParser.dll" target="lib\netstandard2.0\BamlParser.dll" />
+    <file src="lib\netstandard2.0\BamlParser.pdb" target="lib\netstandard2.0\BamlParser.pdb" />
+    <file src="lib\netstandard2.0\Fasterflect.Netstandard.dll" target="lib\netstandard2.0\Fasterflect.Netstandard.dll" />
+    <file src="lib\netstandard2.0\Fasterflect.Netstandard.pdb" target="lib\netstandard2.0\Fasterflect.Netstandard.pdb" />
+    <file src="lib\netstandard2.0\ILRepack.dll" target="lib\netstandard2.0\ILRepack.dll" />
+    <file src="lib\netstandard2.0\ILRepack.MSBuild.Task.dll" target="lib\netstandard2.0\ILRepack.MSBuild.Task.dll" />
+    <file src="lib\netstandard2.0\ILRepack.MSBuild.Task.pdb" target="lib\netstandard2.0\ILRepack.MSBuild.Task.pdb" />
+    <file src="lib\netstandard2.0\ILRepack.MSBuild.Task.targets" target="lib\netstandard2.0\ILRepack.MSBuild.Task.targets" />
+    <file src="lib\netstandard2.0\ILRepack.pdb" target="lib\netstandard2.0\ILRepack.pdb" />
+    <file src="lib\netstandard2.0\Microsoft.Build.Framework.dll" target="lib\netstandard2.0\Microsoft.Build.Framework.dll" />
+    <file src="lib\netstandard2.0\Microsoft.Build.Utilities.Core.dll" target="lib\netstandard2.0\Microsoft.Build.Utilities.Core.dll" />
+    <file src="lib\netstandard2.0\Microsoft.CSharp.dll" target="lib\netstandard2.0\Microsoft.CSharp.dll" />
+    <file src="lib\netstandard2.0\Mono.Cecil.dll" target="lib\netstandard2.0\Mono.Cecil.dll" />
+    <file src="lib\netstandard2.0\Mono.Cecil.pdb" target="lib\netstandard2.0\Mono.Cecil.pdb" />
+    <file src="lib\netstandard2.0\System.Collections.Immutable.dll" target="lib\netstandard2.0\System.Collections.Immutable.dll" />
+    <file src="lib\netstandard2.0\System.Reflection.Emit.ILGeneration.dll" target="lib\netstandard2.0\System.Reflection.Emit.ILGeneration.dll" />
+    <file src="lib\netstandard2.0\System.Reflection.Emit.Lightweight.dll" target="lib\netstandard2.0\System.Reflection.Emit.Lightweight.dll" />
+    <file src="lib\netstandard2.0\System.Runtime.InteropServices.RuntimeInformation.dll" target="lib\netstandard2.0\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <file src="lib\netstandard2.0\System.Runtime.Serialization.Primitives.dll" target="lib\netstandard2.0\System.Runtime.Serialization.Primitives.dll" />
+    <file src="lib\netstandard2.0\System.Text.Encoding.CodePages.dll" target="lib\netstandard2.0\System.Text.Encoding.CodePages.dll" />
+    <file src="lib\netstandard2.0\System.Threading.dll" target="lib\netstandard2.0\System.Threading.dll" />
+    <file src="lib\netstandard2.0\System.Threading.Thread.dll" target="lib\netstandard2.0\System.Threading.Thread.dll" />
+    <file src="tools\ilrepack.exe" target="tools\ilrepack.exe" />
+  </files>
+</package>
