@@ -6,7 +6,8 @@ namespace CustomerLoyaltyStore.Extensions
     {
         public static void AddCustomerLoyalty(this IServiceCollection services)
         {
-            services.AddSingleton< ICustomerLoyaltyStore,CustomerLoyaltyStore>();
+            services.AddSingleton<ICustomerLoyaltyStore,CustomerLoyaltyStore>();
+            services.AddSingleton<IPrizeStore, PrizeStore>();
         }
     }
-}
+} 

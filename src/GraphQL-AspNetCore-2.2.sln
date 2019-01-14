@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.BurnerGraphQL", "P7C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Core.BurnerGraphQL2", "P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj", "{19124FA1-70C0-4A7F-ADCE-8326A965642E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{68AA526D-9EF2-4203-A66F-D032628AB721}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{19124FA1-70C0-4A7F-ADCE-8326A965642E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19124FA1-70C0-4A7F-ADCE-8326A965642E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19124FA1-70C0-4A7F-ADCE-8326A965642E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68AA526D-9EF2-4203-A66F-D032628AB721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68AA526D-9EF2-4203-A66F-D032628AB721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68AA526D-9EF2-4203-A66F-D032628AB721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68AA526D-9EF2-4203-A66F-D032628AB721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

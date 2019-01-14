@@ -31,6 +31,7 @@ using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using TheApp.Services;
+using Utils.Extensions;
 
 namespace TheApp
 {
@@ -49,6 +50,7 @@ namespace TheApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
 

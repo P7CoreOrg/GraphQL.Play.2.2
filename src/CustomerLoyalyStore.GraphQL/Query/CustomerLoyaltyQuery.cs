@@ -11,6 +11,7 @@ using GraphQL;
 using GraphQL.Language.AST;
 using GraphQL.Types;
 using P7Core.GraphQLCore;
+using Utils;
 
 namespace CustomerLoyalyStore.GraphQL.Query
 {
@@ -22,10 +23,13 @@ namespace CustomerLoyalyStore.GraphQL.Query
     public class CustomerLoyaltyQuery : IQueryFieldRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
+        private LazyService<IPrizeStore> _lazyPrizeStore;
 
-        public CustomerLoyaltyQuery(ICustomerLoyaltyStore customerLoyaltyStore)
+        public CustomerLoyaltyQuery(ICustomerLoyaltyStore customerLoyaltyStore,
+            LazyService<IPrizeStore> lazyPrizeStore)
         {
             _customerLoyaltyStore = customerLoyaltyStore;
+            _lazyPrizeStore = lazyPrizeStore;
         }
 
         public void AddGraphTypeFields(QueryCore queryCore)
@@ -41,13 +45,16 @@ namespace CustomerLoyalyStore.GraphQL.Query
                             .Selections
                             .Select(x => x as Field)
                             .FirstOrDefault();
-                        var prizesField = startQuery?.SelectionSet?
+ 
+
+                        var fields = startQuery?.SelectionSet?
                             .Selections
                             .Select(x => x as Field)
-                            .Where(x => x != null && "prizes".EqualsNoCase(x.Name))
+                            .ToList();
+                        var prizesField = fields?
+                            .Where(x => "prizes".EqualsNoCase(x.Name))
                             .FirstOrDefault();
 
- 
 
                         var userContext = context.UserContext.As<GraphQLUserContext>();
                         var user = userContext.HttpContextAccessor.HttpContext.User;
@@ -68,8 +75,9 @@ namespace CustomerLoyalyStore.GraphQL.Query
 
                             if (prizesField != null)
                             {
+                                var prizeStore = _lazyPrizeStore.Value;
                                 var prizes =
-                                    await _customerLoyaltyStore.GetAvailablePrizesAsync(customer.LoyaltyPointBalance);
+                                    await prizeStore.GetAvailablePrizesAsync(customer.LoyaltyPointBalance);
                                 customerResult.Prizes = prizes;
                             }
                             return customerResult;
