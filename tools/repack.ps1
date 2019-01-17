@@ -32,6 +32,8 @@ if (-not $?) {
 
 
 $ILRepackJson = $projectDir + "ILRepack.json"
+$excludeTxt = $projectDir + "exclude.txt"
+
 $jsonObj = (Get-Content $ILRepackJson) -join "`n" | ConvertFrom-Json
 
 $targetPath = $targetDir + $jsonObj.outputAssembly + ".dll"
@@ -41,7 +43,7 @@ $ILRepackCLI = $rootDir + "tools\ILRepack.MSBuild.Task.2.0.0\tools\ILRepack.exe"
 
 $listParams = New-Object System.Collections.Generic.List[System.Object]
 $listParams.Add("/lib:$targetDir")
-$listParams.Add("/internalize")
+$listParams.Add("/internalize:$excludeTxt")
 #$listParams.Add("/ndebug")
 $listParams.Add("/out:" + $targetPath)
 
