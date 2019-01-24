@@ -13,4 +13,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\Identity.Contrib.InMemoryStore\Identity.Contrib.InMemoryStore.csproj" />
+    <ProjectReference Include="..\P7Core.Microsoft.AspNetCore.Authentication.OpenIdConnect\P7Core.Microsoft.AspNetCore.Authentication.OpenIdConnect.csproj" />
+  </ItemGroup>
+
 </Project>
