@@ -4,34 +4,42 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Orders.Services;
+using P7Core.GraphQLCore;
 
 namespace Orders.Schema
 {
-    public class OrdersQuery : ObjectGraphType<object>
+    public class OrdersQuery : IQueryFieldRegistration
     {
+        private ICustomerService _customers;
+        private IOrderService _orders;
+
         public OrdersQuery(IOrderService orders, ICustomerService customers)
         {
-            Name = "Query";
-            Field<ListGraphType<OrderType>>(
+            _orders = orders;
+            _customers = customers;
+        }
+
+        public void AddGraphTypeFields(QueryCore queryCore)
+        {
+            queryCore.FieldAsync<ListGraphType<OrderType>>(
                 "orders",
-                resolve: context => orders.GetOrdersAsync()
+                resolve: async context => await _orders.GetOrdersAsync()
             );
 
-            FieldAsync<OrderType>(
+            queryCore.FieldAsync<OrderType>(
                 "orderById",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> {Name="orderId"}),
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "orderId" }),
                 resolve: async context => {
                     return await context.TryAsyncResolve(
-                        async c=> await orders.GetOrderByIdAsync(c.GetArgument<String>("orderId"))
+                        async c => await _orders.GetOrderByIdAsync(c.GetArgument<String>("orderId"))
                     );
                 }
             );
 
-            Field<ListGraphType<CustomerType>>(
+            queryCore.FieldAsync<ListGraphType<CustomerType>>(
                 "customers",
-                resolve: context => customers.GetCustomersAsync()
+                resolve: async context => await _customers.GetCustomersAsync()
             );
-
         }
     }
 }

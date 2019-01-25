@@ -2,75 +2,79 @@
 using GraphQL.Types;
 using Orders.Models;
 using Orders.Services;
+using P7Core.GraphQLCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Orders.Schema
 {
-    public class OrdersMutation : ObjectGraphType<object>
+    public class OrdersMutation : IMutationFieldRegistration
     {
+        private IOrderService _orders;
+
         public OrdersMutation(IOrderService orders)
         {
-            Name = "Mutation";
-            Field<OrderType>(
-                "createOrder",
-                arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<OrderCreateInputType>> { Name = "order" }),
-                resolve: context =>
+            _orders = orders;
+        }
+        public void AddGraphTypeFields(MutationCore mutationCore)
+        {
+            mutationCore.FieldAsync<OrderType>(name: "createOrder",
+                description: null,
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<OrderCreateInputType>> { Name = "order" }),
+                resolve: async context =>
                 {
+
                     var orderInput = context.GetArgument<OrderCreateInput>("order");
+
                     var id = Guid.NewGuid().ToString();
                     var order = new Order(orderInput.Name, orderInput.Description, orderInput.Created, orderInput.CustomerId, id);
-                    return orders.CreateAsync(order);
+                    return _orders.CreateAsync(order);
                 }
             );
-
-            FieldAsync<OrderType>(
+            mutationCore.FieldAsync<OrderType>(
                 "startOrder",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "orderId" }),
                 resolve: async context =>
                 {
                     var orderId = context.GetArgument<string>("orderId");
                     return await context.TryAsyncResolve(
-                        async c => await orders.StartAsync(orderId));
+                        async c => await _orders.StartAsync(orderId));
                 }
             );
 
-            FieldAsync<OrderType>(
+            mutationCore.FieldAsync<OrderType>(
                 "completeOrder",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "orderId" }),
                 resolve: async context =>
                 {
                     var orderId = context.GetArgument<string>("orderId");
                     return await context.TryAsyncResolve(
-                        async c => await orders.CompleteAsync(orderId));
+                        async c => await _orders.CompleteAsync(orderId));
                 }
             );
 
-            FieldAsync<OrderType>(
+            mutationCore.FieldAsync<OrderType>(
                 "cancelOrder",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "orderId" }),
                 resolve: async context =>
                 {
                     var orderId = context.GetArgument<string>("orderId");
                     return await context.TryAsyncResolve(
-                        async c => await orders.CancelAsync(orderId));
+                        async c => await _orders.CancelAsync(orderId));
                 }
             );
 
-            FieldAsync<OrderType>(
+            mutationCore.FieldAsync<OrderType>(
                 "closeOrder",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "orderId" }),
                 resolve: async context =>
                 {
                     var orderId = context.GetArgument<string>("orderId");
                     return await context.TryAsyncResolve(
-                        async c => await orders.CloseAsync(orderId));
+                        async c => await _orders.CloseAsync(orderId));
                 }
             );
-
-
         }
     }
 }

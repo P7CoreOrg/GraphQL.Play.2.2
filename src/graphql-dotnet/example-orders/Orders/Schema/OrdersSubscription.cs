@@ -7,18 +7,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reactive.Linq;
+using P7Core.GraphQLCore;
 
 namespace Orders.Schema
 {
-    public class OrdersSubscription : ObjectGraphType<object>
+    public class OrdersSubscription : ISubscriptionFieldRegistration
     {
         private readonly IOrderEventService _events;
 
         public OrdersSubscription(IOrderEventService events)
         {
             _events = events;
-            Name = "Subscription";
-            AddField(new EventStreamFieldType
+        }
+
+        public void AddGraphTypeFields(SubscriptionCore subscriptionCore)
+        {
+            var orderEventType = new EventStreamFieldType
             {
                 Name = "orderEvent",
                 Arguments = new QueryArguments(new QueryArgument<ListGraphType<OrderStatusesEnum>>
@@ -28,7 +32,8 @@ namespace Orders.Schema
                 Type = typeof(OrderEventType),
                 Resolver = new FuncFieldResolver<OrderEvent>(ResolveEvent),
                 Subscriber = new EventStreamResolver<OrderEvent>(Subscribe)
-            });
+            };
+            subscriptionCore.AddField(orderEventType);
         }
 
         private OrderEvent ResolveEvent(ResolveFieldContext context)
@@ -45,7 +50,7 @@ namespace Orders.Schema
             {
                 OrderStatuses statuses = 0;
 
-                foreach(var status in statusList)
+                foreach (var status in statusList)
                 {
                     statuses = statuses | status;
                 }
