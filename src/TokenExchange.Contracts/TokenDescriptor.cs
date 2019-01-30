@@ -1,4 +1,4 @@
-﻿namespace IdentityTokenExchange.GraphQL.Services
+﻿namespace TokenExchange.Contracts
 {
     public class TokenDescriptor
     {
@@ -7,12 +7,10 @@
         /// </summary>
         public string Token { get; set; }
         /// <summary>
-        /// The type of token, i.e oidc,etc
+        /// A hint as to what this token is.  i.e.  id_token of an iot, or id_token of a user, etc
+        /// This is a way route this token to a custom exchange
         /// </summary>
         public string TokenScheme { get; set; }
-        /// <summary>
-        /// A wellknown lookup used to validate the token
-        /// </summary>
-        public string AuthorityKey { get; set; }
+       
     }
 }

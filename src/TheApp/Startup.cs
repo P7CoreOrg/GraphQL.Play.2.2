@@ -7,6 +7,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
+using DemoIdentityServerio.Validator.Extensions;
+using Google.Validator.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using IdentityTokenExchange.GraphQL.Extensions;
@@ -30,6 +32,7 @@ using P7Core.BurnerGraphQL2.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
+using P7IdentityServer4.Validator.Extensions;
 using TheApp.Services;
 using Utils.Extensions;
 
@@ -65,8 +68,10 @@ namespace TheApp
             services.AddBurnerGraphQL();
             services.AddBurnerGraphQL2();
 
-
             services.AddGraphQLIdentityTokenExchangeTypes();
+            services.AddP7IdentityServer4OIDCTokenValidator();
+            services.AddDemoIdentityServerioOIDCTokenValidator();
+            services.AddGoogleOIDCTokenValidator();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
 

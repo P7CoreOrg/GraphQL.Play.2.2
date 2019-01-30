@@ -1,4 +1,4 @@
-﻿namespace IdentityTokenExchange.GraphQL
+﻿namespace TokenExchange.Contracts
 {
     public partial class Constants
     {

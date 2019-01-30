@@ -1,32 +1,38 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using P7Core.Utils;
 
-namespace IdentityTokenExchange.GraphQL.Services
+namespace TokenExchange.Contracts
 {
-    public class  TokenValidator : ITokenValidator
+    public class TokenValidator : ITokenValidator
     {
-        private IOIDCTokenValidator _oidcTokenValidator;
+        private Dictionary<string, ISchemeTokenValidator> _mapValidators;
+
 
         public TokenValidator(
-            IOIDCTokenValidator oidcTokenValidator)
+            IEnumerable<ISchemeTokenValidator> schemValidators)
         {
-            _oidcTokenValidator = oidcTokenValidator;
+            _mapValidators = new Dictionary<string, ISchemeTokenValidator>();
+            foreach (var schemValidator in schemValidators)
+            {
+                _mapValidators.Add(schemValidator.TokenScheme, schemValidator);
+            }
         }
+
         public async Task<ClaimsPrincipal> ValidateTokenAsync(TokenDescriptor tokenDescriptor)
         {
             Guard.ArgumentNotNull(nameof(tokenDescriptor), tokenDescriptor);
             Guard.ArgumentNotNull(nameof(tokenDescriptor.TokenScheme), tokenDescriptor.TokenScheme);
             Guard.ArgumentNotNull(nameof(tokenDescriptor.Token), tokenDescriptor.Token);
-            switch (tokenDescriptor.TokenScheme)
-            {
-                case Constants.TokenSchemes.OIDC:
-                    return await _oidcTokenValidator.ValidateTokenAsync(tokenDescriptor);
-                    break;
-            }
-            throw new ArgumentException($"{tokenDescriptor.TokenScheme} is not supported!");
-           
+            Guard.ArgumentValid(_mapValidators.ContainsKey(tokenDescriptor.TokenScheme),
+                nameof(tokenDescriptor.TokenScheme),
+                $"{tokenDescriptor.TokenScheme} is not supported!");
+
+            var validator = _mapValidators[tokenDescriptor.TokenScheme];
+            return await validator.ValidateTokenAsync(tokenDescriptor);
         }
     }
 }

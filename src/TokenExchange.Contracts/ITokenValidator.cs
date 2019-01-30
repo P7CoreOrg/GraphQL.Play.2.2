@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityTokenExchange.GraphQL.Query;
 
-namespace IdentityTokenExchange.GraphQL.Services
+namespace TokenExchange.Contracts
 {
     public interface ITokenValidator
     {

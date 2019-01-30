@@ -1,7 +1,7 @@
-﻿using IdentityTokenExchange.GraphQL.Query;
-using IdentityTokenExchange.GraphQL.Services;
+﻿using IdentityTokenExchange.GraphQL.Query; 
 using Microsoft.Extensions.DependencyInjection;
 using P7Core.GraphQLCore;
+using TokenExchange.Contracts;
 
 namespace IdentityTokenExchange.GraphQL.Extensions
 {
@@ -9,9 +9,7 @@ namespace IdentityTokenExchange.GraphQL.Extensions
     {
         public static void AddGraphQLIdentityTokenExchangeTypes(this IServiceCollection services)
         {
-            services.AddTransient<IOIDCTokenValidator, OIDCTokenValidator>();
-            services.AddTransient<ITokenValidator, TokenValidator>();
-          
+            services.AddSingleton<ITokenValidator, TokenValidator>();
             // AuthRequired Query
             services.AddTransient<IdentityModelType>();
             services.AddTransient<ClaimModelType>();

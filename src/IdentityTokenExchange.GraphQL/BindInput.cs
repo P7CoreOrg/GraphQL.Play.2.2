@@ -14,7 +14,6 @@ namespace IdentityTokenExchange.GraphQL
             Name = "bind";
             Field<NonNullGraphType<StringGraphType>>("token");
             Field<NonNullGraphType<StringGraphType>>("tokenScheme");
-            Field<NonNullGraphType<StringGraphType>>("authorityKey");
         }
     }
 }

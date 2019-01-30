@@ -9,12 +9,12 @@ using IdentityModel;
 using IdentityModel.Client;
 using IdentityModelExtras;
 using IdentityTokenExchange.GraphQL.Models;
-using IdentityTokenExchange.GraphQL.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using P7Core.GraphQLCore;
+using TokenExchange.Contracts;
 
 namespace IdentityTokenExchange.GraphQL.Query
 {
@@ -61,7 +61,6 @@ namespace IdentityTokenExchange.GraphQL.Query
 
                         var principal = await _tokenValidator.ValidateTokenAsync(new TokenDescriptor
                         {
-                            AuthorityKey = input.AuthorityKey,
                             TokenScheme = input.TokenScheme,
                             Token = input.Token
                         });
