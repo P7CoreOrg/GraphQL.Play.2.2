@@ -47,6 +47,7 @@ namespace TheApp.Controllers
 
         }
 
+        [HttpGet]
         [Route("closed")]
         [Authorize("Daffy Duck")]
         public async Task<ActionResult<IEnumerable<ClaimHandle>>> GetClosedAsync()

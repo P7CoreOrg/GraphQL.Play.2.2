@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CustomerLoyaltyStore.Extensions;
@@ -33,6 +35,7 @@ using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using P7IdentityServer4.Validator.Extensions;
+using Swashbuckle.AspNetCore.Swagger;
 using TheApp.Services;
 using Utils.Extensions;
 
@@ -153,7 +156,16 @@ namespace TheApp
             
             services.AddHttpContextAccessor(); services.AddHttpContextAccessor();
             services.AddCustomerLoyalty();
-        
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -179,7 +191,18 @@ namespace TheApp
             app.UseMvc();
             //MEMSTATE Journal stays in memory
             Config.Current.UseInMemoryFileSystem();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
         }
-         
+
     }
 }
