@@ -28,6 +28,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
+using Norton.Validator.Extensions;
 using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
@@ -75,6 +76,7 @@ namespace TheApp
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
             services.AddGoogleOIDCTokenValidator();
+            services.AddNortonOIDCTokenValidator();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
 

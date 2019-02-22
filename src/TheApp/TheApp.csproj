@@ -26,6 +26,7 @@
     <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
     <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
+    <ProjectReference Include="..\Norton.Validator\Norton.Validator.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />

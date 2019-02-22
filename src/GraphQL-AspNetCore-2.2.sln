@@ -56,13 +56,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orders", "graphql-dotnet\ex
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenExchange", "TokenExchange", "{DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenExchange.Contracts", "TokenExchange.Contracts\TokenExchange.Contracts.csproj", "{D2B65969-B2BA-44C3-9FEA-23874EE5B06D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenExchange.Contracts", "TokenExchange.Contracts\TokenExchange.Contracts.csproj", "{D2B65969-B2BA-44C3-9FEA-23874EE5B06D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7IdentityServer4.Validator", "P7IdentityServer4.Validator\P7IdentityServer4.Validator.csproj", "{ED546608-4F23-4986-BF19-97BF3FD55162}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7IdentityServer4.Validator", "P7IdentityServer4.Validator\P7IdentityServer4.Validator.csproj", "{ED546608-4F23-4986-BF19-97BF3FD55162}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoIdentityServerio.Validator", "DemoIdentityServerio.Validator\DemoIdentityServerio.Validator.csproj", "{396092BC-F456-455A-AE4A-C7796BB1CF19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoIdentityServerio.Validator", "DemoIdentityServerio.Validator\DemoIdentityServerio.Validator.csproj", "{396092BC-F456-455A-AE4A-C7796BB1CF19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Validator", "Google.Validator\Google.Validator.csproj", "{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Validator", "Google.Validator\Google.Validator.csproj", "{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norton.Validator", "Norton.Validator\Norton.Validator.csproj", "{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -146,6 +148,10 @@ Global
 		{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +170,7 @@ Global
 		{ED546608-4F23-4986-BF19-97BF3FD55162} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 		{396092BC-F456-455A-AE4A-C7796BB1CF19} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 		{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
+		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}
