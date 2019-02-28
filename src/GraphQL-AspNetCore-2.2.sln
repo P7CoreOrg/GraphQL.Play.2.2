@@ -64,7 +64,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoIdentityServerio.Valida
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Validator", "Google.Validator\Google.Validator.csproj", "{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norton.Validator", "Norton.Validator\Norton.Validator.csproj", "{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Norton.Validator", "Norton.Validator\Norton.Validator.csproj", "{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{8D2C355F-D70D-4F30-AD70-5A7A7E536D32}"
+	ProjectSection(SolutionItems) = preProject
+		..\tools\repack.ps1 = ..\tools\repack.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,6 +176,7 @@ Global
 		{396092BC-F456-455A-AE4A-C7796BB1CF19} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 		{18D63DF0-B5AF-4E66-A6D5-EDC0C1F6FBE7} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
+		{8D2C355F-D70D-4F30-AD70-5A7A7E536D32} = {04D1C14D-65A8-41E4-8914-13631F9D1F32}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}
