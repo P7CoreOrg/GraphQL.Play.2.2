@@ -16,3 +16,10 @@ steps:
 - script: dotnet restore ./src/GraphQL-AspNetCore-2.2.sln
 - script: dotnet build --configuration $(buildConfiguration) ./src/GraphQL-AspNetCore-2.2.sln
   displayName: 'dotnet build $(buildConfiguration)'
+
+- script: dotnet test ./src/GraphQL-AspNetCore-2.2.sln --logger trx --collect "Code coverage"
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
