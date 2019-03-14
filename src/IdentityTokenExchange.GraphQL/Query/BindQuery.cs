@@ -11,6 +11,7 @@ using IdentityModelExtras;
 using IdentityTokenExchange.GraphQL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using P7Core.GraphQLCore;
@@ -25,14 +26,22 @@ namespace IdentityTokenExchange.GraphQL.Query
         private ConfiguredDiscoverCacheContainer _discoveryContainer;
         private IMemoryCache _memoryCache;
         private ProviderValidator _providerValidator;
+        private ITokenMintingService _tokenMintingService;
+        private IConfiguration _configuration;
+        private string _scheme;
 
         public BindQuery(
+            ITokenMintingService tokenMintingService,
+            IConfiguration configuration,
             ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory,
             IMemoryCache memoryCache,
             ITokenValidator tokenValidator)
         {
+            _tokenMintingService = tokenMintingService;
+            _configuration = configuration;
+            _scheme = _configuration["authValidation:scheme"];
             _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
-            _discoveryContainer = _configuredDiscoverCacheContainerFactory.Get("p7identityserver4");
+            _discoveryContainer = _configuredDiscoverCacheContainerFactory.Get(_scheme);
             _memoryCache = memoryCache;
             _providerValidator = new ProviderValidator(_discoveryContainer, _memoryCache);
             _tokenValidator = tokenValidator;
@@ -74,37 +83,23 @@ namespace IdentityTokenExchange.GraphQL.Query
                         var clientId = "arbitrary-resource-owner-client";
 
 
-
-                        Dictionary<string, string> paramaters = new Dictionary<string, string>()
+                        ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
                         {
+                            AccessTokenLifetime = 3600,
+                            ArbitraryClaims = new Dictionary<string, List<string>>()
                             {
-                                OidcConstants.TokenRequest.Scope, "offline_access graphQLPlay"
+                                {"role", new List<string>() {"application", "limited"}}
                             },
-                            {
-                                "arbitrary_claims",
-                                "{'role': ['application', 'limited']}"
-                            },
-                            {
-                                "subject", subject
-                            },
-                            {"access_token_lifetime", "3600"}
+                            Scope = "offline_access graphQLPlay",
+                            Subject = subject
                         };
+                        var response =
+                            await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
-
-                        var client = new HttpClient();
-
-                        var response = await client.RequestTokenAsync(new TokenRequest
-                        {
-                            Address = discoveryResponse.TokenEndpoint,
-                            GrantType = "arbitrary_resource_owner",
-                            ClientId = clientId,
-                            ClientSecret = "secret",
-
-                            Parameters = paramaters
-                        });
                         if (response.IsError)
                             throw new Exception(response.Error);
 
+                     
                         var authorizationResultModel = new AuthorizationResultModel()
                         {
                             access_token = response.AccessToken,
@@ -114,7 +109,7 @@ namespace IdentityTokenExchange.GraphQL.Query
                             authority = discoveryResponse.Issuer,
                             HttpHeaders = new List<HttpHeader>
                             {
-                                new HttpHeader() {Name = "x-authScheme", Value = "One"}
+                                new HttpHeader() {Name = "x-authScheme", Value = _scheme}
                             }
 
                         };

@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04D1C14D-65A8-41E4-8914-13631F9D1F32}"
 	ProjectSection(SolutionItems) = preProject
 		..\appveyor.yml = ..\appveyor.yml
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
@@ -73,7 +74,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{8D2C355F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4514BCFC-090B-4569-9CE0-728127810205}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.TheApp", "UnitTests.TheApp\UnitTests.TheApp.csproj", "{99974A0A-0220-47A1-A984-B0174C6D21D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.TheApp", "UnitTests.TheApp\UnitTests.TheApp.csproj", "{99974A0A-0220-47A1-A984-B0174C6D21D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SignalR", "SignalR", "{4E8B2DEA-ED5A-438A-8C02-7C1BDE610975}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureSignalRHost", "SecureSignalRHost\SecureSignalRHost.csproj", "{8A616746-0E37-49C7-96BC-0A5FCD706F00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleChatClient", "ConsoleChatClient\ConsoleChatClient.csproj", "{B6241561-6FBB-438C-B16E-9A9027F177D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroTokenMintingService", "MicroTokenMintingService\MicroTokenMintingService.csproj", "{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +174,18 @@ Global
 		{99974A0A-0220-47A1-A984-B0174C6D21D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99974A0A-0220-47A1-A984-B0174C6D21D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99974A0A-0220-47A1-A984-B0174C6D21D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A616746-0E37-49C7-96BC-0A5FCD706F00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A616746-0E37-49C7-96BC-0A5FCD706F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A616746-0E37-49C7-96BC-0A5FCD706F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A616746-0E37-49C7-96BC-0A5FCD706F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6241561-6FBB-438C-B16E-9A9027F177D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6241561-6FBB-438C-B16E-9A9027F177D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6241561-6FBB-438C-B16E-9A9027F177D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6241561-6FBB-438C-B16E-9A9027F177D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +207,9 @@ Global
 		{3FB53CFA-7FE7-4863-9F56-AE0397FD44AB} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 		{8D2C355F-D70D-4F30-AD70-5A7A7E536D32} = {04D1C14D-65A8-41E4-8914-13631F9D1F32}
 		{99974A0A-0220-47A1-A984-B0174C6D21D0} = {4514BCFC-090B-4569-9CE0-728127810205}
+		{8A616746-0E37-49C7-96BC-0A5FCD706F00} = {4E8B2DEA-ED5A-438A-8C02-7C1BDE610975}
+		{B6241561-6FBB-438C-B16E-9A9027F177D2} = {4E8B2DEA-ED5A-438A-8C02-7C1BDE610975}
+		{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}

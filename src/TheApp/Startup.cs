@@ -13,6 +13,7 @@ using DemoIdentityServerio.Validator.Extensions;
 using Google.Validator.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
+using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityTokenExchange.GraphQL.Extensions;
 using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -23,6 +24,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -38,6 +40,7 @@ using P7Core.ObjectContainers.Extensions;
 using P7IdentityServer4.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TheApp.Services;
+using TokenMintingService.Extensions;
 using Utils.Extensions;
 
 namespace TheApp
@@ -89,6 +92,7 @@ namespace TheApp
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
+            services.AddExtensionGrantsRollup(Configuration);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -107,13 +111,24 @@ namespace TheApp
                         policy => { policy.RequireClaim("client_namespace", "Daffy Duck"); });
                 });
 
+            var scheme = Configuration["authValidation:scheme"];
+           
+            var section = Configuration.GetSection("oauth2");
+            var oAuth2SchemeRecords = new List<OAuth2SchemeRecord>();
+            section.Bind(oAuth2SchemeRecords);
+            var query = from item in oAuth2SchemeRecords
+                        where item.Scheme == scheme
+                        select item;
+            var oAuth2SchemeRecord = query.FirstOrDefault();
+
+            var authority = oAuth2SchemeRecord.Authority;
             List<SchemeRecord> schemeRecords = new List<SchemeRecord>()
             {  new SchemeRecord()
                 {
-                    Name = "One",
+                    Name = scheme,
                     JwtBearerOptions = options =>
                     {
-                        options.Authority = "https://p7identityserver4.azurewebsites.net";
+                        options.Authority = authority;
                         options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
@@ -155,8 +170,12 @@ namespace TheApp
             
             services.AddAuthentication("Bearer")
                 .AddMultiAuthorityAuthentication(schemeRecords);
-            
-            services.AddHttpContextAccessor(); services.AddHttpContextAccessor();
+
+            services.AddMicroTokenMintingService();
+            services.AddLogging();
+            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
             services.AddCustomerLoyalty();
 
             services.AddSwaggerGen(c =>
