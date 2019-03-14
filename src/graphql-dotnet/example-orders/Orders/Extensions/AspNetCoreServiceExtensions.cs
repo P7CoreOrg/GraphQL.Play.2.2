@@ -18,9 +18,7 @@ namespace Orders.Extensions
 
             services.AddTransient<IMutationFieldRegistration, OrdersMutation>();
             services.AddTransient<IQueryFieldRegistration, OrdersQuery>();
-            services.AddTransient<ISubscriptionFieldRegistration, OrdersSubscription>();
-
-
+           
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<IOrderEventService, OrderEventService>();
             services.AddSingleton<IOrderService, OrderService>();
