@@ -1,11 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using CustomerLoyaltyStore.Extensions;
+using CustomerLoyalyStore.GraphQL.Extensions;
+using DemoIdentityServerio.Validator.Extensions;
+using Google.Validator.Extensions;
+using IdentityModelExtras;
+using IdentityModelExtras.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServerRequestTracker.Extensions;
+using IdentityTokenExchange.GraphQL.Extensions;
+using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +28,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using MultiAuthority.AccessTokenValidation;
+using Norton.Validator.Extensions;
+using Orders.Extensions;
+using P7Core.BurnerGraphQL.Extensions;
+using P7Core.BurnerGraphQL2.Extensions;
+using P7Core.GraphQLCore.Extensions;
+using P7Core.GraphQLCore.Stores;
+using P7Core.ObjectContainers.Extensions;
+using P7IdentityServer4.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
+using TokenMintingService.Extensions;
+using Utils.Extensions;
 
 namespace IdentityServer4_Extension_Grants_App
 {
@@ -38,7 +59,26 @@ namespace IdentityServer4_Extension_Grants_App
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddLazier();
+            services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
+            services.AddMemoryCache();
+            services.AddIdentityModelExtrasTypes();
+            services.AddSingleton<ConfiguredDiscoverCacheContainerFactory>();
+            services.AddGraphQLCoreTypes();
+            services.AddGraphQLCoreCustomLoyaltyTypes();
+            services.AddGraphQLOrders();
+            services.AddBurnerGraphQL();
+            services.AddBurnerGraphQL2();
+
+            services.AddGraphQLIdentityTokenExchangeTypes();
+            services.AddP7IdentityServer4OIDCTokenValidator();
+            services.AddDemoIdentityServerioOIDCTokenValidator();
+            services.AddGoogleOIDCTokenValidator();
+            services.AddNortonOIDCTokenValidator();
+            services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
+            services.RegisterGraphQLCoreConfigurationServices(Configuration);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -49,7 +89,6 @@ namespace IdentityServer4_Extension_Grants_App
                         .AllowCredentials());
             });
             services.AddExtensionGrantsRollup(Configuration);
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -60,36 +99,83 @@ namespace IdentityServer4_Extension_Grants_App
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Daffy Duck",
+                    policy => { policy.RequireClaim("client_namespace", "Daffy Duck"); });
+            });
+
+            var scheme = Configuration["authValidation:scheme"];
+
+            var section = Configuration.GetSection("oauth2");
+            var oAuth2SchemeRecords = new List<OAuth2SchemeRecord>();
+            section.Bind(oAuth2SchemeRecords);
+            var query = from item in oAuth2SchemeRecords
+                        where item.Scheme == scheme
+                        select item;
+            var oAuth2SchemeRecord = query.FirstOrDefault();
+
+            var authority = oAuth2SchemeRecord.Authority;
+            List<SchemeRecord> schemeRecords = new List<SchemeRecord>()
+            {  new SchemeRecord()
                 {
-                    options.Authority = Configuration["self:authority"];
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
+                    Name = scheme,
+                    JwtBearerOptions = options =>
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidAudiences = new List<string>()
+                        options.Authority = authority;
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            $"{options.Authority}/Resources"
-                        }
-                    };
-                });
+                            ValidateIssuer = true,
+                            ValidateAudience = false,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true
+                        };
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                return Task.CompletedTask;
+                            },
+                            OnTokenValidated = context =>
+                            {
+
+                                ClaimsIdentity identity = context.Principal.Identity as ClaimsIdentity;
+                                if (identity != null)
+                                {
+                                    // Add the access_token as a claim, as we may actually need it
+                                    var accessToken = context.SecurityToken as JwtSecurityToken;
+                                    if (accessToken != null)
+                                    {
+                                        if (identity != null)
+                                        {
+                                            identity.AddClaim(new Claim("access_token", accessToken.RawData));
+                                        }
+                                    }
+                                }
+
+                                return Task.CompletedTask;
+                            }
+                        };
+                    }
+
+                },
+            };
+
+            services.AddAuthentication("Bearer")
+                .AddMultiAuthorityAuthentication(schemeRecords);
+
+            services.AddInProcTokenMintingService();
+
             services.AddLogging();
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.AddCustomerLoyalty();
             // Build the intermediate service provider then return it
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
-                {
-                    Version = "v1",
-                    Title = "ToDo API"
-
-                });
-
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -101,15 +187,7 @@ namespace IdentityServer4_Extension_Grants_App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui(HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            
 
             app.UseRewriter(new RewriteOptions().Add(new RewriteLowerCaseRule()));
 
@@ -123,6 +201,8 @@ namespace IdentityServer4_Extension_Grants_App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors("CorsPolicy");
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -132,6 +212,20 @@ namespace IdentityServer4_Extension_Grants_App
             app.UseAuthentication();
 
             app.UseMvc();
+
+            //MEMSTATE Journal stays in memory
+            Config.Current.UseInMemoryFileSystem();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
         }
     }
 }

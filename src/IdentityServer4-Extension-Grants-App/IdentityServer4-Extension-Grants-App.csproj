@@ -22,7 +22,26 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="morelinq" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="P7Core.ObjectContainers" Version="1.0.46" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj" />
+    <ProjectReference Include="..\DemoIdentityServerio.Validator\DemoIdentityServerio.Validator.csproj" />
+    <ProjectReference Include="..\Google.Validator\Google.Validator.csproj" />
+    <ProjectReference Include="..\graphql-dotnet\example-orders\Orders\Orders.csproj" />
+    <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
+    <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
+    <ProjectReference Include="..\InProcTokenMintingService\InProcTokenMintingService.csproj" />
+    <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
+    <ProjectReference Include="..\Norton.Validator\Norton.Validator.csproj" />
+    <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
+    <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
+    <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />
+    <ProjectReference Include="..\P7IdentityServer4.Validator\P7IdentityServer4.Validator.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
 
