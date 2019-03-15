@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheApp", "TheApp\TheApp.csproj", "{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiAuthority.AccessTokenValidation", "MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj", "{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModelExtras", "IdentityModelExtras\IdentityModelExtras.csproj", "{36CF6D4F-0814-4BA9-90B8-5EC743B9B7A1}"
@@ -78,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.TheApp", "UnitTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroTokenMintingService", "MicroTokenMintingService\MicroTokenMintingService.csproj", "{70E4C2C5-B067-4E94-9B94-FA55CC4CE3F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InProcTokenMintingService", "InProcTokenMintingService\InProcTokenMintingService.csproj", "{8F58FDC2-B0B7-409A-9A37-6D3C0C0A720F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InProcTokenMintingService", "InProcTokenMintingService\InProcTokenMintingService.csproj", "{8F58FDC2-B0B7-409A-9A37-6D3C0C0A720F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4-Extension-Grants-App", "IdentityServer4-Extension-Grants-App\IdentityServer4-Extension-Grants-App.csproj", "{8E4D5124-1EEA-485C-9068-245858D13794}"
 EndProject
@@ -90,10 +88,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -191,7 +185,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D0A0FBF4-4F24-4052-ADB5-1214B024F2AA} = {19418411-5334-4122-87E5-F80D747114AA}
 		{C6DD148A-C8BD-4342-B288-0620EE1B2AA1} = {DC1630E8-FB5C-49D6-B7CD-B67700AE69A7}
 		{5F507953-2B02-4D08-A838-777FCADF5676} = {4E85988C-332F-4B14-9351-EC78E99D218D}
 		{19124FA1-70C0-4A7F-ADCE-8326A965642E} = {4E85988C-332F-4B14-9351-EC78E99D218D}
