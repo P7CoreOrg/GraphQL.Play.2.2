@@ -171,7 +171,8 @@ namespace TheApp
             services.AddAuthentication("Bearer")
                 .AddMultiAuthorityAuthentication(schemeRecords);
 
-            services.AddMicroTokenMintingService();
+           // services.AddMicroTokenMintingService();
+            services.AddInProcTokenMintingService();
             services.AddLogging();
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
