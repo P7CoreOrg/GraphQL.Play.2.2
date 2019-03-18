@@ -9,6 +9,7 @@ namespace IdentityServer4_Extension_Grants_App.ViewComponents
     public class IdentitySourceViewComponentModel
     {
         public DiscoveryResponse DiscoveryResponse { get; set; }
+        public string SchemeId { get; set; }
     }
     public class IdentitySourceViewComponent : ViewComponent
     {
@@ -32,6 +33,7 @@ namespace IdentityServer4_Extension_Grants_App.ViewComponents
             var discoveryResponse = await _configuredDiscoverCacheContainerFactory.Get(sourceId).DiscoveryCache.GetAsync();
             var model = new IdentitySourceViewComponentModel()
             {
+                SchemeId = sourceId,
                 DiscoveryResponse = discoveryResponse
             };
           
