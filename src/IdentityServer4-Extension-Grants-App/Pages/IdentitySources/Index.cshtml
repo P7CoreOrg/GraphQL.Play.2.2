@@ -1,0 +1,26 @@
+﻿@page "{sourceId?}"
+@model IdentityServer4_Extension_Grants_App.Pages.IdentitySources.IndexModel
+@{
+    ViewData["Title"] = "IdentitySources";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar3 col-sm-3 ">
+            @await  Component.InvokeAsync("IdentitySources")
+        </div>
+        <div class="main2 col-sm-8 ">
+            @await Component.InvokeAsync("IdentitySource", new { id = Model.SourceId })
+        </div>
+    </div>
+</div>
+
+
+@section StyleHead
+{
+    <link rel="stylesheet" href="~/css/sidebar.css" />
+
+}
+
+
+ 

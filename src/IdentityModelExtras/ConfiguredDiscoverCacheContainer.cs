@@ -110,7 +110,10 @@ namespace IdentityModelExtras
         }
 
 
-
+        public Dictionary<string, ConfiguredDiscoverCacheContainer> GetAll()
+        {
+            return OIDCDiscoverCacheContainers;
+        }
         public ConfiguredDiscoverCacheContainer Get(string scheme)
         {
             if (OIDCDiscoverCacheContainers.ContainsKey(scheme))
