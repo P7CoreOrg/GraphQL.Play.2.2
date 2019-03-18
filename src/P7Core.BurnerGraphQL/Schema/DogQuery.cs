@@ -10,10 +10,15 @@ namespace P7Core.BurnerGraphQL.Schema
 {
     public class DogQuery : IQueryFieldRegistration
     {
+        private IDogStore _dogStore;
+
+        public DogQuery(IDogStore dogStore)
+        {
+            _dogStore = dogStore;
+        }
         private async Task<string> DogNameAsync()
         {
-            var dog = new Dog();
-            return dog.Name;
+            return _dogStore.Name;
         }
         public void AddGraphTypeFields(QueryCore queryCore)
         {

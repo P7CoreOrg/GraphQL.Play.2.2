@@ -9,6 +9,12 @@ namespace P7Core.BurnerGraphQL.Extensions
         public static void AddBurnerGraphQL(this IServiceCollection services)
         {
             services.AddTransient<IQueryFieldRegistration, DogQuery>();
+            services.AddTransient<IMutationFieldRegistration, DogMutation>();
+
+            services.AddTransient<DogType>();
+            services.AddTransient<DogInputType>();
+
+            services.AddSingleton<IDogStore, DogStore>();
         }
     }
 }
