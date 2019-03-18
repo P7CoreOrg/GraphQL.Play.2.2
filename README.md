@@ -1,6 +1,6 @@
 # GraphQL.Play.2.2
 
-This GraphQL demo app implements the following use cases;  
+This [GraphQL demo app](src/IdentityServer4-Extension-Grants-App) implements the following use cases;  
 [AuthUseCases](https://github.com/AuthUseCases/Flows)  
 
 
