@@ -28,8 +28,9 @@ namespace IdentityServer4_Extension_Grants_App
                         .AddJsonFile("appsettings.keyVault.json", optional: false, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{environmentName}.IdentityResources.json", optional: true)
                         .AddJsonFile($"appsettings.{environmentName}.ApiResources.json", optional: true)
+                        .AddJsonFile($"appsettings.{environmentName}.ApiResources.json", optional: true)
                         .AddJsonFile($"appsettings.{environmentName}.Clients.json", optional: true)
-                        .AddJsonFile($"appsettings.{environmentName}.json", optional: true)
+                        .AddJsonFile($"appsettings.graphql.json", optional: false, reloadOnChange: true)
                         .AddUserSecrets<Startup>();
 
                 })
