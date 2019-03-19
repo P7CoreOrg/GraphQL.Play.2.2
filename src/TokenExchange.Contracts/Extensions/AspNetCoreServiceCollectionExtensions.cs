@@ -9,5 +9,18 @@ namespace TokenExchange.Contracts.Extensions
             services.AddSingleton<IPrincipalEvaluatorRouter, PrincipalEvaluatorRouter>();
             return services;
         }
+
+        public static IServiceCollection AddGoogleUserPrincipalEvaluator(this IServiceCollection services)
+        {
+
+            services.AddSingleton<IPrincipalEvaluator, GoogleUserPrincipalEvaluator>();
+            return services;
+        }
+
+        public static IServiceCollection AddSelfUserPrincipalEvaluator(this IServiceCollection services)
+        {
+            services.AddSingleton<IPrincipalEvaluator, SelfUserPrincipalEvaluator>();
+            return services;
+        }
     }
 }

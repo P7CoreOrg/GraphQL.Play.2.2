@@ -81,6 +81,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
 
             services.AddPrincipalEvaluatorRouter();
+            services.AddGoogleUserPrincipalEvaluator();
+            services.AddSelfUserPrincipalEvaluator();
 
             services.AddCors(options =>
             {

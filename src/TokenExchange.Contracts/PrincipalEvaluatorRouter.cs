@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,10 +10,15 @@ namespace TokenExchange.Contracts
     {
         private IEnumerable<IPrincipalEvaluator> _principalEvaluators;
 
-        Dictionary<string, IPrincipalEvaluatorRouter> _mapPrincipalEvaluators=>new Dictionary<string, IPrincipalEvaluatorRouter>();
+        readonly Dictionary<string, IPrincipalEvaluator> _mapPrincipalEvaluators;
         public PrincipalEvaluatorRouter(IEnumerable<IPrincipalEvaluator> principalEvaluators)
         {
+            _mapPrincipalEvaluators = new Dictionary<string, IPrincipalEvaluator>();
             _principalEvaluators = principalEvaluators;
+            foreach (var principalEvaluator in _principalEvaluators)
+            {
+                _mapPrincipalEvaluators.Add(principalEvaluator.Name, principalEvaluator);
+            }
         }
         string GetSubjectFromPincipal(ClaimsPrincipal principal)
         {
@@ -24,19 +30,19 @@ namespace TokenExchange.Contracts
 
         }
 
-        public async Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(string tokenScheme, ClaimsPrincipal principal)
+        public async Task<ResourceOwnerTokenRequest> 
+            GenerateResourceOwnerTokenRequestAsync(
+                string tokenScheme, 
+                ClaimsPrincipal principal)
         {
-            ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
+            if (_mapPrincipalEvaluators.ContainsKey(tokenScheme))
             {
-                AccessTokenLifetime = 3600,
-                ArbitraryClaims = new Dictionary<string, List<string>>()
-                {
-                    {"role", new List<string>() {"application", "limited"}}
-                },
-                Scope = "offline_access graphQLPlay",
-                Subject = GetSubjectFromPincipal(principal)
-            };
-            return resourceOwnerTokenRequest;
+                var resourceOwnerTokenRequest =
+                    await _mapPrincipalEvaluators[tokenScheme]
+                        .GenerateResourceOwnerTokenRequestAsync(principal);
+                return resourceOwnerTokenRequest;
+            }
+            throw new Exception($"{tokenScheme} is not mapped to an IPrincipalEvaluator");
         }
     }
 }
