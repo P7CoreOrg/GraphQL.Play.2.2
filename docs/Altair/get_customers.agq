@@ -1,0 +1,1 @@
+{"version":1,"type":"window","query":"query getCustomers {\n  customers {\n    id\n    name\n  }\n}","apiUrl":"{{serverUrl}}/api/v1/GraphQL","variables":"{}","subscriptionUrl":"","headers":[{"key":"","value":""}],"windowName":"GetCustomers"}
