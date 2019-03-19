@@ -80,5 +80,12 @@ query{
   }
 }
 ```
-
+```
+query getCustomers {
+  customers {
+    id
+    name
+  }
+}
+```
 
