@@ -29,7 +29,7 @@ namespace Orders.Schema
 
                     var id = Guid.NewGuid().ToString();
                     var order = new Order(orderInput.Name, orderInput.Description, orderInput.Created, orderInput.CustomerId, id);
-                    return _orders.CreateAsync(order);
+                    return await _orders.CreateAsync(order);
                 }
             );
             mutationCore.FieldAsync<OrderType>(

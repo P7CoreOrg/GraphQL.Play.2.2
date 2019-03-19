@@ -50,7 +50,6 @@ namespace Orders.Services
             var orderEvent = new OrderEvent(order.Id, order.Name, OrderStatuses.CREATED,DateTime.Now);
             _events.AddEvent(orderEvent);
             return Task.FromResult(order);
-            throw new NotImplementedException();
         }
 
         public Task<Order> GetOrderByIdAsync(string id)
