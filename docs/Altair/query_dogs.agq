@@ -1,0 +1,1 @@
+{"version":1,"type":"window","query":"query{\n  dogName\n  dogName2\n}","apiUrl":"{{serverUrl}}/api/v1/GraphQL","variables":"","subscriptionUrl":"","headers":[{"key":"","value":""}],"windowName":"Query Dogs"}
