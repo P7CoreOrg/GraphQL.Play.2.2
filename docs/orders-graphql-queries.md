@@ -1,4 +1,5 @@
 # Orders 
+[example-orders](https://github.com/graphql-dotnet/example-orders)  
 
 # Mutation  
 
@@ -47,3 +48,44 @@ mutation q($input: OrderInput!){
   }
 }
 ```
+# Queries
+```
+query{
+  orders{
+    created
+    customer{
+      id
+      name
+    }
+    description
+    id
+    name
+    status
+  }
+}
+```
+
+```
+query{
+  orderById(orderId:"FAEBD971-CBA5-4CED-8AD5-CC0B8D4B7827" ){
+    created
+    customer{
+      id
+      name
+    }
+    description
+    id
+    name
+    status
+  }
+}
+```
+```
+query getCustomers {
+  customers {
+    id
+    name
+  }
+}
+```
+
