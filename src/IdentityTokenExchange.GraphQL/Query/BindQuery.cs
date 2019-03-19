@@ -29,15 +29,18 @@ namespace IdentityTokenExchange.GraphQL.Query
         private ITokenMintingService _tokenMintingService;
         private IConfiguration _configuration;
         private string _scheme;
+        private IPrincipalEvaluatorRouter _principalEvaluatorRouter;
 
         public BindQuery(
             ITokenMintingService tokenMintingService,
+            IPrincipalEvaluatorRouter principalEvaluatorRouter,
             IConfiguration configuration,
             ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory,
             IMemoryCache memoryCache,
             ITokenValidator tokenValidator)
         {
             _tokenMintingService = tokenMintingService;
+            _principalEvaluatorRouter = principalEvaluatorRouter;
             _configuration = configuration;
             _scheme = _configuration["authValidation:scheme"];
             _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
@@ -82,17 +85,9 @@ namespace IdentityTokenExchange.GraphQL.Query
                         var discoveryResponse = await _discoveryContainer.DiscoveryCache.GetAsync();
                         var clientId = "arbitrary-resource-owner-client";
 
+                        var resourceOwnerTokenRequest = await _principalEvaluatorRouter.GenerateResourceOwnerTokenRequestAsync(input.TokenScheme,
+                            principal);
 
-                        ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
-                        {
-                            AccessTokenLifetime = 3600,
-                            ArbitraryClaims = new Dictionary<string, List<string>>()
-                            {
-                                {"role", new List<string>() {"application", "limited"}}
-                            },
-                            Scope = "offline_access graphQLPlay",
-                            Subject = subject
-                        };
                         var response =
                             await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
