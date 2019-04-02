@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IdentityTokenExchange.GraphQL.Models
+namespace IdentityTokenExchangeGraphQL.Models
 {
     public class AuthorizationResultModel 
     {

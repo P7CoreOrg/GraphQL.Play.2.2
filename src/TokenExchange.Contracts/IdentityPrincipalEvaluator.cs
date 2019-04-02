@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts
 {
-    public abstract class UserPrincipalEvaluator : IPrincipalEvaluator
+    public abstract class IdentityPrincipalEvaluator : IPrincipalEvaluator
     {
         string GetSubjectFromPincipal(ClaimsPrincipal principal)
         {
@@ -17,7 +17,7 @@ namespace TokenExchange.Contracts
 
         }
         public virtual async Task<ResourceOwnerTokenRequest> 
-            GenerateResourceOwnerTokenRequestAsync(ClaimsPrincipal principal)
+            GenerateResourceOwnerTokenRequestAsync(ClaimsPrincipal principal, List<string> extras)
         {
             ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
             {
@@ -32,6 +32,7 @@ namespace TokenExchange.Contracts
             return resourceOwnerTokenRequest;
         }
 
+       
         public string Name { get; set; }
     }
 }

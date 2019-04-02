@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdentityTokenExchange.GraphQL.Models
+namespace IdentityTokenExchangeGraphQL.Models
 {
     public class BindResultModel 
     {

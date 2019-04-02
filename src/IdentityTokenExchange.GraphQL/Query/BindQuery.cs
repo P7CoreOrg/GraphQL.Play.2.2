@@ -8,7 +8,7 @@ using GraphQL.Types;
 using IdentityModel;
 using IdentityModel.Client;
 using IdentityModelExtras;
-using IdentityTokenExchange.GraphQL.Models;
+using IdentityTokenExchangeGraphQL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using P7Core.GraphQLCore;
 using TokenExchange.Contracts;
 
-namespace IdentityTokenExchange.GraphQL.Query
+namespace IdentityTokenExchangeGraphQL.Query
 {
     public class BindQuery : IQueryFieldRegistration
     {
@@ -85,8 +85,9 @@ namespace IdentityTokenExchange.GraphQL.Query
                         var discoveryResponse = await _discoveryContainer.DiscoveryCache.GetAsync();
                         var clientId = "arbitrary-resource-owner-client";
 
-                        var resourceOwnerTokenRequest = await _principalEvaluatorRouter.GenerateResourceOwnerTokenRequestAsync(input.TokenScheme,
-                            principal);
+                        var resourceOwnerTokenRequest = await _principalEvaluatorRouter.GenerateResourceOwnerTokenRequestAsync(
+                            input.TokenScheme,
+                            principal,input.Extras);
 
                         var response =
                             await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);

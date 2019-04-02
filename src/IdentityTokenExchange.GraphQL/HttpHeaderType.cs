@@ -1,7 +1,7 @@
 ﻿using GraphQL.Types;
-using IdentityTokenExchange.GraphQL.Models;
+using IdentityTokenExchangeGraphQL.Models;
 
-namespace IdentityTokenExchange.GraphQL
+namespace IdentityTokenExchangeGraphQL
 {
     public class HttpHeaderType : ObjectGraphType<HttpHeader>
     {

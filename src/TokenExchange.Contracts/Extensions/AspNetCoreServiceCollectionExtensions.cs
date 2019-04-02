@@ -13,13 +13,13 @@ namespace TokenExchange.Contracts.Extensions
         public static IServiceCollection AddGoogleUserPrincipalEvaluator(this IServiceCollection services)
         {
 
-            services.AddSingleton<IPrincipalEvaluator, GoogleUserPrincipalEvaluator>();
+            services.AddSingleton<IPrincipalEvaluator, GoogleIdentityPrincipalEvaluator>();
             return services;
         }
 
         public static IServiceCollection AddSelfUserPrincipalEvaluator(this IServiceCollection services)
         {
-            services.AddSingleton<IPrincipalEvaluator, SelfUserPrincipalEvaluator>();
+            services.AddSingleton<IPrincipalEvaluator, SelfIdentityPrincipalEvaluator>();
             return services;
         }
     }

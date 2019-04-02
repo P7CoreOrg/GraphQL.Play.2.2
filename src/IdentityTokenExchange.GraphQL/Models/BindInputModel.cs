@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace IdentityTokenExchange.GraphQL.Models
+namespace IdentityTokenExchangeGraphQL.Models
 {
     public class BindInputModel : IComparable
     {
@@ -16,6 +17,8 @@ namespace IdentityTokenExchange.GraphQL.Models
         /// A wellknown lookup used to validate the token
         /// </summary>
         public string AuthorityKey { get; set; }
+
+        public List<string> Extras { get; set; }
         public int CompareTo(object obj)
         {
             if (Equals(obj))

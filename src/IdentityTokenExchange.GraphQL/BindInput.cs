@@ -1,6 +1,6 @@
 ﻿using GraphQL.Types;
 
-namespace IdentityTokenExchange.GraphQL
+namespace IdentityTokenExchangeGraphQL
 {
     public class BindInput : InputObjectGraphType
     {
@@ -12,8 +12,9 @@ namespace IdentityTokenExchange.GraphQL
         public BindInput()
         {
             Name = "bind";
-            Field<NonNullGraphType<StringGraphType>>("token");
+            Field<NonNullGraphType<GraphQL.Types.StringGraphType>>("token");
             Field<NonNullGraphType<StringGraphType>>("tokenScheme");
+            Field<ListGraphType<StringGraphType>>("extras");
         }
     }
 }

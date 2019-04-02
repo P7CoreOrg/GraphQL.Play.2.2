@@ -23,7 +23,7 @@ namespace TokenExchange.Contracts
 
         public string TokenScheme { get; set; }
 
-        public async Task<ClaimsPrincipal> ValidateTokenAsync(TokenDescriptor tokenDescriptor)
+        public virtual async Task<ClaimsPrincipal> ValidateTokenAsync(TokenDescriptor tokenDescriptor)
         {
             if (tokenDescriptor.TokenScheme != TokenScheme)
             {

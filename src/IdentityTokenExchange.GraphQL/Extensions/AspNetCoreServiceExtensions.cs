@@ -1,9 +1,9 @@
-﻿using IdentityTokenExchange.GraphQL.Query; 
+﻿using IdentityTokenExchangeGraphQL.Query; 
 using Microsoft.Extensions.DependencyInjection;
 using P7Core.GraphQLCore;
 using TokenExchange.Contracts;
 
-namespace IdentityTokenExchange.GraphQL.Extensions
+namespace IdentityTokenExchangeGraphQL.Extensions
 {
     public static class AspNetCoreServiceExtensions
     {

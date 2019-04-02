@@ -14,7 +14,7 @@ using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServerRequestTracker.Extensions;
-using IdentityTokenExchange.GraphQL.Extensions;
+using IdentityTokenExchangeGraphQL.Extensions;
 using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

@@ -7,7 +7,7 @@ namespace TokenExchange.Contracts
 {
     public interface IPrincipalEvaluator
     {
-        Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(ClaimsPrincipal principal);
+        Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(ClaimsPrincipal principal, System.Collections.Generic.List<string> extras);
         string Name { get; }
     }
 }

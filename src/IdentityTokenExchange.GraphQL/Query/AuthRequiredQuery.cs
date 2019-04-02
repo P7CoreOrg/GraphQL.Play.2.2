@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using GraphQL;
-using IdentityTokenExchange.GraphQL.Models;
+using IdentityTokenExchangeGraphQL.Models;
 using P7Core.GraphQLCore;
 
-namespace IdentityTokenExchange.GraphQL.Query
+namespace IdentityTokenExchangeGraphQL.Query
 {
     public class AuthRequiredQuery : IQueryFieldRegistration
     {
