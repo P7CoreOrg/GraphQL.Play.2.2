@@ -86,7 +86,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                         var clientId = "arbitrary-resource-owner-client";
 
                         var resourceOwnerTokenRequest = await _principalEvaluatorRouter.GenerateResourceOwnerTokenRequestAsync(
-                            input.TokenScheme,
+                            input.Exchange,
                             principal,input.Extras);
 
                         var response =

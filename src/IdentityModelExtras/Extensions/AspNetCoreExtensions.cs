@@ -9,5 +9,10 @@ namespace IdentityModelExtras.Extensions
         {
             services.TryAddTransient<IDefaultHttpClientFactory, NullDefaultHttpClientFactory>();
         }
+        public static IServiceCollection AddInMemoryOAuth2ConfigurationStore(this IServiceCollection services)
+        {
+            services.AddSingleton<IOAuth2ConfigurationStore, InMemoryOAuth2ConfigurationStore>();
+            return services;
+        }
     }
 }

@@ -72,6 +72,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddBurnerGraphQL();
             services.AddBurnerGraphQL2();
 
+            services.AddInMemoryOAuth2ConfigurationStore();
+
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();

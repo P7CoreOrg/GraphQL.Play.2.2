@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IdentityTokenExchangeGraphQL.Models
 {
-    public class BindInputModel : IComparable
+    public class BindInputModel 
     {
         /// <summary>
         /// Any accepted token [id_token, etc] 
@@ -16,34 +16,8 @@ namespace IdentityTokenExchangeGraphQL.Models
         /// <summary>
         /// A wellknown lookup used to validate the token
         /// </summary>
-        public string AuthorityKey { get; set; }
+        public string Exchange { get; set; }
 
         public List<string> Extras { get; set; }
-        public int CompareTo(object obj)
-        {
-            if (Equals(obj))
-                return 0;
-            return -1;
-        }
-        public override bool Equals(object obj)
-        {
-            return ShallowEquals(obj);
-        }
-        public bool ShallowEquals(object obj)
-        {
-            var other = obj as BindInputModel;
-            if (other == null)
-            {
-                return false;
-            }
-            if (other.Token != this.Token ||
-                other.TokenScheme != this.TokenScheme ||
-                other.AuthorityKey != this.AuthorityKey  
-            )
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }
