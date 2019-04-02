@@ -10,14 +10,19 @@ namespace TokenExchange.Contracts.Extensions
             return services;
         }
 
-        public static IServiceCollection AddGoogleUserPrincipalEvaluator(this IServiceCollection services)
+        public static IServiceCollection AddGoogleIdentityPrincipalEvaluator(this IServiceCollection services)
         {
 
             services.AddSingleton<IPrincipalEvaluator, GoogleIdentityPrincipalEvaluator>();
             return services;
         }
+        public static IServiceCollection AddGoogleMyCustomIdentityPrincipalEvaluator(this IServiceCollection services)
+        {
 
-        public static IServiceCollection AddSelfUserPrincipalEvaluator(this IServiceCollection services)
+            services.AddSingleton<IPrincipalEvaluator, GoogleMyCustomIdentityPrincipalEvaluator>();
+            return services;
+        }
+        public static IServiceCollection AddSelfIdentityPrincipalEvaluator(this IServiceCollection services)
         {
             services.AddSingleton<IPrincipalEvaluator, SelfIdentityPrincipalEvaluator>();
             return services;

@@ -76,14 +76,15 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
             services.AddGoogleOIDCTokenValidator();
+            services.AddGoogleMyCustomOIDCTokenValidator();
             services.AddNortonOIDCTokenValidator();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
 
             services.AddPrincipalEvaluatorRouter();
-            services.AddGoogleUserPrincipalEvaluator();
-            services.AddSelfUserPrincipalEvaluator();
-
+            services.AddGoogleIdentityPrincipalEvaluator();
+            services.AddSelfIdentityPrincipalEvaluator();
+            services.AddGoogleMyCustomIdentityPrincipalEvaluator();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",

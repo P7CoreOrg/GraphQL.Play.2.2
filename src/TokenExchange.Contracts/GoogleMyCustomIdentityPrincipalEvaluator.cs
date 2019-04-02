@@ -1,38 +1,39 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts
 {
-    public abstract class IdentityPrincipalEvaluator : IPrincipalEvaluator
+    public class GoogleMyCustomIdentityPrincipalEvaluator : IdentityPrincipalEvaluator
     {
-        protected string GetSubjectFromPincipal(ClaimsPrincipal principal)
+        public GoogleMyCustomIdentityPrincipalEvaluator()
         {
-            var query = from item in principal.Claims
-                where item.Type == ClaimTypes.NameIdentifier || item.Type == "sub"
-                select item.Value;
-            var subject = query.FirstOrDefault();
-            return subject;
-
+            Name = "google-my-custom";
         }
-        public virtual async Task<ResourceOwnerTokenRequest> 
+        public override async Task<ResourceOwnerTokenRequest>
             GenerateResourceOwnerTokenRequestAsync(ClaimsPrincipal principal, List<string> extras)
         {
+            if (extras == null || extras.Count == 0)
+            {
+                throw new Exception($"{Name}: We require that extras be populated!");
+            }
+
+            // for this demo, lets assume all the extras are roles.
+            var roles = extras;
+            roles.Add("user");
+            
             ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
             {
                 AccessTokenLifetime = 3600,
                 ArbitraryClaims = new Dictionary<string, List<string>>()
                 {
-                    {"role", new List<string>() {"user"}}
+                    {"role", roles}
                 },
                 Scope = "offline_access graphQLPlay",
                 Subject = GetSubjectFromPincipal(principal)
             };
             return resourceOwnerTokenRequest;
         }
-
-       
-        public string Name { get; set; }
     }
 }
