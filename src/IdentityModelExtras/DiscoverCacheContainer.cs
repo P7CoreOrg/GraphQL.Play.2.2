@@ -6,26 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace IdentityModelExtras
 {
-    /*
-     "oauth2": [
-        {
-          "scheme": "norton",
-          "authority": "https://login-int.norton.com/sso/oidc1/token",
-          "callbackPath": "/signin-norton",
-          "additionalEndpointBaseAddresses": [
-            "https://login-int.norton.com/sso/idp/OIDC",
-            "https://login-int.norton.com/sso/oidc1"
-          ]
-        },  
-        {
-          "scheme": "google",
-          "authority": "https://accounts.google.com",
-          "callbackPath": "/signin-google",
-          "additionalEndpointBaseAddresses": []
-        }
-      ]
-   */
-
+ 
     public class OAuth2SchemeRecord
     {
         public string Scheme { get; set; }
@@ -35,7 +16,7 @@ namespace IdentityModelExtras
         public List<string> AdditionalEndpointBaseAddresses { get; set; }
     }
 
-    public class ConfiguredDiscoverCacheContainer : IDiscoveryCacheContainer
+    public class DiscoverCacheContainer : IDiscoveryCacheContainer
     {
         private readonly IDefaultHttpClientFactory _defaultHttpClientFactory;
         private WellknownAuthority _wellknownAuthority;
@@ -43,7 +24,7 @@ namespace IdentityModelExtras
  
         
 
-        public ConfiguredDiscoverCacheContainer(IDefaultHttpClientFactory defaultHttpClientFactory, 
+        public DiscoverCacheContainer(IDefaultHttpClientFactory defaultHttpClientFactory, 
             WellknownAuthority wellknownAuthority)
         {
             _defaultHttpClientFactory = defaultHttpClientFactory;
@@ -80,25 +61,25 @@ namespace IdentityModelExtras
         }
     }
 
-    public class ConfiguredDiscoverCacheContainerFactory
+    public class DiscoverCacheContainerFactory
     {
         private IConfiguration _configuration;
         private IDefaultHttpClientFactory _defaultHttpClientFactory;
         private IOAuth2ConfigurationStore _oAuth2ConfigurationStore;
-        private Dictionary<string, ConfiguredDiscoverCacheContainer> _oIDCDiscoverCacheContainers;
+        private Dictionary<string, DiscoverCacheContainer> _oIDCDiscoverCacheContainers;
 
-        private Dictionary<string, ConfiguredDiscoverCacheContainer> OIDCDiscoverCacheContainers
+        private Dictionary<string, DiscoverCacheContainer> OIDCDiscoverCacheContainers
         {
             get
             {
                 if (_oIDCDiscoverCacheContainers == null)
                 {
-                    _oIDCDiscoverCacheContainers = new Dictionary<string, ConfiguredDiscoverCacheContainer>();
+                    _oIDCDiscoverCacheContainers = new Dictionary<string, DiscoverCacheContainer>();
                     var authorities = _oAuth2ConfigurationStore.GetWellknownAuthoritiesAsync().GetAwaiter().GetResult();
                     foreach (var record in authorities)
                     {
                         _oIDCDiscoverCacheContainers.Add(record.Scheme,
-                            new ConfiguredDiscoverCacheContainer(_defaultHttpClientFactory, record));
+                            new DiscoverCacheContainer(_defaultHttpClientFactory, record));
                     }
                 }
 
@@ -106,7 +87,7 @@ namespace IdentityModelExtras
             }
         }
 
-        public ConfiguredDiscoverCacheContainerFactory(
+        public DiscoverCacheContainerFactory(
             IDefaultHttpClientFactory defaultHttpClientFactory,
             IOAuth2ConfigurationStore oAuth2ConfigurationStore,
             IConfiguration configuration)
@@ -116,11 +97,11 @@ namespace IdentityModelExtras
         }
 
 
-        public Dictionary<string, ConfiguredDiscoverCacheContainer> GetAll()
+        public Dictionary<string, DiscoverCacheContainer> GetAll()
         {
             return OIDCDiscoverCacheContainers;
         }
-        public ConfiguredDiscoverCacheContainer Get(string scheme)
+        public DiscoverCacheContainer Get(string scheme)
         {
             if (OIDCDiscoverCacheContainers.ContainsKey(scheme))
             {

@@ -7,8 +7,8 @@ namespace Norton.Validator
     public class NortonOIDCTokenValidator : OIDCTokenValidator
     {
         public NortonOIDCTokenValidator(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory, 
-            IMemoryCache memoryCache) : base(configuredDiscoverCacheContainerFactory, memoryCache)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory, 
+            IMemoryCache memoryCache) : base(discoverCacheContainerFactory, memoryCache)
         {
             TokenScheme = "norton";
         }

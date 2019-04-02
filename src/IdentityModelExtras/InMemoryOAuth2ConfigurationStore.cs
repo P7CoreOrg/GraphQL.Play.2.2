@@ -8,7 +8,42 @@ using Microsoft.Extensions.Logging;
 
 namespace IdentityModelExtras
 {
-    
+    /*
+     "authorities": [
+        {
+          "scheme": "self",
+          "authority": "https://localhost:44371",
+          "additionalEndpointBaseAddresses": [
+          ]
+        },
+        {
+          "scheme": "p7identityserver4",
+          "authority": "https://p7identityserver4.azurewebsites.net",
+          "additionalEndpointBaseAddresses": [
+          ]
+        },
+        {
+          "scheme": "google",
+          "authority": "https://accounts.google.com",
+          "additionalEndpointBaseAddresses": [
+          ]
+        },
+        {
+          "scheme": "norton",
+          "authority": "https://login-int.norton.com/sso/oidc1/token",
+          "additionalEndpointBaseAddresses": [
+            "https://login-int.norton.com/sso/idp/OIDC",
+            "https://login-int.norton.com/sso/oidc1"
+          ]
+        },
+        {
+          "scheme": "demoidentityserverio",
+          "authority": "https://demo.identityserver.io",
+          "additionalEndpointBaseAddresses": [
+          ]
+        }
+      ]
+     */
     public class InMemoryOAuth2ConfigurationStore : IOAuth2ConfigurationStore
     {
         class Oauth2Section

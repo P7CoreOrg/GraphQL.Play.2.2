@@ -65,7 +65,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddOptions();
             services.AddMemoryCache();
             services.AddIdentityModelExtrasTypes();
-            services.AddSingleton<ConfiguredDiscoverCacheContainerFactory>();
+            services.AddSingleton<DiscoverCacheContainerFactory>();
             services.AddGraphQLCoreTypes();
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.AddGraphQLOrders();
@@ -78,7 +78,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
             services.AddGoogleOIDCTokenValidator();
-            services.AddGoogleMyCustomOIDCTokenValidator();
+            
             services.AddNortonOIDCTokenValidator();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);

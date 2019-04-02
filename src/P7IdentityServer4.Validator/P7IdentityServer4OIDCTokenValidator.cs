@@ -8,8 +8,8 @@ namespace P7IdentityServer4.Validator
     public class P7IdentityServer4OIDCTokenValidator : OIDCTokenValidator
     {
         public P7IdentityServer4OIDCTokenValidator(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory, 
-            IMemoryCache memoryCache) : base(configuredDiscoverCacheContainerFactory, memoryCache)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory, 
+            IMemoryCache memoryCache) : base(discoverCacheContainerFactory, memoryCache)
         {
             TokenScheme = "p7identityserver4";
         }

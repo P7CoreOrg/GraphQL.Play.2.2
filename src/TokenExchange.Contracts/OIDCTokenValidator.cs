@@ -9,14 +9,14 @@ namespace TokenExchange.Contracts
 {
     public abstract class OIDCTokenValidator: ISchemeTokenValidator
     {
-        private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;
+        private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
         private IMemoryCache _memoryCache;
 
         public OIDCTokenValidator(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory,
+            DiscoverCacheContainerFactory discoverCacheContainerFactory,
             IMemoryCache memoryCache)
         {
-            _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
+            _discoverCacheContainerFactory = discoverCacheContainerFactory;
             _memoryCache = memoryCache;
 
         }
@@ -29,7 +29,7 @@ namespace TokenExchange.Contracts
             {
                 throw new ArgumentException($"{nameof(tokenDescriptor.TokenScheme)} must be {TokenScheme} to use this validator");
             }
-            var discoveryContainer = _configuredDiscoverCacheContainerFactory.Get(tokenDescriptor.TokenScheme);
+            var discoveryContainer = _discoverCacheContainerFactory.Get(tokenDescriptor.TokenScheme);
             if (discoveryContainer == null)
             {
                 throw new ArgumentException($"The OIDC AuthorityKey:{nameof(tokenDescriptor.TokenScheme)} is not supported");

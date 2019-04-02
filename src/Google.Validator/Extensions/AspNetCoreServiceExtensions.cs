@@ -9,9 +9,6 @@ namespace Google.Validator.Extensions
         {
             services.AddSingleton<ISchemeTokenValidator, GoogleOIDCTokenValidator>();
         }
-        public static void AddGoogleMyCustomOIDCTokenValidator(this IServiceCollection services)
-        {
-            services.AddSingleton<ISchemeTokenValidator, GoogleMyCustomOIDCTokenValidator>();
-        }
+        
     }
 }

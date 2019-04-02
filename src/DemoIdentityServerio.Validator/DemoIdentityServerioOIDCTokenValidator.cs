@@ -7,8 +7,8 @@ namespace DemoIdentityServerio.Validator
     public class DemoIdentityServerioOIDCTokenValidator : OIDCTokenValidator
     {
         public DemoIdentityServerioOIDCTokenValidator(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory, 
-            IMemoryCache memoryCache) : base(configuredDiscoverCacheContainerFactory, memoryCache)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory, 
+            IMemoryCache memoryCache) : base(discoverCacheContainerFactory, memoryCache)
         {
             TokenScheme = "demoidentityserverio";
         }

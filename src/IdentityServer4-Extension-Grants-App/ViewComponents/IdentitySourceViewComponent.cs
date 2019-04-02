@@ -13,13 +13,13 @@ namespace IdentityServer4_Extension_Grants_App.ViewComponents
     }
     public class IdentitySourceViewComponent : ViewComponent
     {
-        private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;
+        private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
 
 
         public IdentitySourceViewComponent(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory)
         {
-            _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
+            _discoverCacheContainerFactory = discoverCacheContainerFactory;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string id)
@@ -27,10 +27,10 @@ namespace IdentityServer4_Extension_Grants_App.ViewComponents
             string sourceId = id;
             if (string.IsNullOrWhiteSpace(sourceId))
             {
-                sourceId = _configuredDiscoverCacheContainerFactory.GetAll().Keys.FirstOrDefault();
+                sourceId = _discoverCacheContainerFactory.GetAll().Keys.FirstOrDefault();
             }
 
-            var discoveryResponse = await _configuredDiscoverCacheContainerFactory.Get(sourceId).DiscoveryCache.GetAsync();
+            var discoveryResponse = await _discoverCacheContainerFactory.Get(sourceId).DiscoveryCache.GetAsync();
             var model = new IdentitySourceViewComponentModel()
             {
                 SchemeId = sourceId,

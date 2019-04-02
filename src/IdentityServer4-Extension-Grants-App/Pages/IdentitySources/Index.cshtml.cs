@@ -11,13 +11,13 @@ namespace IdentityServer4_Extension_Grants_App.Pages.IdentitySources
     public class IndexModel : PageModel
     {
         public string SourceId { get; private set; }
-        private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;
+        private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
 
         public IndexModel(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory
+            DiscoverCacheContainerFactory discoverCacheContainerFactory
         )
         {
-            _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
+            _discoverCacheContainerFactory = discoverCacheContainerFactory;
         }
         public async Task OnGetAsync(string sourceId)
         {

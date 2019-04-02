@@ -17,16 +17,16 @@ namespace TokenMintingService
         private string _authority;
         private string _clientId;
         private string _clientSecret;
-        private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;
-        private ConfiguredDiscoverCacheContainer _discoveryContainer;
+        private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
+        private DiscoverCacheContainer _discoveryContainer;
 
         public MicroTokenMintingService(IConfiguration configuration,
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory)
         {
             _configuration = configuration;
-            _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
+            _discoverCacheContainerFactory = discoverCacheContainerFactory;
             var scheme = _configuration["microTokenMintingService:scheme"];
-            _discoveryContainer = _configuredDiscoverCacheContainerFactory.Get(_configuration["microTokenMintingService:scheme"]);
+            _discoveryContainer = _discoverCacheContainerFactory.Get(_configuration["microTokenMintingService:scheme"]);
 
             _clientId = _configuration["microTokenMintingService:clientId"];
             _clientSecret = _configuration["microTokenMintingService:clientSecret"];

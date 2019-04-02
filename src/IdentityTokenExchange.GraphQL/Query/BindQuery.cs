@@ -22,8 +22,8 @@ namespace IdentityTokenExchangeGraphQL.Query
     public class BindQuery : IQueryFieldRegistration
     {
         private ITokenValidator _tokenValidator;
-        private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;
-        private ConfiguredDiscoverCacheContainer _discoveryContainer;
+        private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
+        private DiscoverCacheContainer _discoveryContainer;
         private IMemoryCache _memoryCache;
         private ProviderValidator _providerValidator;
         private ITokenMintingService _tokenMintingService;
@@ -35,7 +35,7 @@ namespace IdentityTokenExchangeGraphQL.Query
             ITokenMintingService tokenMintingService,
             IPrincipalEvaluatorRouter principalEvaluatorRouter,
             IConfiguration configuration,
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory,
+            DiscoverCacheContainerFactory discoverCacheContainerFactory,
             IMemoryCache memoryCache,
             ITokenValidator tokenValidator)
         {
@@ -43,8 +43,8 @@ namespace IdentityTokenExchangeGraphQL.Query
             _principalEvaluatorRouter = principalEvaluatorRouter;
             _configuration = configuration;
             _scheme = _configuration["authValidation:scheme"];
-            _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
-            _discoveryContainer = _configuredDiscoverCacheContainerFactory.Get(_scheme);
+            _discoverCacheContainerFactory = discoverCacheContainerFactory;
+            _discoveryContainer = _discoverCacheContainerFactory.Get(_scheme);
             _memoryCache = memoryCache;
             _providerValidator = new ProviderValidator(_discoveryContainer, _memoryCache);
             _tokenValidator = tokenValidator;

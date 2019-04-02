@@ -9,18 +9,18 @@ namespace IdentityServer4_Extension_Grants_App.ViewComponents
 {
     public class IdentitySourcesViewComponent : ViewComponent
     {
-        private ConfiguredDiscoverCacheContainerFactory _configuredDiscoverCacheContainerFactory;
+        private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
 
 
         public IdentitySourcesViewComponent(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory)
         {
-            _configuredDiscoverCacheContainerFactory = configuredDiscoverCacheContainerFactory;
+            _discoverCacheContainerFactory = discoverCacheContainerFactory;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var sources = _configuredDiscoverCacheContainerFactory.GetAll();
+            var sources = _discoverCacheContainerFactory.GetAll();
             return View(sources);
         }
     }

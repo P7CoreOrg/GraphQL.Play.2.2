@@ -9,8 +9,8 @@ namespace Google.Validator
     public class GoogleOIDCTokenValidator : OIDCTokenValidator
     {
         public GoogleOIDCTokenValidator(
-            ConfiguredDiscoverCacheContainerFactory configuredDiscoverCacheContainerFactory,
-            IMemoryCache memoryCache) : base(configuredDiscoverCacheContainerFactory, memoryCache)
+            DiscoverCacheContainerFactory discoverCacheContainerFactory,
+            IMemoryCache memoryCache) : base(discoverCacheContainerFactory, memoryCache)
         {
             TokenScheme = "google";
         }
