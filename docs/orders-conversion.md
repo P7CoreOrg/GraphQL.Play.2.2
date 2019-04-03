@@ -26,4 +26,12 @@ We will inherit this class from [IQueryFieldRegistration](https://github.com/P7C
 
 [converted](https://github.com/P7CoreOrg/GraphQL.Play.2.2/blob/8e8492e03b3844ef189c4bc5f314c72652a18356/src/graphql-dotnet/example-orders/Orders/Schema/OrdersQuery.cs)  
 
+ # Registering Your New API  
+ 
+ Registering occurs in our host apps [StartUp.cs](../src/IdentityServer4-Extension-Grants-App/Startup.cs) using the following [registration extension](../src/graphql-dotnet/example-orders/Orders/Extensions/AspNetCoreServiceExtensions.cs)  
+  
+ ```
+ services.AddGraphQLOrders();
+ ```
+ 
  
