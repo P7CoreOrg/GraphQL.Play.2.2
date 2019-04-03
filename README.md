@@ -1,10 +1,11 @@
 # GraphQL.Play.2.2
 
 # Requirments
-Visual Studio 2017   
+Visual Studio 2017  15.9.11 
 Visual Studio 2019 (Currently Testing)  
 [.net core 2.2.105 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2)  
 [Altair GraphQL Client](https://altair.sirmuel.design/)  
+[Postman](https://www.getpostman.com/) 
 
 
 # How to get a google id_token
@@ -15,7 +16,25 @@ Visual Studio 2019 (Currently Testing)
 This [GraphQL demo app](src/IdentityServer4-Extension-Grants-App) implements the following use cases;  
 [AuthUseCases](https://github.com/AuthUseCases/Flows)  
 
+After you run the **IdentityServer4-Extension-Grants-App** you should be able to make a **client_credentials** call to verify that the OAuth2 stack is working.
+```
+curl -X POST \
+  https://localhost:44371/connect/token \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'Postman-Token: f9540e6f-7ce5-43e9-8efa-ce781a48695f' \
+  -H 'cache-control: no-cache' \
+  -d 'grant_type=client_credentials&client_id=b2b-client&client_secret=secret&undefined='
+```
+## Result
+```
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQzMDczNjksImV4cCI6MTU1NDMxMDk2OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiM1BBcGkiXSwiY2xpZW50X2lkIjoiYjJiLWNsaWVudCIsImNsaWVudF9uYW1lc3BhY2UiOiJiMmItb3JnIiwic2NvcGUiOlsiM1BBcGkiXX0.nH_Cfr60qweUPFIcVGGqFhnUIDtuVRED9fJTcnNFT3EfHwcGK3Ix4lZMESTntLgygUj-hI5DHFl0zQA1oE7oETW41T6bZ1CRfoXF4046_tAuxUqqpQVAhnjzTEcS-nJoupw28dbBUUHTh0aeRz7vr5H8sbVq_m_-J6Sw-asS_eebabTxSOd46sp735gtnFfssuJX-xGeTO3ilKw56T2X2s8LTF8QyzrpOndpPBLzBoMOm0vf8WZRios5vWkGP6sEsrycEfIkcuZXvkQsFbfKfvPRxXOH_U00EuJWIIJxHr76Cso6wiTnv9ot2cukF2CaloP2aHHSgpvFgT_2gbyaWw",
+    "expires_in": 3600,
+    "token_type": "Bearer"
+}
+```
 
+The **client_credentials** call is what B2B clients would use to get their bear access_tokens to use when making downstream authorized calls into the gateway. 
 
 
 3 IDP's are currently supported  
