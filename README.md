@@ -7,6 +7,7 @@ Visual Studio 2019 (Currently Testing)
 [Altair GraphQL Client](https://altair.sirmuel.design/)  
 [Postman](https://www.getpostman.com/) 
 
+# [Extensibility Points](./docs/extensibility.md)  
 
 
 # The Host App
