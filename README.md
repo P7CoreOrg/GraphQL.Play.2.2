@@ -42,15 +42,14 @@ The **client_credentials** call is what B2B clients would use to get their bear 
 # Bind Query
 ```
 query q($input: bind!) {
-	bind(input: $input){
- 		authorization{
-			authority
+  bind(input: $input){
+    authorization{
+      authority
       access_token
-      httpHeaders
-      {
-				name
+      httpHeaders{
+        name
         value
- 			}
+      }
     }
   }
 }
