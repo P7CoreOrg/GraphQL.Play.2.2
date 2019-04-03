@@ -1,7 +1,20 @@
 # GraphQL.Play.2.2
 
+# Requirments
+Visual Studio 2017   
+Visual Studio 2019 (Currently Testing)  
+[.net core 2.2.105 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2)  
+[Altair GraphQL Client](https://altair.sirmuel.design/)  
+
+
+# How to get a google id_token
+[oidcreference](https://oidcreference.azurewebsites.net/)
+**IMPORTANT** Make sure you agree to the cookies are being used prompt prior to attempting a google login.
+
+# The Host App
 This [GraphQL demo app](src/IdentityServer4-Extension-Grants-App) implements the following use cases;  
 [AuthUseCases](https://github.com/AuthUseCases/Flows)  
+
 
 
 
