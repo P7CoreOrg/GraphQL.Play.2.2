@@ -1,8 +1,10 @@
 # GraphQL.Play.2.2
 
 # Requirments
-Visual Studio 2017  15.9.11 
-Visual Studio 2019 (Currently Testing)  
+[Visual Studio 2017  15.9.11](https://visualstudio.microsoft.com/downloads/)  
+[Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)  
+
+
 [.net core 2.2.105 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2)  
 [Altair GraphQL Client](https://altair.sirmuel.design/)  
 [Postman](https://www.getpostman.com/) 
