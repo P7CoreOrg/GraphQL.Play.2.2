@@ -37,7 +37,8 @@ namespace AppIdentity.Query
                                 { "appId", new List<string> { input.AppId } },
                                 { "machineId", new List<string> { input.MachineId } }
                             },
-                            Scope = "arbitrary_identity"
+                            Scope = "arbitrary_identity",
+                            ClientId = "app-identity-client"
                         };
                         var identityResult = await _tokenMintingService.MintIdentityTokenAsync(identityRequest);
                         var jwt = new JwtSecurityTokenHandler().ReadToken(identityResult.IdentityToken) as JwtSecurityToken;

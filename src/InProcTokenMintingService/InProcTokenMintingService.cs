@@ -34,7 +34,6 @@ namespace TokenMintingService
           
         }
 
-       
 
         static TokenMintingResponse ToTokenMintingResponse(TokenRawResult tokenRawResult)
         {
@@ -56,7 +55,7 @@ namespace TokenMintingService
             var scopesList = resourceOwnerTokenRequest.Scope.Split(' ').ToList();
             var extensionGrantRequest = new ArbitraryResourceOwnerRequest()
             {
-                ClientId = _clientId,
+                ClientId = string.IsNullOrEmpty(resourceOwnerTokenRequest.ClientId) ? _clientId : resourceOwnerTokenRequest.ClientId,
                 Scopes = scopesList,
                 Subject = resourceOwnerTokenRequest.Subject,
                 ArbitraryClaims = resourceOwnerTokenRequest.ArbitraryClaims,
@@ -70,7 +69,7 @@ namespace TokenMintingService
             var scopesList = identityTokenRequest.Scope.Split(' ').ToList();
             var extensionGrantRequest = new ArbitraryIdentityRequest()
             {
-                ClientId = _clientId,
+                ClientId = string.IsNullOrEmpty(identityTokenRequest.ClientId)?_clientId: identityTokenRequest.ClientId,
                 Scopes = scopesList,
                 Subject = identityTokenRequest.Subject,
                 ArbitraryClaims = identityTokenRequest.ArbitraryClaims,
