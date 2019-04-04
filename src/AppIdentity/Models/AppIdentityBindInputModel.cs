@@ -6,11 +6,11 @@ namespace AppIdentity.Models
     public class AppIdentityBindInputModel
     {
         /// <summary>
-        /// Any accepted token [id_token, etc] 
+        /// The AppId
         /// </summary>
         public string AppId { get; set; }
         /// <summary>
-        /// The type of token, i.e oidc
+        /// The Machine Id
         /// </summary>
         public string MachineId { get; set; }
 

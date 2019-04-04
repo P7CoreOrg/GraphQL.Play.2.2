@@ -14,6 +14,8 @@ namespace AppIdentity.Extensions
 
             services.AddTransient<AppIdentityBindInput>();
             services.AddTransient<AppIdentityResultType>();
+            services.AddTransient<AppIdentityRefreshInput>();
+            
             services.AddTransient<IQueryFieldRegistration, AppIdentityBindQuery>();
 
         }

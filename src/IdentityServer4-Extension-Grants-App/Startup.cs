@@ -38,6 +38,7 @@ using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using P7IdentityServer4.Validator.Extensions;
+using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenExchange.Contracts.Extensions;
 using TokenMintingService.Extensions;
@@ -81,7 +82,9 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
             services.AddGoogleOIDCTokenValidator();
-            
+            services.AddSelfOIDCTokenValidator();
+
+
             services.AddNortonOIDCTokenValidator();
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);

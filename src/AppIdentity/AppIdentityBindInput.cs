@@ -12,4 +12,5 @@ namespace AppIdentity
             Field<NonNullGraphType<StringGraphType>>("machineId");
         }
     }
+
 }
