@@ -4,14 +4,19 @@ using GraphQL.Types;
 using P7Core.GraphQLCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using TokenExchange.Contracts;
 
 namespace AppIdentity.Query
 {
     public class AppIdentityBindQuery : IQueryFieldRegistration
     {
-        public AppIdentityBindQuery()
+        private ITokenMintingService _tokenMintingService;
+
+        public AppIdentityBindQuery(ITokenMintingService tokenMintingService)
         {
+            _tokenMintingService = tokenMintingService;
 
         }
         public void AddGraphTypeFields(QueryCore queryCore)
@@ -24,13 +29,24 @@ namespace AppIdentity.Query
                     try
                     {
                         var input = context.GetArgument<AppIdentityBindInputModel>("input");
-
+                        var identityRequest = new IdentityTokenRequest()
+                        {
+                            Subject = Guid.NewGuid().ToString(),
+                            ArbitraryClaims = new Dictionary<string, List<string>>
+                            {
+                                { "appId", new List<string> { input.AppId } },
+                                { "machineId", new List<string> { input.MachineId } }
+                            },
+                            Scope = "arbitrary_identity"
+                        };
+                        var identityResult = await _tokenMintingService.MintIdentityTokenAsync(identityRequest);
+                        var jwt = new JwtSecurityTokenHandler().ReadToken(identityResult.IdentityToken) as JwtSecurityToken;
 
                         var bindResult = new AppIdentityResultModel
                         {
-                            authority ="blah",
-                            expires_in = 1234,
-                            id_token = "id_token_blah"
+                            authority = jwt.Issuer,
+                            expires_in = jwt.Payload.Exp == null ? 0 : (int)jwt.Payload.Exp,
+                            id_token = identityResult.IdentityToken
                         };
                         return bindResult;
                     }

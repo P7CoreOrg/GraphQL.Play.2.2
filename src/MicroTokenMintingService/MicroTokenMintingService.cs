@@ -83,5 +83,10 @@ namespace TokenMintingService
             return ToTokenMintingResponse(response);
 
         }
+
+        public Task<TokenMintingResponse> MintIdentityTokenAsync(IdentityTokenRequest identityTokenRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

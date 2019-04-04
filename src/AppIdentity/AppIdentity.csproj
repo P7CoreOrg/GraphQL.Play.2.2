@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\P7Core.GraphQLCore\P7Core.GraphQLCore.csproj" />
+    <ProjectReference Include="..\TokenExchange.Contracts\TokenExchange.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

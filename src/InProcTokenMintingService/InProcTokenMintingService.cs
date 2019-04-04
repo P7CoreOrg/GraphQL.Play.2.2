@@ -64,9 +64,31 @@ namespace TokenMintingService
             };
             return extensionGrantRequest;
         }
+
+        ArbitraryIdentityRequest ToArbitraryIdentityRequest(IdentityTokenRequest identityTokenRequest)
+        {
+            var scopesList = identityTokenRequest.Scope.Split(' ').ToList();
+            var extensionGrantRequest = new ArbitraryIdentityRequest()
+            {
+                ClientId = _clientId,
+                Scopes = scopesList,
+                Subject = identityTokenRequest.Subject,
+                ArbitraryClaims = identityTokenRequest.ArbitraryClaims,
+                AccessTokenLifetime = identityTokenRequest.AccessTokenLifetime?.ToString()
+            };
+            return extensionGrantRequest;
+        }
+
         public async Task<TokenMintingResponse> MintResourceOwnerTokenAsync(ResourceOwnerTokenRequest resourceOwnerTokenRequest)
         {
             var extensionGrantRequest = ToArbitraryResourceOwnerRequest(resourceOwnerTokenRequest);
+            var result = await _tokenEndpointHandlerExtra.ProcessRawAsync(extensionGrantRequest);
+            return ToTokenMintingResponse(result);
+        }
+
+        public async Task<TokenMintingResponse> MintIdentityTokenAsync(IdentityTokenRequest identityTokenRequest)
+        {
+            var extensionGrantRequest = ToArbitraryIdentityRequest(identityTokenRequest);
             var result = await _tokenEndpointHandlerExtra.ProcessRawAsync(extensionGrantRequest);
             return ToTokenMintingResponse(result);
         }
