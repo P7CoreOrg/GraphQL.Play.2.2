@@ -29,6 +29,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\AppIdentity\AppIdentity.csproj" />
     <ProjectReference Include="..\CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj" />
     <ProjectReference Include="..\DemoIdentityServerio.Validator\DemoIdentityServerio.Validator.csproj" />
     <ProjectReference Include="..\Google.Validator\Google.Validator.csproj" />

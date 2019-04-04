@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AppIdentity.Extensions;
 using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
 using DemoIdentityServerio.Validator.Extensions;
@@ -73,6 +74,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddBurnerGraphQL2();
 
             services.AddInMemoryOAuth2ConfigurationStore();
+
+            services.AddGraphQLAppIdentityTypes();
 
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.AddP7IdentityServer4OIDCTokenValidator();
