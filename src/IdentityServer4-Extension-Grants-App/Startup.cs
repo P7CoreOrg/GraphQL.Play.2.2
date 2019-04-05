@@ -10,6 +10,7 @@ using AppIdentity.Extensions;
 using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
 using DemoIdentityServerio.Validator.Extensions;
+using DiscoveryHub.Extensions;
 using Google.Validator.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
@@ -77,6 +78,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddInMemoryOAuth2ConfigurationStore();
 
             services.AddGraphQLAppIdentityTypes();
+            services.AddGraphQLDiscoveryTypes();
+            services.AddInMemoryDiscoveryHubStore();
 
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.AddP7IdentityServer4OIDCTokenValidator();
