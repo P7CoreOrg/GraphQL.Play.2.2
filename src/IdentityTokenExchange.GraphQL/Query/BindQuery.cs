@@ -88,6 +88,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                         var resourceOwnerTokenRequest = await _principalEvaluatorRouter.GenerateResourceOwnerTokenRequestAsync(
                             input.Exchange,
                             principal,input.Extras);
+                        resourceOwnerTokenRequest.ClientId = clientId;
 
                         var response =
                             await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);

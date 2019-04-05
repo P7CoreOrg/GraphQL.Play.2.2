@@ -1,13 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>AppIdentity</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AppIdentity.Models\AppIdentity.Models.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore\P7Core.GraphQLCore.csproj" />
-    <ProjectReference Include="..\TokenExchange.Contracts\TokenExchange.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

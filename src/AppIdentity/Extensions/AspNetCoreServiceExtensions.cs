@@ -1,4 +1,5 @@
-﻿using AppIdentity.Query;
+﻿using AppIdentity.Models;
+using AppIdentity.Query;
 using Microsoft.Extensions.DependencyInjection;
 using P7Core.GraphQLCore;
 

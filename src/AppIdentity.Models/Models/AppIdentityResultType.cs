@@ -2,7 +2,7 @@
 using GraphQL.Types;
 
 
-namespace AppIdentity
+namespace AppIdentity.Models
 {
     public class AppIdentityResultType : ObjectGraphType<AppIdentityResultModel>
     {

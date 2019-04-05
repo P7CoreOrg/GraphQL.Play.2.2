@@ -1,13 +1,13 @@
 ﻿using GraphQL.Types;
 
-namespace AppIdentity
+namespace AppIdentity.Models
 {
     public class AppIdentityRefreshInput : InputObjectGraphType
     {
         public AppIdentityRefreshInput()
         {
             Name = "appIdentityRefresh";
-            Field<NonNullGraphType<GraphQL.Types.StringGraphType>>("id_token");
+            Field<NonNullGraphType<StringGraphType>>("id_token");
         }
     }
 
