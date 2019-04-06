@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace B2BPublisher.Models
+namespace B2BPublisher.Contracts.Models
 {
     public enum PublishStatus
     {

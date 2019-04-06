@@ -1,4 +1,5 @@
-﻿using B2BPublisher.Models;
+﻿using B2BPublisher.Contracts.Models;
+using B2BPublisher.Models;
 using GraphQL.Types;
 
 

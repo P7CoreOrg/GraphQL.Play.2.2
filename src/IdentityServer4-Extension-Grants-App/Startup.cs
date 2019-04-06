@@ -83,6 +83,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddInMemoryDiscoveryHubStore();
 
             services.AddB2BPublisherTypes();
+            services.AddInMemoryB2BPlublisherStore();
+
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();

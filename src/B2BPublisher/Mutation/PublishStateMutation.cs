@@ -1,7 +1,10 @@
-﻿using B2BPublisher.Models;
+﻿using B2BPublisher.Contracts;
+using B2BPublisher.Contracts.Models;
+using B2BPublisher.Models;
 using GraphQL.Types;
 using P7Core.GraphQLCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -9,7 +12,13 @@ namespace B2BPublisher.Mutation
 {
     public class PublishStateMutation : IMutationFieldRegistration
     {
-        (string clientId, string clientNamespace) GetClientInfoFromPincipal(ClaimsPrincipal principal)
+        private IB2BPlublisherStore _b2BPlublisherStore;
+
+        public PublishStateMutation(IB2BPlublisherStore b2BPlublisherStore)
+        {
+            _b2BPlublisherStore = b2BPlublisherStore;
+        }
+        (string clientId, string clientNamespace, List<string> scopes) GetClientInfoFromPincipal(ClaimsPrincipal principal)
         {
             var query = from item in principal.Claims
                         where item.Type == "client_id"
@@ -17,12 +26,15 @@ namespace B2BPublisher.Mutation
             var clientId = query.FirstOrDefault();
 
             query = from item in principal.Claims
-                        where item.Type == "client_namespace"
-                        select item.Value;
+                    where item.Type == "client_namespace"
+                    select item.Value;
             var clientNamespace = query.FirstOrDefault();
 
-
-            return (clientId,clientNamespace);
+            query = from item in principal.Claims
+                    where item.Type == "scope"
+                    select item.Value;
+            var scopes = query.ToList();
+            return (clientId, clientNamespace, scopes);
 
         }
 
@@ -44,14 +56,28 @@ namespace B2BPublisher.Mutation
 
                        var clientInfo = GetClientInfoFromPincipal(principal);
 
+                       bool clientIdRequested = context.SubFields.ContainsKey("client_id");
+                       bool clientNamespaceRequested = context.SubFields.ContainsKey("client_namespace");
+                       var requestedFields = (from item in context.SubFields
+                                              select item.Key).ToList();
 
-                       var customer = context.GetArgument<PublishStateModel>("input");
-                       return new PublishStateResultModel()
-                       {
-                           status = PublishStatus.Accepted,
-                           client_id = clientInfo.clientId,
-                           client_namespace = clientInfo.clientNamespace
-                       };
+                       var input = context.GetArgument<PublishStateModel>("input");
+
+                       var result = await _b2BPlublisherStore.PublishStateAsync(
+                           new Contracts.Models.AuthContext
+                           {
+                               ClientId = clientInfo.clientId,
+                               ClientNamespace = clientInfo.clientNamespace,
+                               Scopes = clientInfo.scopes
+
+                           }, new Contracts.Models.RequestedFields
+                           {
+                               Fields = requestedFields
+                           }, 
+                           input);
+
+
+                       return result;
 
                    }
                    catch (Exception e)
@@ -59,9 +85,9 @@ namespace B2BPublisher.Mutation
 
                    }
                    return false;
-                    //                    return await Task.Run(() => { return ""; });
+                   //                    return await Task.Run(() => { return ""; });
 
-                },
+               },
                deprecationReason: null
            );
         }

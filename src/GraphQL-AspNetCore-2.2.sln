@@ -92,17 +92,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Self.Validator", "Self.Vali
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppIdentityBind", "AppIdentityBind", "{FBAC76F8-C62E-4C20-8BBD-23836C5CAE75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppIdentity.Models", "AppIdentity.Models\AppIdentity.Models.csproj", "{E50490EB-773C-400B-8876-A0984F246909}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppIdentity.Models", "AppIdentity.Models\AppIdentity.Models.csproj", "{E50490EB-773C-400B-8876-A0984F246909}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discovery", "Discovery", "{CE3B1357-5EDF-4709-BAA4-7F8E82A151D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscoveryHub", "DiscoveryHub\DiscoveryHub.csproj", "{900D2F84-58D0-42E8-81CE-3C477A0C311B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscoveryHub", "DiscoveryHub\DiscoveryHub.csproj", "{900D2F84-58D0-42E8-81CE-3C477A0C311B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscoveryHub.Contracts", "DiscoveryHub.Contracts\DiscoveryHub.Contracts.csproj", "{DBD61061-9C99-4AED-8540-032DEDD441CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscoveryHub.Contracts", "DiscoveryHub.Contracts\DiscoveryHub.Contracts.csproj", "{DBD61061-9C99-4AED-8540-032DEDD441CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "B2B", "B2B", "{C6EAAE66-15A7-43A9-82CD-F14F16CC5CCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2BPublisher", "B2BPublisher\B2BPublisher.csproj", "{4B3002FE-5BDC-4720-B1BB-C88C0441641E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "B2BPublisher", "B2BPublisher\B2BPublisher.csproj", "{4B3002FE-5BDC-4720-B1BB-C88C0441641E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2BPublisher.Contracts", "B2BPublisher.Contracts\B2BPublisher.Contracts.csproj", "{E1286DAA-FC88-4EAD-81BA-E050948C1787}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -226,6 +228,10 @@ Global
 		{4B3002FE-5BDC-4720-B1BB-C88C0441641E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B3002FE-5BDC-4720-B1BB-C88C0441641E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B3002FE-5BDC-4720-B1BB-C88C0441641E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1286DAA-FC88-4EAD-81BA-E050948C1787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1286DAA-FC88-4EAD-81BA-E050948C1787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1286DAA-FC88-4EAD-81BA-E050948C1787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1286DAA-FC88-4EAD-81BA-E050948C1787}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,6 +271,7 @@ Global
 		{DBD61061-9C99-4AED-8540-032DEDD441CC} = {CE3B1357-5EDF-4709-BAA4-7F8E82A151D3}
 		{C6EAAE66-15A7-43A9-82CD-F14F16CC5CCF} = {4CEE4042-2D8A-4594-9CCF-79B539115F22}
 		{4B3002FE-5BDC-4720-B1BB-C88C0441641E} = {C6EAAE66-15A7-43A9-82CD-F14F16CC5CCF}
+		{E1286DAA-FC88-4EAD-81BA-E050948C1787} = {C6EAAE66-15A7-43A9-82CD-F14F16CC5CCF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}
