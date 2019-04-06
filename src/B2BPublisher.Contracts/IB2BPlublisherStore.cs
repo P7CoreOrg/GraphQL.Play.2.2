@@ -10,5 +10,7 @@ namespace B2BPublisher.Contracts
             AuthContext authContext, 
             RequestedFields requestedFields,
             PublishStateModel state);
+        Task<PublishStateModel> GetPublishStateAsync(
+           AuthContext authContext, RequestedFields requestedFields);
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using B2BPublisher.Contracts;
 using B2BPublisher.Models;
 using B2BPublisher.Mutation;
+using B2BPublisher.Query;
 using B2BPublisher.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using P7Core.GraphQLCore;
@@ -18,6 +19,12 @@ namespace B2BPublisher.Extensions
             services.AddTransient<PublishStateInputType>();
             services.AddTransient<PublishStateResultType>();
             services.AddTransient<IMutationFieldRegistration, PublishStateMutation>();
+
+
+            services.AddTransient<PublishStateModelType>();
+            services.AddTransient<IQueryFieldRegistration, PublishStateQuery>();
+
+
         }
         public static void AddInMemoryB2BPlublisherStore(this IServiceCollection services)
         {

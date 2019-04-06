@@ -10,10 +10,32 @@ namespace B2BPublisher.Stores
 {
     class InMemoryB2BPlublisherStore : IB2BPlublisherStore
     {
-        public async Task<PublishStateResultModel> PublishStateAsync(AuthContext authContext, RequestedFields requestedFields, PublishStateModel state)
+        Dictionary<(string clientId, string clientNamespace), PublishStateModel> _database;
+        Dictionary<(string clientId, string clientNamespace), PublishStateModel> Database {
+            get
+            {
+                if(_database == null)
+                {
+                    _database = new Dictionary<(string clientId, string clientNamespace), PublishStateModel>();
+                }
+                return _database;
+            }
+        }
+
+        public async Task<PublishStateModel> GetPublishStateAsync(AuthContext authContext, RequestedFields requestedFields)
+        {
+            if (Database.ContainsKey((authContext.ClientId, authContext.ClientNamespace))){
+                return Database[(authContext.ClientId, authContext.ClientNamespace)];
+            }
+            return null;
+           
+        }
+
+        public async Task<PublishStateResultModel> PublishStateAsync(AuthContext authContext, RequestedFields requestedFields, PublishStateModel payload)
         {
             var clientIdRequested = requestedFields.Fields.Contains("client_id");
             var clientNamespaceRequested = requestedFields.Fields.Contains("client_namespace");
+            Database[(authContext.ClientId, authContext.ClientNamespace)] = payload;
             return new PublishStateResultModel()
             {
                 status = PublishStatus.Accepted,

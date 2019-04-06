@@ -18,4 +18,5 @@ namespace B2BPublisher.Models
             Field<StringGraphType>("client_namespace", "the client_namespace that made the call");
         }
     }
+
 }
