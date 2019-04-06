@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppIdentity\AppIdentity.csproj" />
+    <ProjectReference Include="..\B2BPublisher\B2BPublisher.csproj" />
     <ProjectReference Include="..\CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj" />
     <ProjectReference Include="..\DemoIdentityServerio.Validator\DemoIdentityServerio.Validator.csproj" />
     <ProjectReference Include="..\DiscoveryHub\DiscoveryHub.csproj" />

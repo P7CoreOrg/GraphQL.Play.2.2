@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AppIdentity.Extensions;
+using B2BPublisher.Extensions;
 using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
 using DemoIdentityServerio.Validator.Extensions;
@@ -81,6 +82,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddGraphQLDiscoveryTypes();
             services.AddInMemoryDiscoveryHubStore();
 
+            services.AddB2BPublisherTypes();
             services.AddGraphQLIdentityTokenExchangeTypes();
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
