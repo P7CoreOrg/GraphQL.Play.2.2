@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using XUnitHelpers;
 
-namespace XUnit_IdentityServer4_Extension_Grants_App
+namespace XUnitTestServerBase
 {
+
     public class MyTestServerFixture : TestServerFixture<Startup>
     {
         protected override string RelativePathToHostProject => @"..\..\..\..\IdentityServer4-Extension-Grants-App";

@@ -6,10 +6,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using XUnitTestServerBase;
 
-namespace XUnit_IdentityServer4_Extension_Grants_App
+namespace XUnitServer_OAuth2
 {
-    public class OAuth2GrantTests : IClassFixture<MyTestServerFixture>
+    public class OAuth2GrantTests : TestServerBaseTests
     {
         public class ClientCredentialsResponse
         {

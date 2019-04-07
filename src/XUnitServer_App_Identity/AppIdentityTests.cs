@@ -9,19 +9,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using XUnitTestServerBase;
 
-namespace XUnit_IdentityServer4_Extension_Grants_App
+namespace XUnitServer_App_Identity
 {
-    public class AppIdentityTests : IClassFixture<MyTestServerFixture>
+    public class AppIdentityTests : TestServerBaseTests
     {
-         
-        
+
+
         public class AppIdentityResponse
         {
             public string id_token { get; set; }
             public int expires_in { get; set; }
             public string authority { get; set; }
-       
+
 
         }
         private readonly MyTestServerFixture _fixture;
@@ -62,7 +63,7 @@ namespace XUnit_IdentityServer4_Extension_Grants_App
                             }
                         }")
                 {
-                   
+
                     OperationName = null,
                     Variables = new
                     {
@@ -84,6 +85,6 @@ namespace XUnit_IdentityServer4_Extension_Grants_App
                 tokenS.ShouldNotBeNull();
             }
         }
-       
+
     }
 }

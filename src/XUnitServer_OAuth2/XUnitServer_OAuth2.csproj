@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>XUnit_IdentityServer4_Extension_Grants_App</RootNamespace>
+    <RootNamespace>XUnitServer_OAuth2</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <ProjectReference Include="..\GraphQL.Client\GraphQL.Client.csproj" />
     <ProjectReference Include="..\IdentityServer4-Extension-Grants-App\IdentityServer4-Extension-Grants-App.csproj" />
     <ProjectReference Include="..\XUnitHelpers\XUnitHelpers.csproj" />
+    <ProjectReference Include="..\XUnitTestServerBase\XUnitTestServerBase.csproj" />
   </ItemGroup>
 
 </Project>
