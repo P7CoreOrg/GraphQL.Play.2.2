@@ -14,6 +14,8 @@ namespace XUnitHelpers
     {
         private readonly TestServer _testServer;
         public HttpClient Client { get; }
+        public HttpMessageHandler MessageHandler { get; }
+
         // RelativePathToHostProject = @"..\..\..\..\IdentityServer4-Extension-Grants-App";
         protected abstract string RelativePathToHostProject { get; }
         public TestServerFixture()
@@ -36,6 +38,7 @@ namespace XUnitHelpers
 
             _testServer = new TestServer(builder);
             Client = _testServer.CreateClient();
+            MessageHandler = _testServer.CreateHandler();
 
         }
 

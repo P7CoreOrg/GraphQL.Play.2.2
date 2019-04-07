@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>XUnit_IdentityServer4_Extension_Grants_App</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -19,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GraphQL.Client\GraphQL.Client.csproj" />
     <ProjectReference Include="..\IdentityServer4-Extension-Grants-App\IdentityServer4-Extension-Grants-App.csproj" />
     <ProjectReference Include="..\XUnitHelpers\XUnitHelpers.csproj" />
   </ItemGroup>
