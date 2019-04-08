@@ -1,0 +1,2 @@
+﻿GraphQLPlay.*
+P7Core.GraphQLCore.Controllers

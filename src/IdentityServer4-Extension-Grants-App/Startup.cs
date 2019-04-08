@@ -13,6 +13,7 @@ using CustomerLoyalyStore.GraphQL.Extensions;
 using DemoIdentityServerio.Validator.Extensions;
 using DiscoveryHub.Extensions;
 using Google.Validator.Extensions;
+using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
@@ -68,9 +69,12 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddMemoryCache();
+            services.AddGraphQLPlayRollup();
+            services.AddGraphQLPlayRollupInMemoryServices(Configuration);
+
             services.AddIdentityModelExtrasTypes();
             services.AddSingleton<DiscoverCacheContainerFactory>();
-            services.AddGraphQLCoreTypes();
+            
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.AddGraphQLOrders();
             services.AddBurnerGraphQL();
@@ -85,7 +89,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddB2BPublisherTypes();
             services.AddInMemoryB2BPlublisherStore();
 
-            services.AddGraphQLIdentityTokenExchangeTypes();
+          
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
             services.AddGoogleOIDCTokenValidator();
@@ -93,13 +97,11 @@ namespace IdentityServer4_Extension_Grants_App
 
 
             services.AddNortonOIDCTokenValidator();
-            services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
-            services.RegisterGraphQLCoreConfigurationServices(Configuration);
 
-            services.AddPrincipalEvaluatorRouter();
             services.AddGoogleIdentityPrincipalEvaluator();
             services.AddSelfIdentityPrincipalEvaluator();
             services.AddGoogleMyCustomIdentityPrincipalEvaluator();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -185,8 +187,6 @@ namespace IdentityServer4_Extension_Grants_App
 
             services.AddAuthentication("Bearer")
                 .AddMultiAuthorityAuthentication(schemeRecords);
-
-            services.AddInProcTokenMintingService();
 
             services.AddLogging();
             services.AddHttpContextAccessor();

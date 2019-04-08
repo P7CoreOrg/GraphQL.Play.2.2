@@ -1,0 +1,27 @@
+{
+  "outputAssembly": "GraphQLPlay.Rollup",
+  "assembliesToMerge": [
+    {
+      "assembly": "GraphQLPlay.Rollup.Shadow",
+      "symbols": null
+    },
+    {
+      "assembly": "IdentityTokenExchange.GraphQL",
+      "symbols": null
+    },
+    {
+      "assembly": "InProcTokenMintingService",
+      "symbols": null
+    },
+    {
+      "assembly": "P7Core.GraphQLCore",
+      "symbols": null
+    },
+    {
+      "assembly": "P7Core.GraphQLCore.Controllers",
+      "symbols": null
+    }
+
+    
+  ]
+}
