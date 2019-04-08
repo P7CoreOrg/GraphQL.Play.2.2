@@ -1,9 +1,23 @@
 # GraphQL.Play.2.2
 
 # Requirments
-[Visual Studio 2017  15.9.11](https://visualstudio.microsoft.com/downloads/)  
 [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)  
+I think there is c# 8 preview code in some of the projects where it may not work with 2017.
+```
+<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>preview</LangVersion>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+</Project>
+```
 
 [.net core 2.2.105 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2)  
 [Altair GraphQL Client](https://altair.sirmuel.design/)  
