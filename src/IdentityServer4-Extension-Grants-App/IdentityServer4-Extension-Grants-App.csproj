@@ -44,7 +44,6 @@
     <ProjectReference Include="..\Norton.Validator\Norton.Validator.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
-    <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />
     <ProjectReference Include="..\P7IdentityServer4.Validator\P7IdentityServer4.Validator.csproj" />
     <ProjectReference Include="..\Self.Validator\Self.Validator.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />

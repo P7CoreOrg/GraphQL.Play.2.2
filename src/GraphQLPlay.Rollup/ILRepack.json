@@ -16,6 +16,12 @@
     {
       "assembly": "P7Core.GraphQLCore",
       "symbols": null
+    },
+    {
+      "assembly": "P7Core.GraphQLCore.Controllers",
+      "symbols": null
     }
+
+    
   ]
 }
