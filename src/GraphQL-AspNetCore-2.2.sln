@@ -112,11 +112,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.Common", "GraphQL.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQL.Client", "GraphQL.Client\GraphQL.Client.csproj", "{13B8D0F0-A7F5-4303-AD05-606485BB4AF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitServer_App_Identity", "XUnitServer_App_Identity\XUnitServer_App_Identity.csproj", "{78C78772-AC9F-485F-B4FC-E67679C52FEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitServer_App_Identity", "XUnitServer_App_Identity\XUnitServer_App_Identity.csproj", "{78C78772-AC9F-485F-B4FC-E67679C52FEE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitServer_OAuth2", "XUnitServer_OAuth2\XUnitServer_OAuth2.csproj", "{C02F2E12-D054-44FA-BA11-0ADC65FE93AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestServerBase", "XUnitTestServerBase\XUnitTestServerBase.csproj", "{E80152CB-3615-4518-80D7-6A8DFE79B2A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTestServerBase", "XUnitTestServerBase\XUnitTestServerBase.csproj", "{E80152CB-3615-4518-80D7-6A8DFE79B2A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQLPlay.Rollup.Shadow", "GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj", "{F8A3B71D-7609-4474-ABFB-7754B57F0A2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,6 +266,10 @@ Global
 		{E80152CB-3615-4518-80D7-6A8DFE79B2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E80152CB-3615-4518-80D7-6A8DFE79B2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E80152CB-3615-4518-80D7-6A8DFE79B2A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8A3B71D-7609-4474-ABFB-7754B57F0A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8A3B71D-7609-4474-ABFB-7754B57F0A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8A3B71D-7609-4474-ABFB-7754B57F0A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8A3B71D-7609-4474-ABFB-7754B57F0A2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -309,6 +315,7 @@ Global
 		{78C78772-AC9F-485F-B4FC-E67679C52FEE} = {4514BCFC-090B-4569-9CE0-728127810205}
 		{C02F2E12-D054-44FA-BA11-0ADC65FE93AD} = {4514BCFC-090B-4569-9CE0-728127810205}
 		{E80152CB-3615-4518-80D7-6A8DFE79B2A0} = {4514BCFC-090B-4569-9CE0-728127810205}
+		{F8A3B71D-7609-4474-ABFB-7754B57F0A2B} = {19418411-5334-4122-87E5-F80D747114AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}

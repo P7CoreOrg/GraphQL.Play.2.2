@@ -13,6 +13,7 @@ using CustomerLoyalyStore.GraphQL.Extensions;
 using DemoIdentityServerio.Validator.Extensions;
 using DiscoveryHub.Extensions;
 using Google.Validator.Extensions;
+using GraphQLPlay.Rollup.Shadow;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
@@ -68,6 +69,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddMemoryCache();
+            services.AddGraphQLPlayRollup(Configuration);
             services.AddIdentityModelExtrasTypes();
             services.AddSingleton<DiscoverCacheContainerFactory>();
             services.AddGraphQLCoreTypes();
