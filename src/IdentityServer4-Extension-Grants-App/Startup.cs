@@ -210,7 +210,7 @@ namespace IdentityServer4_Extension_Grants_App
         {
             
 
-            app.UseRewriter(new RewriteOptions().Add(new RewriteLowerCaseRule()));
+            app.UseLowercaseRewriter();
 
             if (env.IsDevelopment())
             {

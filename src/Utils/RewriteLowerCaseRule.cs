@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
 
-namespace IdentityServer4_Extension_Grants_App
+namespace Utils
 {
     public class RewriteLowerCaseRule : IRule
     {

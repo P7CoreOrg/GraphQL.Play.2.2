@@ -1,2 +1,3 @@
 ﻿GraphQLPlay.*
 P7Core.GraphQLCore.Controllers
+Utils.Extensions.*
