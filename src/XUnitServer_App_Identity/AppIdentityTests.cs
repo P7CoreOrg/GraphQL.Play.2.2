@@ -127,11 +127,12 @@ namespace XUnitServer_App_Identity
 
                 tokenS.ShouldNotBeNull();
             }
+
             /*
              * This next part fails because the validator calls out to authorities to get the public keys
              * The authority in the self case is under this TestServer and for some reason the discovery cache
              * cant reach this pretend http://localhost
-
+             */
             using (var graphQLHttpClient =
                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
