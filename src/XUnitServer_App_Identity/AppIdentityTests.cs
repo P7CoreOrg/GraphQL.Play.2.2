@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GraphQL.Client;
 using Xunit;
 using XUnitTestServerBase;
 
@@ -130,7 +131,7 @@ namespace XUnitServer_App_Identity
              * This next part fails because the validator calls out to authorities to get the public keys
              * The authority in the self case is under this TestServer and for some reason the discovery cache
              * cant reach this pretend http://localhost
-             * 
+
             using (var graphQLHttpClient =
                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
@@ -162,7 +163,7 @@ namespace XUnitServer_App_Identity
 
                 tokenS.ShouldNotBeNull();
             }
-            */
+
         }
     }
 }

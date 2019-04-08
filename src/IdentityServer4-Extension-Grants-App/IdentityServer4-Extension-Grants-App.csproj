@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="3.10.6" />
     <PackageReference Include="IdentityServer4.Storage" Version="2.4.0" />
-    <PackageReference Include="IdentityServer4ExtensionGrants.Rollup" Version="1.0.0-beta-20190403-215935" />
+    <PackageReference Include="IdentityServer4ExtensionGrants.Rollup" Version="1.0.0-beta-20190408-224150" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
