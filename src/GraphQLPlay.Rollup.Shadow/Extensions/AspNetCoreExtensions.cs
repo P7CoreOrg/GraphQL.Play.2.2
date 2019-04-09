@@ -27,11 +27,11 @@ namespace GraphQLPlay.Rollup.Extensions
 
             return services;
         }
-        public static IServiceCollection AddGraphQLPlayRollupInMemoryServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddGraphQLPlayRollupInMemoryServices(this IServiceCollection services, IExtensionGrantsRollupRegistrations extensionGrantsRollupRegistrations, IConfiguration configuration)
         {
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(configuration);
-            services.AddExtensionGrantsRollup(configuration);
+            services.AddExtensionGrantsRollup(extensionGrantsRollupRegistrations,configuration);
             return services;
         }
     }

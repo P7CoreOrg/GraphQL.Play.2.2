@@ -16,6 +16,8 @@ using Google.Validator.Extensions;
 using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
+using IdentityServer4ExtensionGrants.Rollup.Extensions;
+using IdentityServer4Extras.Extensions;
 using IdentityServerRequestTracker.Extensions;
 using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +38,7 @@ using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
 using P7Core.ObjectContainers.Extensions;
+using P7IdentityServer4.Extensions;
 using P7IdentityServer4.Validator.Extensions;
 using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
@@ -44,7 +47,7 @@ using Utils.Extensions;
 
 namespace IdentityServer4_Extension_Grants_App
 {
-    public class Startup
+    public class Startup: IExtensionGrantsRollupRegistrations
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         public IConfiguration Configuration { get; }
@@ -65,7 +68,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddOptions();
             services.AddMemoryCache();
             services.AddGraphQLPlayRollup();
-            services.AddGraphQLPlayRollupInMemoryServices(Configuration);
+            services.AddGraphQLPlayRollupInMemoryServices(this,Configuration);
 
             services.AddInMemoryOAuth2ConfigurationStore();
 
@@ -237,6 +240,74 @@ namespace IdentityServer4_Extension_Grants_App
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+        }
+
+        public void AddIdentityResources(IServiceCollection services, IIdentityServerBuilder builder)
+        {
+            var identityResources = Configuration.LoadIdentityResourcesFromSettings();
+            builder.AddInMemoryIdentityResources(identityResources);
+        }
+
+        public void AddClients(IServiceCollection services, IIdentityServerBuilder builder)
+        {
+            var clients = Configuration.LoadClientsFromSettings();
+            builder.AddInMemoryClientsExtra(clients);
+        }
+
+        public void AddApiResources(IServiceCollection services, IIdentityServerBuilder builder)
+        {
+            var apiResources = Configuration.LoadApiResourcesFromSettings();
+            builder.AddInMemoryApiResources(apiResources);
+        }
+
+        public void AddOperationalStore(IServiceCollection services, IIdentityServerBuilder builder)
+        {
+            bool useRedis = Convert.ToBoolean(Configuration["appOptions:redis:useRedis"]);
+            if (useRedis)
+            {
+                var redisConnectionString = Configuration["appOptions:redis:redisConnectionString"];
+                builder.AddOperationalStore(options =>
+                {
+                    options.RedisConnectionString = redisConnectionString;
+                    options.Db = 1;
+                })
+                    .AddRedisCaching(options =>
+                    {
+                        options.RedisConnectionString = redisConnectionString;
+                        options.KeyPrefix = "prefix";
+                    });
+
+                services.AddDistributedRedisCache(options =>
+                {
+                    options.Configuration = redisConnectionString;
+                });
+            }
+            else
+            {
+                builder.AddInMemoryPersistedGrants();
+                services.AddDistributedMemoryCache();
+            }
+        }
+
+        public void AddSigningServices(IServiceCollection services, IIdentityServerBuilder builder)
+        {
+            bool useKeyVault = Convert.ToBoolean(Configuration["appOptions:keyVault:useKeyVault"]);
+            bool useKeyVaultSigning = Convert.ToBoolean(Configuration["appOptions:keyVault:useKeyVaultSigning"]);
+            if (useKeyVault)
+            {
+                builder.AddKeyVaultCredentialStore();
+                services.AddKeyVaultTokenCreateServiceTypes();
+                services.AddKeyVaultTokenCreateServiceConfiguration(Configuration);
+                if (useKeyVaultSigning)
+                {
+                    // this signs the token using azure keyvault to do the actual signing
+                    builder.AddKeyVaultTokenCreateService();
+                }
+            }
+            else
+            {
+                builder.AddDeveloperSigningCredential();
+            }
         }
     }
 }
