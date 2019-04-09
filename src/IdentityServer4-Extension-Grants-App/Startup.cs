@@ -16,9 +16,7 @@ using Google.Validator.Extensions;
 using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
-using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServerRequestTracker.Extensions;
-using IdentityTokenExchangeGraphQL.Extensions;
 using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -37,14 +35,11 @@ using Norton.Validator.Extensions;
 using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
-using P7Core.GraphQLCore.Extensions;
-using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using P7IdentityServer4.Validator.Extensions;
 using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenExchange.Contracts.Extensions;
-using TokenMintingService.Extensions;
 using Utils.Extensions;
 
 namespace IdentityServer4_Extension_Grants_App
@@ -72,32 +67,26 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddGraphQLPlayRollup();
             services.AddGraphQLPlayRollupInMemoryServices(Configuration);
 
-            services.AddIdentityModelExtrasTypes();
-            services.AddSingleton<DiscoverCacheContainerFactory>();
-            
+            services.AddInMemoryOAuth2ConfigurationStore();
+
+            // APIS
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.AddGraphQLOrders();
             services.AddBurnerGraphQL();
             services.AddBurnerGraphQL2();
-
-            services.AddInMemoryOAuth2ConfigurationStore();
-
             services.AddGraphQLAppIdentityTypes();
             services.AddGraphQLDiscoveryTypes();
             services.AddInMemoryDiscoveryHubStore();
-
             services.AddB2BPublisherTypes();
             services.AddInMemoryB2BPlublisherStore();
+            services.AddCustomerLoyalty();
 
-          
+            // Token Exchange Validators          
             services.AddP7IdentityServer4OIDCTokenValidator();
             services.AddDemoIdentityServerioOIDCTokenValidator();
             services.AddGoogleOIDCTokenValidator();
             services.AddSelfOIDCTokenValidator();
-
-
             services.AddNortonOIDCTokenValidator();
-
             services.AddGoogleIdentityPrincipalEvaluator();
             services.AddSelfIdentityPrincipalEvaluator();
             services.AddGoogleMyCustomIdentityPrincipalEvaluator();
@@ -111,7 +100,6 @@ namespace IdentityServer4_Extension_Grants_App
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
-            services.AddExtensionGrantsRollup(Configuration);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -194,7 +182,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            services.AddCustomerLoyalty();
+           
             // Build the intermediate service provider then return it
             services.AddSwaggerGen(c =>
             {
