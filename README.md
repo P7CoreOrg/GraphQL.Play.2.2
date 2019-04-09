@@ -23,6 +23,23 @@ I think there is c# 8 preview code in some of the projects where it may not work
 [Altair GraphQL Client](https://altair.sirmuel.design/)  
 [Postman](https://www.getpostman.com/) 
 
+
+## Ports 
+In the projects GraphQL.Play.2.2\src\.vs\config folder there is a file called **applicationhost.config**  
+Make sure that it is set to launch the project using the 44371 port.  In our [appsettings.json](../src/IdentityServer4-Extension-Grants-App/appsettings.json)  there is a configuration that expect it to be 44371.  You can change the appsetting.json, but its best to understand how **applicationhost.config** works because we can use a free dns lookup like [xip.io](http://xip.io/) when we need a non localhost domain.  
+
+```
+<site name="IdentityServer4-Extension-Grants-App" id="5">
+  <application path="/" applicationPool="IdentityServer4-Extension-Grants-App AppPool">
+    <virtualDirectory path="/" physicalPath="H:\github\P7CoreOrg\GraphQL.Play.2.2\src\IdentityServer4-Extension-Grants-App" />
+  </application>
+  <bindings>
+    <binding protocol="http" bindingInformation="*:29552:localhost" />
+    <binding protocol="https" bindingInformation="*:44371:localhost" />
+  </bindings>
+</site>
+```
+
 # [Extensibility Points](./docs/extensibility.md)  
 
 
