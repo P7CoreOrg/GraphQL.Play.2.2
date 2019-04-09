@@ -130,15 +130,17 @@ namespace IdentityServer4_Extension_Grants_App
 
             var scheme = Configuration["authValidation:scheme"];
 
-            var section = Configuration.GetSection("oauth2");
-            var oAuth2SchemeRecords = new List<OAuth2SchemeRecord>();
-            section.Bind(oAuth2SchemeRecords);
-            var query = from item in oAuth2SchemeRecords
+            var section = Configuration.GetSection("InMemoryOAuth2ConfigurationStore:oauth2");
+            var oauth2Section = new Oauth2Section();
+            section.Bind(oauth2Section);
+
+           
+            var query = from item in oauth2Section.Authorities
                         where item.Scheme == scheme
                         select item;
-            var oAuth2SchemeRecord = query.FirstOrDefault();
+            var wellknownAuthority = query.FirstOrDefault();
 
-            var authority = oAuth2SchemeRecord.Authority;
+            var authority = wellknownAuthority.Authority;
             List<SchemeRecord> schemeRecords = new List<SchemeRecord>()
             {  new SchemeRecord()
                 {

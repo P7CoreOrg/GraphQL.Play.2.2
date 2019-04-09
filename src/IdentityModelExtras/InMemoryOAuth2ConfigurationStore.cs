@@ -44,12 +44,13 @@ namespace IdentityModelExtras
         }
       ]
      */
+    public class Oauth2Section
+    {
+        public List<WellknownAuthority> Authorities { get; set; }
+    }
     public class InMemoryOAuth2ConfigurationStore : IOAuth2ConfigurationStore
     {
-        class Oauth2Section
-        {
-            public List<WellknownAuthority> Authorities { get; set; }
-        }
+        
         private IConfiguration _configuration;
         private ILogger<InMemoryOAuth2ConfigurationStore> _logger;
         private Oauth2Section _oAuth2Section;
