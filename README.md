@@ -26,7 +26,7 @@ I think there is c# 8 preview code in some of the projects where it may not work
 
 ## Ports 
 In the projects **./GraphQL.Play.2.2/src/.vs/config/** folder there is a file called **applicationhost.config**  
-Make sure that it is set to launch the project using the 44371 port.  In our [appsettings.json](../src/IdentityServer4-Extension-Grants-App/appsettings.json)  there is a configuration that expect it to be 44371.  You can change the appsetting.json, but its best to understand how **applicationhost.config** works because we can use a free dns lookup like [xip.io](http://xip.io/) when we need a non localhost domain.  
+Make sure that it is set to launch the project using the 44371 port.  In our [appsettings.json](./src/IdentityServer4-Extension-Grants-App/appsettings.json)  there is a configuration that expect it to be 44371.  You can change the appsetting.json, but its best to understand how **applicationhost.config** works because we can use a free dns lookup like [xip.io](http://xip.io/) when we need a non localhost domain.  
 
 ```
 <site name="IdentityServer4-Extension-Grants-App" id="5">
@@ -40,6 +40,21 @@ Make sure that it is set to launch the project using the 44371 port.  In our [ap
 </site>
 ```
 
+Also, [launchSettings.json](./src/IdentityServer4-Extension-Grants-App/Properties/launchSettings.json) lets you use xip.io.  
+This is probably the best thing to do as working with IISExpress can turn problematic at times.  
+
+```
+"IdentityServer4_Extension_Grants_App": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://graphqlplay.127.0.0.1.xip.io:5001;http://localhost:5000"
+    }
+  }
+  
+```
 # [Extensibility Points](./docs/extensibility.md)  
 
 
