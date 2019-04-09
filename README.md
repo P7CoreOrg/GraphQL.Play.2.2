@@ -25,7 +25,7 @@ I think there is c# 8 preview code in some of the projects where it may not work
 
 
 ## Ports 
-In the projects GraphQL.Play.2.2\src\.vs\config folder there is a file called **applicationhost.config**  
+In the projects **./GraphQL.Play.2.2/src/.vs/config/** folder there is a file called **applicationhost.config**  
 Make sure that it is set to launch the project using the 44371 port.  In our [appsettings.json](../src/IdentityServer4-Extension-Grants-App/appsettings.json)  there is a configuration that expect it to be 44371.  You can change the appsetting.json, but its best to understand how **applicationhost.config** works because we can use a free dns lookup like [xip.io](http://xip.io/) when we need a non localhost domain.  
 
 ```
