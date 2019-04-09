@@ -87,7 +87,10 @@ The **client_credentials** call is what B2B clients would use to get their bear 
 [oidcreference](https://oidcreference.azurewebsites.net/)
 **IMPORTANT** Make sure you agree to the cookies are being used prompt prior to attempting a google login.
 
-
+# GraphQL
+```
+endpoint: https://localhost:5001/api/v1/GraphQL
+```
 # Bind Query
 ```
 query q($input: bind!) {
