@@ -40,6 +40,21 @@ Make sure that it is set to launch the project using the 44371 port.  In our [ap
 </site>
 ```
 
+Also, [launchSettings.json](../src/IdentityServer4-Extension-Grants-App/Properties/launchSettings.json) lets you use xip.io.  
+This is probably the best thing to do as working with IISExpress can turn problematic at times.  
+
+```
+"IdentityServer4_Extension_Grants_App": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://graphqlplay.127.0.0.1.xip.io:5001;http://localhost:5000"
+    }
+  }
+  
+```
 # [Extensibility Points](./docs/extensibility.md)  
 
 
