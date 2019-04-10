@@ -40,6 +40,9 @@ query q($input: bind!) {
 }
 ```
 ## Variables  
+The **tokenScheme** is a wellknown registered OIDC provider that is used to validate the token that is passsed in.  In this case "google".  
+The **exchange** is what custom echange is to be executed to produce the subsequent access_token.  
+The **extras** are hints that are only known to the exchange.
 ```
 {
   "input": {
@@ -72,4 +75,10 @@ query q($input: bind!) {
   }
 }
 ```
-[jwt.io](https://jwt.io/#debugger-io?token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQyMjQ2OTMsImV4cCI6MTU1NDIyODI5MywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsImF1dGhfdGltZSI6MTU1NDIyNDY5MywiaWRwIjoibG9jYWwiLCJyb2xlIjpbImEiLCJ1c2VyIl0sImNsaWVudF9uYW1lc3BhY2UiOiJEYWZmeSBEdWNrIiwic2NvcGUiOlsiZ3JhcGhRTFBsYXkiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsiYXJiaXRyYXJ5X3Jlc291cmNlX293bmVyIl19.MlYPEv0xNe_JjwJJFIw_lJ5ZpxRrnt_1J1WVOXtmAlv3qzM2gXzLRUDiK_geOaO2jz_WM9VFFZvSSEMwuo8QT5Iez5SzTX_nPA5nEDCNJm38cCNgoGDky-j2ZLSojBCqWz3yV6ORQIdRwpxlBGyqyL8Ng25ICkiTOx4gKx0m06SUtk6ezXC_N1BzLO6rHOK1rNTsaeFbJeTk__Mrkzq3nq-9sBhgQVW4vm5giosLkTeEHaamYmkn_9QXtDHYGw5ZPPRHUNlaEJzXHNeSM_suP1B1F4zsdnaB_ixo1xauaRUwix2D7rFeX3V7trDhG1cBazutForWYACqSGQn12nzZA&publicKey=-----BEGIN%20PUBLIC%20KEY-----%0AMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArfiIm%2Bsg%2FHE%2Bk71K5GAj%0A%2FwRm36X87pR9UivWeepzAGVU0aKM9pFs3i%2BJftHhozYq8yrumx%2BwwCgXqi%2FgZN64%0AbDOkt1zM7fopRO6jfgJzMTJFL7jUs1T1yHzXefSQLG6ZPf0KsvAz5L2WdezdVrYi%0A6YZCG873QkAgSfx5ZSR96x5TPqUxh%2BIzdWp62xtLhySzMNpTXHTkRzhdtDKdPahU%0AW3M6LIYcnDvPrNE5adk9eJzpsgUOcUG7JrEY2UqJ9VkCeES2Q%2FDzGpcTGLQoLG4i%0AEJ%2FuGIHMZID66A00MwXbJb8kyri6GoGtWjtxLSFHF%2Feet4mho%2BUd92fpFWxyD4SG%0AxQIDAQAB%0A-----END%20PUBLIC%20KEY-----%0A)
+[jwt.io](https://jwt.io/#debugger-io?token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQyMjQ2OTMsImV4cCI6MTU1NDIyODI5MywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsImF1dGhfdGltZSI6MTU1NDIyNDY5MywiaWRwIjoibG9jYWwiLCJyb2xlIjpbImEiLCJ1c2VyIl0sImNsaWVudF9uYW1lc3BhY2UiOiJEYWZmeSBEdWNrIiwic2NvcGUiOlsiZ3JhcGhRTFBsYXkiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsiYXJiaXRyYXJ5X3Jlc291cmNlX293bmVyIl19.MlYPEv0xNe_JjwJJFIw_lJ5ZpxRrnt_1J1WVOXtmAlv3qzM2gXzLRUDiK_geOaO2jz_WM9VFFZvSSEMwuo8QT5Iez5SzTX_nPA5nEDCNJm38cCNgoGDky-j2ZLSojBCqWz3yV6ORQIdRwpxlBGyqyL8Ng25ICkiTOx4gKx0m06SUtk6ezXC_N1BzLO6rHOK1rNTsaeFbJeTk__Mrkzq3nq-9sBhgQVW4vm5giosLkTeEHaamYmkn_9QXtDHYGw5ZPPRHUNlaEJzXHNeSM_suP1B1F4zsdnaB_ixo1xauaRUwix2D7rFeX3V7trDhG1cBazutForWYACqSGQn12nzZA&publicKey=-----BEGIN%20PUBLIC%20KEY-----%0AMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArfiIm%2Bsg%2FHE%2Bk71K5GAj%0A%2FwRm36X87pR9UivWeepzAGVU0aKM9pFs3i%2BJftHhozYq8yrumx%2BwwCgXqi%2FgZN64%0AbDOkt1zM7fopRO6jfgJzMTJFL7jUs1T1yHzXefSQLG6ZPf0KsvAz5L2WdezdVrYi%0A6YZCG873QkAgSfx5ZSR96x5TPqUxh%2BIzdWp62xtLhySzMNpTXHTkRzhdtDKdPahU%0AW3M6LIYcnDvPrNE5adk9eJzpsgUOcUG7JrEY2UqJ9VkCeES2Q%2FDzGpcTGLQoLG4i%0AEJ%2FuGIHMZID66A00MwXbJb8kyri6GoGtWjtxLSFHF%2Feet4mho%2BUd92fpFWxyD4SG%0AxQIDAQAB%0A-----END%20PUBLIC%20KEY-----%0A)  
+
+# Summary
+Writing an exchange means you are taking full control over what gets exchanged for what.  The only thing you are using the GraphQLPlay stack for is custodial duties of an OAuth2 stack.  
+
+You can use this exchange to get an access_token, and the access_token can be used as a bearer into any API anywhere.  So if all you use from the GraphQLPlay's offerings is as an exchange, its still pretty significant.
+
