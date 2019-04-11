@@ -10,7 +10,7 @@ GraphQL.Play uses the [GraphQL.Net Project](https://github.com/graphql-dotnet/gr
 
 If you want to learn how to write GraphQL apis, then go to [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet).  
 
-# OAuth2
+## OAuth2
 [IdentityServer4](https://github.com/IdentityServer/IdentityServer4) is used as the OAuth2 engine.  So out of the box you get stuff like **client_credentials** flows.  I use the **client_credentials** flow when I want to allow B2B access to apis.  Being also a compliant OAuth2 service, thanks to **IdentityServer4**, you get all the discovery and token endpoints you would expect.  
 
 ## Authorization  
