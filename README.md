@@ -33,6 +33,10 @@ Token Exchanges are the cool part of the kit.  In real life you exchange your id
 The kit allows you to author [custom exchanges](./docs/custom-bind-handler.md) and exposes a graphQL bind api to get at any exchange registered with the system.  If the only thing you use GraphQLPlay for is the token exchange feature, then you are one step ahead of everyone else when it comes to security concepts.  
 
 
+## 2 Kits in One  
+For those that really love microservice you could spin up 2 version of this where your OAuth2 and TokenExchange are in one service and your apis are in another.  Your apis micro service would simply refer to the first one as its auhorization authority.
+
+I personally like monoliths but in a pinch can spawn off a microservice.  In the end you are trading one problem for another.  
 
 
 
