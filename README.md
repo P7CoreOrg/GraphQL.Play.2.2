@@ -21,6 +21,10 @@ Once you author an api, you configure in the security that is required to access
 
 ## TokenExchange  
 [OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/draft-ietf-oauth-token-exchange/)  
+I don't fully buy into what is going on with the draft spec, simply because exchanging something for something else is a private matter.  So I would find it interesting if anyone could build a reference implementation to the spec.  I put it here to point out that folks are giving a lot of thought to it.  
+
+Other examples of exchanges.  
+[AWS Security Token Service](https://docs.aws.amazon.com/STS/latest/APIReference/Welcome.html)  
 
 Token Exchanges are the cool part of the kit.  In real life you exchange your id_token (drivers license) for an access_token(a tyvek wristband) when you want to gain access to some club.  The enforcer of the rules set forth by the club owner is typically a bouncer.  Those rules are private to club and can change anytime.  In short, the resulting access_token( a tyvek wristband) is private to the club and no reasonable person would think that it will be accepted down the street at another club.
 
