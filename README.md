@@ -57,8 +57,38 @@ This is probably the best thing to do as working with IISExpress can turn proble
 ```
 # [Extensibility Points](./docs/extensibility.md)  
 
+# Configuration  
+The configuration options for local development are set in secrets.json, and on azure as application settings.  
+
+## secrets.json
+```
+{
+  "appOptions:redis:useRedis": false,
+  "appOptions:redis:redisConnectionString": "p7identity.redis.cache.windows.net:6380,password={{your password}},ssl=True,abortConnect=False",
+  "appOptions:keyVault:useKeyVault": false,
+  "appOptions:keyVault:useKeyVaultSigning": false,
+  "appOptions:keyVault:ClientId": "{{your clientId}}",
+  "appOptions:keyVault:ClientSecret": "{{your password}}",
+  "InMemoryOAuth2ConfigurationStore:oauth2:authorities:0:authority": "https://localhost:5001"
+
+}
+```
+## azure
+```
+{
+  "appOptions:redis:useRedis": true,
+  "appOptions:redis:redisConnectionString": "p7identity.redis.cache.windows.net:6380,password={{your password}},ssl=True,abortConnect=False",
+  "appOptions:keyVault:useKeyVault": true,
+  "appOptions:keyVault:useKeyVaultSigning": true,
+  "appOptions:keyVault:ClientId": "{{your clientId}}",
+  "appOptions:keyVault:ClientSecret": "{{your password}}",
+  "InMemoryOAuth2ConfigurationStore:oauth2:authorities:0:authority": "https://graphqlplay22.azurewebsites.net"
+
+}
+```
 
 # The Host App
+
 This [GraphQL demo app](src/IdentityServer4-Extension-Grants-App) implements the following use cases;  
 [AuthUseCases](https://github.com/AuthUseCases/Flows)  
 
