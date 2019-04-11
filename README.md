@@ -1,5 +1,9 @@
 # GraphQL.Play.2.2
 
+
+![alt text](./docs/GraphQLPlay.png)
+
+
 # [Requirments](./docs/app-requirements.md)
 
 ## APIS
