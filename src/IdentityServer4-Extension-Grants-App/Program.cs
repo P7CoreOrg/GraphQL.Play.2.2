@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace IdentityServer4_Extension_Grants_App
@@ -14,7 +15,10 @@ namespace IdentityServer4_Extension_Grants_App
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+            var logger = host.Services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("Seeded the database.");
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -23,10 +27,18 @@ namespace IdentityServer4_Extension_Grants_App
                 {
                     var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
                     LoadConfigurations(config, environmentName);
-
-
+                    config.AddEnvironmentVariables();
                 })
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    logging.AddDebug();
+                    logging.AddEventSourceLogger();
+                    logging.AddAzureWebAppDiagnostics();
+                });
 
         public static void LoadConfigurations(IConfigurationBuilder config, string environmentName)
         {
@@ -43,3 +55,4 @@ namespace IdentityServer4_Extension_Grants_App
         }
     }
 }
+

@@ -31,6 +31,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using Norton.Validator.Extensions;
@@ -52,10 +53,13 @@ namespace IdentityServer4_Extension_Grants_App
         private readonly IHostingEnvironment _hostingEnvironment;
         public IConfiguration Configuration { get; }
 
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        private ILogger<Startup> _logger;
+
+        public Startup(IHostingEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
             _hostingEnvironment = env;
             Configuration = configuration;
+            _logger = logger;
         }
 
        
@@ -63,10 +67,12 @@ namespace IdentityServer4_Extension_Grants_App
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
             services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
             services.AddGraphQLPlayRollup();
             services.AddGraphQLPlayRollupInMemoryServices(this,Configuration);
 
@@ -75,6 +81,8 @@ namespace IdentityServer4_Extension_Grants_App
             // APIS
             services.AddGraphQLCoreCustomLoyaltyTypes();
             services.AddGraphQLOrders();
+
+
             services.AddBurnerGraphQL();
             services.AddBurnerGraphQL2();
             services.AddGraphQLAppIdentityTypes();
@@ -181,7 +189,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddAuthentication("Bearer")
                 .AddMultiAuthorityAuthentication(schemeRecords);
 
-            services.AddLogging();
+            
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
@@ -244,34 +252,42 @@ namespace IdentityServer4_Extension_Grants_App
 
         public void AddIdentityResources(IServiceCollection services, IIdentityServerBuilder builder)
         {
+            _logger.LogInformation("AddIdentityResources to services");
             var identityResources = Configuration.LoadIdentityResourcesFromSettings();
             builder.AddInMemoryIdentityResources(identityResources);
         }
 
         public void AddClients(IServiceCollection services, IIdentityServerBuilder builder)
         {
+            _logger.LogInformation("AddClients to services");
             var clients = Configuration.LoadClientsFromSettings();
             builder.AddInMemoryClientsExtra(clients);
         }
 
         public void AddApiResources(IServiceCollection services, IIdentityServerBuilder builder)
         {
+            _logger.LogInformation("AddApiResources to services");
             var apiResources = Configuration.LoadApiResourcesFromSettings();
             builder.AddInMemoryApiResources(apiResources);
         }
 
         public void AddOperationalStore(IServiceCollection services, IIdentityServerBuilder builder)
         {
+            _logger.LogInformation("AddOperationalStore to services");
             bool useRedis = Convert.ToBoolean(Configuration["appOptions:redis:useRedis"]);
             if (useRedis)
             {
+                _logger.LogInformation("AddOperationalStore,Using Redis..");
+
+
                 var redisConnectionString = Configuration["appOptions:redis:redisConnectionString"];
+                _logger.LogInformation($"AddOperationalStore,redisConnectionString:{redisConnectionString.Substring(0, 70)}.....");
                 builder.AddOperationalStore(options =>
                 {
                     options.RedisConnectionString = redisConnectionString;
                     options.Db = 1;
                 })
-                    .AddRedisCaching(options =>
+                .AddRedisCaching(options =>
                     {
                         options.RedisConnectionString = redisConnectionString;
                         options.KeyPrefix = "prefix";
@@ -284,15 +300,21 @@ namespace IdentityServer4_Extension_Grants_App
             }
             else
             {
+                _logger.LogInformation("AddOperationalStore,Using AddInMemoryPersistedGrants..");
                 builder.AddInMemoryPersistedGrants();
-                services.AddDistributedMemoryCache();
             }
         }
 
         public void AddSigningServices(IServiceCollection services, IIdentityServerBuilder builder)
         {
+            _logger.LogInformation("AddSigningServices to services");
+
             bool useKeyVault = Convert.ToBoolean(Configuration["appOptions:keyVault:useKeyVault"]);
             bool useKeyVaultSigning = Convert.ToBoolean(Configuration["appOptions:keyVault:useKeyVaultSigning"]);
+
+            _logger.LogInformation($"AddSigningServices:useKeyVault:{useKeyVault}");
+            _logger.LogInformation($"AddSigningServices:useKeyVaultSigning:{useKeyVaultSigning}");
+
             if (useKeyVault)
             {
                 builder.AddKeyVaultCredentialStore();
@@ -306,6 +328,7 @@ namespace IdentityServer4_Extension_Grants_App
             }
             else
             {
+                _logger.LogInformation("AddSigningServices AddDeveloperSigningCredential");
                 builder.AddDeveloperSigningCredential();
             }
         }
