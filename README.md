@@ -2,5 +2,35 @@
 
 # [Requirments](./docs/app-requirements.md)
 
+## APIS
+
+This project is a GraphQL based starter kit that uses a plugin model when bringing in new APIs.  The goal was to make it as simple as possible when adding apis by fully adpoting how apis are writing with the [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet).  
+
+GraphQL.Play uses the [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet) and there is an [example](./docs/orders-conversion.md) of converting an [graphql-dotnet/example-orders](https://github.com/graphql-dotnet/example-orders) into a plugin.  
+
+If you want to learn how to write GraphQL apis, then go to [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet).  
+
+# OAuth2
+[IdentityServer4](https://github.com/IdentityServer/IdentityServer4) is used as the OAuth2 engine.  So out of the box you get stuff like **client_credentials** flows.  I use the **client_credentials** flow when I want to allow B2B access to apis.  Being also a compliant OAuth2 service, thanks to **IdentityServer4**, you get all the discovery and token endpoints you would expect.  
+
+## Authorization  
+The project adopted the OAuth2 bearer token model for authorization.  The access_tokens that are needed are minted by the application using  [IdentityServer4](https://github.com/IdentityServer/IdentityServer4) as the minter.  For our purposes **IdentityServer4** is a way better JWT library than the one that Microsoft supplies.  The **IdentityServer4** one accounts for an operational store that you need if you want to mint refresh_tokens and reference access_tokens, and stores that house your clients configurations.  Redis and CosmosDB are options, as is using KeyVault to manage certificates.  
+
+Once you author an api, you configure in the security that is required to access it.  Typically this is stating that your graph queries require auth and must have the following claims.  The kit will honor that before you are ever called.  
+
+
+## TokenExchange  
+[OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/draft-ietf-oauth-token-exchange/)  
+
+Token Exchanges are the cool part of the kit.  In real life you exchange your id_token (drivers license) for an access_token(a tyvek wristband) when you want to gain access to some club.  The enforcer of the rules set forth by the club owner is typically a bouncer.  Those rules are private to club and can change anytime.  In short, the resulting access_token( a tyvek wristband) is private to the club and no reasonable person would think that it will be accepted down the street at another club.
+
+**NOTE:** your id_token doesn't give you access to anything.  It is nothing more than proof of identity that is being vouched for by a third party that is acceptable to an enforcer.  
+
+The kit allows you to author [custom exchanges](./docs/custom-bind-handler.md) and exposes a graphQL bind api to get at any exchange registered with the system.  If the only thing you use GraphQLPlay for is the token exchange feature, then you are one step ahead of everyone else when it comes to security concepts.  
+
+
+
+
+
 
 
