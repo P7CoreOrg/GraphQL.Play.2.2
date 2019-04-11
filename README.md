@@ -1,246 +1,45 @@
 # GraphQL.Play.2.2
 
-# Requirments
-[Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)  
-I think there is c# 8 preview code in some of the projects where it may not work with 2017.
-```
-<Project Sdk="Microsoft.NET.Sdk">
+# [Requirments](./docs/app-requirements.md)
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <LangVersion>preview</LangVersion>
+## APIS
 
-  </PropertyGroup>
+This project is a GraphQL based starter kit that uses a plugin model when bringing in new APIs.  The goal was to make it as simple as possible when adding apis by fully adpoting how apis are writing with the [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet).  
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-  </ItemGroup>
+GraphQL.Play uses the [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet) and there is an [example](./docs/orders-conversion.md) of converting an [graphql-dotnet/example-orders](https://github.com/graphql-dotnet/example-orders) into a plugin.  
 
-</Project>
-```
+If you want to learn how to write GraphQL apis, then go to [GraphQL.Net Project](https://github.com/graphql-dotnet/graphql-dotnet).  
 
-[.net core 2.2.105 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2)  
-[Altair GraphQL Client](https://altair.sirmuel.design/)  
-[Postman](https://www.getpostman.com/) 
+## OAuth2
+[IdentityServer4](https://github.com/IdentityServer/IdentityServer4) is used as the OAuth2 engine.  So out of the box you get stuff like **client_credentials** flows.  I use the **client_credentials** flow when I want to allow B2B access to apis.  Being also a compliant OAuth2 service, thanks to **IdentityServer4**, you get all the discovery and token endpoints you would expect.  
+
+## Authorization  
+The project adopted the OAuth2 bearer token model for authorization.  The access_tokens that are needed are minted by the application using  [IdentityServer4](https://github.com/IdentityServer/IdentityServer4) as the minter.  For our purposes **IdentityServer4** is a way better JWT library than the one that Microsoft supplies.  The **IdentityServer4** one accounts for an operational store that you need if you want to mint refresh_tokens and reference access_tokens, and stores that house your clients configurations.  Redis and CosmosDB are options, as is using KeyVault to manage certificates.  
+
+Once you author an api, you configure in the security that is required to access it.  Typically this is stating that your graph queries require auth and must have the following claims.  The kit will honor that before you are ever called.  An appsettings example can be seen [here](./src/IdentityServer4-Extension-Grants-App/appsettings.graphql.json).  
 
 
-## Ports 
-In the projects **./GraphQL.Play.2.2/src/.vs/config/** folder there is a file called **applicationhost.config**  
-Make sure that it is set to launch the project using the 44371 port.  In our [appsettings.json](./src/IdentityServer4-Extension-Grants-App/appsettings.json)  there is a configuration that expect it to be 44371.  You can change the appsetting.json, but its best to understand how **applicationhost.config** works because we can use a free dns lookup like [xip.io](http://xip.io/) when we need a non localhost domain.  
 
-```
-<site name="IdentityServer4-Extension-Grants-App" id="5">
-  <application path="/" applicationPool="IdentityServer4-Extension-Grants-App AppPool">
-    <virtualDirectory path="/" physicalPath="H:\github\P7CoreOrg\GraphQL.Play.2.2\src\IdentityServer4-Extension-Grants-App" />
-  </application>
-  <bindings>
-    <binding protocol="http" bindingInformation="*:29552:localhost" />
-    <binding protocol="https" bindingInformation="*:44371:localhost" />
-  </bindings>
-</site>
-```
+## TokenExchange  
+[OAuth 2.0 Token Exchange](https://datatracker.ietf.org/doc/draft-ietf-oauth-token-exchange/)  
+I don't fully buy into what is going on with the draft spec, simply because exchanging something for something else is a private matter.  So I would find it interesting if anyone could build a reference implementation to the spec.  I put it here to point out that folks are giving a lot of thought to it.  
 
-Also, [launchSettings.json](./src/IdentityServer4-Extension-Grants-App/Properties/launchSettings.json) lets you use xip.io.  
-This is probably the best thing to do as working with IISExpress can turn problematic at times.  
+Other examples of exchanges.  
+[AWS Security Token Service](https://docs.aws.amazon.com/STS/latest/APIReference/Welcome.html)  
 
-```
-"IdentityServer4_Extension_Grants_App": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://graphqlplay.127.0.0.1.xip.io:5001;http://localhost:5000"
-    }
-  }
-  
-```
-# [Extensibility Points](./docs/extensibility.md)  
+Token Exchanges are the cool part of the kit.  In real life you exchange your id_token (drivers license) for an access_token(a tyvek wristband) when you want to gain access to some club.  The enforcer of the rules set forth by the club owner is typically a bouncer.  Those rules are private to club and can change anytime.  In short, the resulting access_token( a tyvek wristband) is private to the club and no reasonable person would think that it will be accepted down the street at another club.
+
+**NOTE:** your id_token doesn't give you access to anything.  It is nothing more than proof of identity that is being vouched for by a third party that is acceptable to an enforcer.  
+
+The kit allows you to author [custom exchanges](./docs/custom-bind-handler.md) and exposes a graphQL bind api to get at any exchange registered with the system.  If the only thing you use GraphQLPlay for is the token exchange feature, then you are one step ahead of everyone else when it comes to security concepts.  
 
 
-# The Host App
-This [GraphQL demo app](src/IdentityServer4-Extension-Grants-App) implements the following use cases;  
-[AuthUseCases](https://github.com/AuthUseCases/Flows)  
+## 2 Kits in One  
+For those that really love microservice you could spin up 2 version of this where your OAuth2 and TokenExchange are in one service and your apis are in another.  Your apis micro service would simply refer to the first one as its auhorization authority.
 
-After you run the **IdentityServer4-Extension-Grants-App** you should be able to make a **client_credentials** call to verify that the OAuth2 stack is working.
-```
-curl -X POST \
-  https://localhost:44371/connect/token \
-  -H 'Content-Type: application/x-www-form-urlencoded' \
-  -H 'Postman-Token: f9540e6f-7ce5-43e9-8efa-ce781a48695f' \
-  -H 'cache-control: no-cache' \
-  -d 'grant_type=client_credentials&client_id=b2b-client&client_secret=secret&undefined='
-```
-## Result
-```
-{
-    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQzMDczNjksImV4cCI6MTU1NDMxMDk2OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiM1BBcGkiXSwiY2xpZW50X2lkIjoiYjJiLWNsaWVudCIsImNsaWVudF9uYW1lc3BhY2UiOiJiMmItb3JnIiwic2NvcGUiOlsiM1BBcGkiXX0.nH_Cfr60qweUPFIcVGGqFhnUIDtuVRED9fJTcnNFT3EfHwcGK3Ix4lZMESTntLgygUj-hI5DHFl0zQA1oE7oETW41T6bZ1CRfoXF4046_tAuxUqqpQVAhnjzTEcS-nJoupw28dbBUUHTh0aeRz7vr5H8sbVq_m_-J6Sw-asS_eebabTxSOd46sp735gtnFfssuJX-xGeTO3ilKw56T2X2s8LTF8QyzrpOndpPBLzBoMOm0vf8WZRios5vWkGP6sEsrycEfIkcuZXvkQsFbfKfvPRxXOH_U00EuJWIIJxHr76Cso6wiTnv9ot2cukF2CaloP2aHHSgpvFgT_2gbyaWw",
-    "expires_in": 3600,
-    "token_type": "Bearer"
-}
-```
-
-The **client_credentials** call is what B2B clients would use to get their bear access_tokens to use when making downstream authorized calls into the gateway. 
+I personally like monoliths but in a pinch can spawn off a microservice.  In the end you are trading one problem for another.  
 
 
-# How to get a google id_token
-[oidcreference](https://oidcreference.azurewebsites.net/)
-**IMPORTANT** Make sure you agree to the cookies are being used prompt prior to attempting a google login.
 
-# GraphQL
-```
-endpoint: https://localhost:5001/api/v1/GraphQL
-```
-# Bind Query
-```
-query q($input: bind!) {
-  bind(input: $input){
-    authorization{
-      authority
-      access_token
-      httpHeaders{
-        name
-        value
-      }
-    }
-  }
-}
-```
-```
-{
-  "input": {
-    "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImE0MzEzZTdmZDFlOWUyYTRkZWQzYjI5MmQyYTdmNGU1MTk1NzQzMDgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDk2MzAxNjE2NTQ2LWVkYmw2MTI4ODF0N3JrcGxqcDNxYTNqdW1pbnNrdWxvLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTA5NjMwMTYxNjU0Ni1lZGJsNjEyODgxdDdya3BsanAzcWEzanVtaW5za3Vsby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsIm5vbmNlIjoiNjM2ODk5MDQ2NzI4OTI3NTY0Lk56QXpaR1k1T1dJdE1qVTNNeTAwWkRNMUxXSTBaakl0WldWa1ptTTFObUUxTURKbE5XUmpNbVV3WVRJdFlUVXlNeTAwTmpJd0xXSm1PR0V0WlRNNVptRXdPREUzWkdNeSIsIm5hbWUiOiJIZXJiIFN0YWhsIiwicGljdHVyZSI6Imh0dHBzOi8vbGg0Lmdvb2dsZXVzZXJjb250ZW50LmNvbS8tdXZPc3RBRzhUcWsvQUFBQUFBQUFBQUkvQUFBQUFBQUFGVTAvaU9OSWpKbjNkZHMvczk2LWMvcGhvdG8uanBnIiwiZ2l2ZW5fbmFtZSI6IkhlcmIiLCJmYW1pbHlfbmFtZSI6IlN0YWhsIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE1NTQzMDc4NzMsImV4cCI6MTU1NDMxMTQ3MywianRpIjoiZmJmN2UyZWVhZjYyNGIyYTNkMDBjOTU2ZWQ2ZDBmZDYzMmNkMmNmZCJ9.ZxFf_U4aycyh5CIAddUdFKphXjRME03EmuebtAWe4nUTpkRLpCRUEYE619D8o42j5HN3wHJWuc8ar8ESMcYw_w6OiW4zqsfdiAjmZqO1XpPVjePHIEb8P-gVPBrmNQYQTGyjISEaIXhH8oMo6jQkxwh8RDq7sB__3TyPU4h_PhqeOQfo18yy0cZQTQFRRPzxMfVJANMmaai1_z1yZfVwPs5XVb1I1Lw8PTHuKzQAjtB0g3T-ANx2nO4qDVdVTDG_4JzKc5PtLpXUEMsiSnogUaicfBnvjoYUUdQ7noGNUrl5y3U_X8axrV9Mwk5UtSi4EGrk84NV4ih3t6kAgkykYw",
-    "tokenScheme": "google",
-    "exchange": "google-my-custom",
-     "extras":["a","b","c"]
-  }
-}
-```
-Produces... [jwt.io](https://jwt.io/#debugger-io?token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQzMDc5MDAsImV4cCI6MTU1NDMxMTUwMCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsImF1dGhfdGltZSI6MTU1NDMwNzkwMCwiaWRwIjoibG9jYWwiLCJjbGllbnRfbmFtZXNwYWNlIjpbIkRhZmZ5IER1Y2siLCJEYWZmeSBEdWNrIl0sInJvbGUiOlsiYSIsImIiLCJjIiwidXNlciJdLCJzY29wZSI6WyJncmFwaFFMUGxheSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJhcmJpdHJhcnlfcmVzb3VyY2Vfb3duZXIiXX0.GqKpliB4i5MZZ7zN0neI9a470yIw39ueCiSgF5Gkv33CUvYd3HPsFdOPb00tV8PeRlCWtAcQcJlSR-Z66Smhu8Ue2gexv-8RUPatiCbuJy41rJ_xel08socLeuCZqwsbdATrfwCDLKoSOMRUfvMqpAgXLb1FbGiZhCXOZ7QIUStikBqt0Eyu-KWWIU-VxkZxrJIlo7wt043sQOBSh_qUjCqzuZZnDwB7bAhRFbhWSVT23ZH0c_mHVXMgr4GvkVgpEAGCZRg6StV9xsZnndo1QCiQ0iJ-X9n6MTr-_TaZT8kr1HCYsttDrnCGcaoiORxP60E9UOZRhSPMGElugPHUMg&publicKey=-----BEGIN%20PUBLIC%20KEY-----%0AMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArfiIm%2Bsg%2FHE%2Bk71K5GAj%0A%2FwRm36X87pR9UivWeepzAGVU0aKM9pFs3i%2BJftHhozYq8yrumx%2BwwCgXqi%2FgZN64%0AbDOkt1zM7fopRO6jfgJzMTJFL7jUs1T1yHzXefSQLG6ZPf0KsvAz5L2WdezdVrYi%0A6YZCG873QkAgSfx5ZSR96x5TPqUxh%2BIzdWp62xtLhySzMNpTXHTkRzhdtDKdPahU%0AW3M6LIYcnDvPrNE5adk9eJzpsgUOcUG7JrEY2UqJ9VkCeES2Q%2FDzGpcTGLQoLG4i%0AEJ%2FuGIHMZID66A00MwXbJb8kyri6GoGtWjtxLSFHF%2Feet4mho%2BUd92fpFWxyD4SG%0AxQIDAQAB%0A-----END%20PUBLIC%20KEY-----%0A)  
-
-```
-{
-  "data": {
-    "bind": {
-      "authorization": {
-        "authority": "https://localhost:44371",
-        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQzMDc5MDAsImV4cCI6MTU1NDMxMTUwMCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsImF1dGhfdGltZSI6MTU1NDMwNzkwMCwiaWRwIjoibG9jYWwiLCJjbGllbnRfbmFtZXNwYWNlIjpbIkRhZmZ5IER1Y2siLCJEYWZmeSBEdWNrIl0sInJvbGUiOlsiYSIsImIiLCJjIiwidXNlciJdLCJzY29wZSI6WyJncmFwaFFMUGxheSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJhcmJpdHJhcnlfcmVzb3VyY2Vfb3duZXIiXX0.GqKpliB4i5MZZ7zN0neI9a470yIw39ueCiSgF5Gkv33CUvYd3HPsFdOPb00tV8PeRlCWtAcQcJlSR-Z66Smhu8Ue2gexv-8RUPatiCbuJy41rJ_xel08socLeuCZqwsbdATrfwCDLKoSOMRUfvMqpAgXLb1FbGiZhCXOZ7QIUStikBqt0Eyu-KWWIU-VxkZxrJIlo7wt043sQOBSh_qUjCqzuZZnDwB7bAhRFbhWSVT23ZH0c_mHVXMgr4GvkVgpEAGCZRg6StV9xsZnndo1QCiQ0iJ-X9n6MTr-_TaZT8kr1HCYsttDrnCGcaoiORxP60E9UOZRhSPMGElugPHUMg",
-        "httpHeaders": [
-          {
-            "name": "x-authScheme",
-            "value": "self"
-          }
-        ]
-      }
-    }
-  }
-}
-```
-
-# Identity Query
-```
-query{
-  authRequired{
-    claims{
-      name
-      value
-    }
-  }
-}
-```
-Headers:
-```
-Authorization : Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTQzMDc5MDAsImV4cCI6MTU1NDMxMTUwMCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsImF1dGhfdGltZSI6MTU1NDMwNzkwMCwiaWRwIjoibG9jYWwiLCJjbGllbnRfbmFtZXNwYWNlIjpbIkRhZmZ5IER1Y2siLCJEYWZmeSBEdWNrIl0sInJvbGUiOlsiYSIsImIiLCJjIiwidXNlciJdLCJzY29wZSI6WyJncmFwaFFMUGxheSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJhcmJpdHJhcnlfcmVzb3VyY2Vfb3duZXIiXX0.GqKpliB4i5MZZ7zN0neI9a470yIw39ueCiSgF5Gkv33CUvYd3HPsFdOPb00tV8PeRlCWtAcQcJlSR-Z66Smhu8Ue2gexv-8RUPatiCbuJy41rJ_xel08socLeuCZqwsbdATrfwCDLKoSOMRUfvMqpAgXLb1FbGiZhCXOZ7QIUStikBqt0Eyu-KWWIU-VxkZxrJIlo7wt043sQOBSh_qUjCqzuZZnDwB7bAhRFbhWSVT23ZH0c_mHVXMgr4GvkVgpEAGCZRg6StV9xsZnndo1QCiQ0iJ-X9n6MTr-_TaZT8kr1HCYsttDrnCGcaoiORxP60E9UOZRhSPMGElugPHUMg
-
-x-authScheme : One
-
-```
-Produces...
-```
-{
-  "data": {
-    "authRequired": {
-      "claims": [
-        {
-          "name": "nbf",
-          "value": "1552967414"
-        },
-        {
-          "name": "exp",
-          "value": "1552971014"
-        },
-        {
-          "name": "iss",
-          "value": "https://localhost:44371"
-        },
-        {
-          "name": "aud",
-          "value": "https://localhost:44371/resources"
-        },
-        {
-          "name": "aud",
-          "value": "graphQLPlay"
-        },
-        {
-          "name": "client_id",
-          "value": "arbitrary-resource-owner-client"
-        },
-        {
-          "name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
-          "value": "104758924428036663951"
-        },
-        {
-          "name": "auth_time",
-          "value": "1552967414"
-        },
-        {
-          "name": "http://schemas.microsoft.com/identity/claims/identityprovider",
-          "value": "local"
-        },
-        {
-          "name": "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-          "value": "application"
-        },
-        {
-          "name": "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-          "value": "limited"
-        },
-        {
-          "name": "client_namespace",
-          "value": "Daffy Duck"
-        },
-        {
-          "name": "scope",
-          "value": "graphQLPlay"
-        },
-        {
-          "name": "scope",
-          "value": "graphQLPlay"
-        },
-        {
-          "name": "scope",
-          "value": "graphQLPlay"
-        },
-        {
-          "name": "scope",
-          "value": "graphQLPlay"
-        },
-        {
-          "name": "scope",
-          "value": "offline_access"
-        },
-        {
-          "name": "http://schemas.microsoft.com/claims/authnmethodsreferences",
-          "value": "arbitrary_resource_owner"
-        },
-        {
-          "name": "access_token",
-          "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjI1YmM0M2NjYzdiODFkYjgxZjU3NWYwY2M2OWU3YWQ4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTI5Njc0MTQsImV4cCI6MTU1Mjk3MTAxNCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEiLCJhdWQiOlsiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzNzEvcmVzb3VyY2VzIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6IjEwNDc1ODkyNDQyODAzNjY2Mzk1MSIsImF1dGhfdGltZSI6MTU1Mjk2NzQxNCwiaWRwIjoibG9jYWwiLCJyb2xlIjpbImFwcGxpY2F0aW9uIiwibGltaXRlZCJdLCJjbGllbnRfbmFtZXNwYWNlIjoiRGFmZnkgRHVjayIsInNjb3BlIjpbImdyYXBoUUxQbGF5IiwiZ3JhcGhRTFBsYXkiLCJncmFwaFFMUGxheSIsImdyYXBoUUxQbGF5Iiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbImFyYml0cmFyeV9yZXNvdXJjZV9vd25lciJdfQ.YHgKcQHF1ZrOqDG-Is1YsO73ROkC9rDbNKPn7DfRT07sq4SsKhp5bZFi7LKpKbsXcK8WI_3ZkTQeQLt29xdqSITM6bglCiepyb3ZXrsx1PLMBvfrZAW7-9m0Act8UH_g2FUgh8OzogLwshQNCLy0FBYjN68f61hyJUJOzraYFI_v8GFJS_DE54fiTjNchGyeFR9XRzrgTTvBLs3_g20enRZhbZbNxMwEb4bUQ1woUugXyTqdI652WfNMOeaGylepFTNQJT-c_z1DMChapGlQDSryrhDcYJY3_tIendF25BIwXoRYKyGdcY1JM7r8Q92zyQG35WB_F-dpA_VhUJMAYw"
-        }
-      ]
-    }
-  }
-}
-```
 
 
