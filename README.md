@@ -16,7 +16,8 @@ If you want to learn how to write GraphQL apis, then go to [GraphQL.Net Project]
 ## Authorization  
 The project adopted the OAuth2 bearer token model for authorization.  The access_tokens that are needed are minted by the application using  [IdentityServer4](https://github.com/IdentityServer/IdentityServer4) as the minter.  For our purposes **IdentityServer4** is a way better JWT library than the one that Microsoft supplies.  The **IdentityServer4** one accounts for an operational store that you need if you want to mint refresh_tokens and reference access_tokens, and stores that house your clients configurations.  Redis and CosmosDB are options, as is using KeyVault to manage certificates.  
 
-Once you author an api, you configure in the security that is required to access it.  Typically this is stating that your graph queries require auth and must have the following claims.  The kit will honor that before you are ever called.  
+Once you author an api, you configure in the security that is required to access it.  Typically this is stating that your graph queries require auth and must have the following claims.  The kit will honor that before you are ever called.  An appsettings example can be seen [here](./src/IdentityServer4-Extension-Grants-App/appsettings.graphql.json).  
+
 
 
 ## TokenExchange  
