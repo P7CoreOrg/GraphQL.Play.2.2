@@ -4,8 +4,9 @@ namespace TokenExchange.Contracts.Extensions
 {
     public static class AspNetCoreServiceCollectionExtensions
     {
-        public static IServiceCollection AddPrincipalEvaluatorRouter(this IServiceCollection services)
+        public static IServiceCollection AddTokenExchangeContracts(this IServiceCollection services)
         {
+            services.AddTransient<OIDCTokenValidator>();
             services.AddSingleton<IPrincipalEvaluatorRouter, PrincipalEvaluatorRouter>();
             return services;
         }

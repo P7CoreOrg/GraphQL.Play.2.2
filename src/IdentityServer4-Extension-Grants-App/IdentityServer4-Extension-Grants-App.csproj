@@ -29,17 +29,13 @@
     <ProjectReference Include="..\AppIdentity\AppIdentity.csproj" />
     <ProjectReference Include="..\B2BPublisher\B2BPublisher.csproj" />
     <ProjectReference Include="..\CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj" />
-    <ProjectReference Include="..\DemoIdentityServerio.Validator\DemoIdentityServerio.Validator.csproj" />
     <ProjectReference Include="..\DiscoveryHub\DiscoveryHub.csproj" />
-    <ProjectReference Include="..\Google.Validator\Google.Validator.csproj" />
     <ProjectReference Include="..\graphql-dotnet\example-orders\Orders\Orders.csproj" />
     <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj" />
     <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
-    <ProjectReference Include="..\Norton.Validator\Norton.Validator.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
-    <ProjectReference Include="..\P7IdentityServer4.Validator\P7IdentityServer4.Validator.csproj" />
     <ProjectReference Include="..\Self.Validator\Self.Validator.csproj" />
   </ItemGroup>
 

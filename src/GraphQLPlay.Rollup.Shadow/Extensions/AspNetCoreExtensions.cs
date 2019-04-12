@@ -18,6 +18,7 @@ namespace GraphQLPlay.Rollup.Extensions
         public interface IGraphQLRollupRegistrations
         {
             void AddGraphQLFieldAuthority(IServiceCollection services);
+            void AddTokenValidators(IServiceCollection services);
         }
         public static IServiceCollection AddGraphQLPlayRollup(
             this IServiceCollection services,
@@ -25,12 +26,12 @@ namespace GraphQLPlay.Rollup.Extensions
         {
             services.AddGraphQLCoreTypes();
             services.AddGraphQLIdentityTokenExchangeTypes();
-            services.AddPrincipalEvaluatorRouter();
             services.AddInProcTokenMintingService();
             services.AddIdentityModelExtrasTypes();
             services.AddSingleton<DiscoverCacheContainerFactory>();
 
             graphQLRollupRegistrations.AddGraphQLFieldAuthority(services);
+            graphQLRollupRegistrations.AddTokenValidators(services);
 
             return services;
         }

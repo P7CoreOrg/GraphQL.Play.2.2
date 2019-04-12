@@ -10,9 +10,7 @@ using AppIdentity.Extensions;
 using B2BPublisher.Extensions;
 using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
-using DemoIdentityServerio.Validator.Extensions;
 using DiscoveryHub.Extensions;
-using Google.Validator.Extensions;
 using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
@@ -34,7 +32,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
-using Norton.Validator.Extensions;
 using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
@@ -42,17 +39,22 @@ using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using P7IdentityServer4.Extensions;
-using P7IdentityServer4.Validator.Extensions;
 using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
+using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
 using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 
 namespace IdentityServer4_Extension_Grants_App
 {
-    public class Startup : 
-        IExtensionGrantsRollupRegistrations, 
+    public class OAuth2WellknownAuthorities
+    {
+        public List<string> v { get; set; }
+    }
+
+    public class Startup :
+        IExtensionGrantsRollupRegistrations,
         IGraphQLRollupRegistrations
     {
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -67,11 +69,13 @@ namespace IdentityServer4_Extension_Grants_App
             _logger = logger;
         }
 
-       
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddLogging();
             services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
@@ -98,11 +102,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddCustomerLoyalty();
 
             // Token Exchange Validators          
-            services.AddP7IdentityServer4OIDCTokenValidator();
-            services.AddDemoIdentityServerioOIDCTokenValidator();
-            services.AddGoogleOIDCTokenValidator();
-            services.AddSelfOIDCTokenValidator();
-            services.AddNortonOIDCTokenValidator();
+           
+
             services.AddGoogleIdentityPrincipalEvaluator();
             services.AddSelfIdentityPrincipalEvaluator();
             services.AddGoogleMyCustomIdentityPrincipalEvaluator();
@@ -138,7 +139,7 @@ namespace IdentityServer4_Extension_Grants_App
             var oauth2Section = new Oauth2Section();
             section.Bind(oauth2Section);
 
-           
+
             var query = from item in oauth2Section.Authorities
                         where item.Scheme == scheme
                         select item;
@@ -194,11 +195,11 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddAuthentication("Bearer")
                 .AddMultiAuthorityAuthentication(schemeRecords);
 
-            
+
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-           
+
             // Build the intermediate service provider then return it
             services.AddSwaggerGen(c =>
             {
@@ -214,7 +215,7 @@ namespace IdentityServer4_Extension_Grants_App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
+
 
             app.UseLowercaseRewriter();
 
@@ -342,6 +343,27 @@ namespace IdentityServer4_Extension_Grants_App
         {
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
+        }
+
+        public void AddTokenValidators(IServiceCollection services)
+        {
+            services.AddSelfOIDCTokenValidator();
+            var schemes = Configuration
+                .GetSection("oidcSchemes")
+                .Get<List<string>>();
+
+            foreach(var scheme in schemes)
+            {
+                services.AddSingleton<ISchemeTokenValidator>(x =>
+                {
+                    var oidcTokenValidator =  x.GetRequiredService<OIDCTokenValidator>();
+                    oidcTokenValidator.TokenScheme = scheme;
+                    return oidcTokenValidator;
+                });
+
+            }
+
+           
         }
     }
 }

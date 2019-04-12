@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace TokenExchange.Contracts
 {
-    public abstract class OIDCTokenValidator: ISchemeTokenValidator
+    public class OIDCTokenValidator: ISchemeTokenValidator
     {
         private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
         private IMemoryCache _memoryCache;
