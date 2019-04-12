@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj" />
     <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
     <ProjectReference Include="..\InProcTokenMintingService\InProcTokenMintingService.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />

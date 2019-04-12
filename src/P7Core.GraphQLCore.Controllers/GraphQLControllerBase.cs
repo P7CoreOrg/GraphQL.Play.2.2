@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using GraphQLPlay.Contracts;
 
 namespace P7Core.GraphQLCore.Controllers
 {
@@ -30,6 +31,7 @@ namespace P7Core.GraphQLCore.Controllers
         private ISchema _schema { get; set; }
         private readonly IDictionary<string, string> _namedQueries;
         private List<IPluginValidationRule> _pluginValidationRules;
+        private IScopedSummaryLogger _scopedSummaryLogger;
 
         public GraphQLControllerBase(
             IHttpContextAccessor httpContextAccessor,
@@ -37,7 +39,8 @@ namespace P7Core.GraphQLCore.Controllers
             IDocumentExecuter executer,
             IDocumentWriter writer,
             ISchema schema,
-            IEnumerable<IPluginValidationRule> pluginValidationRules)
+            IEnumerable<IPluginValidationRule> pluginValidationRules,
+            IScopedSummaryLogger scopedSummaryLogger)
         {
             _httpContextAccessor = httpContextAccessor;
             Logger = logger;
@@ -49,6 +52,7 @@ namespace P7Core.GraphQLCore.Controllers
 
             };
             _pluginValidationRules = pluginValidationRules.ToList();
+            _scopedSummaryLogger = scopedSummaryLogger;
         }
         [HttpGet]
         public async Task<IActionResult> GetAsync(
@@ -93,12 +97,17 @@ namespace P7Core.GraphQLCore.Controllers
                 dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json);
 
                 var objectResult = new ObjectResult(obj) { StatusCode = (int)httpResult };
+
+                var summaryLog = string.Join(";", _scopedSummaryLogger.Select(x => x.Key + "=" + x.Value).ToArray());
+                Logger.LogCritical(summaryLog);
                 return objectResult;
 
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return MakeObjectResult("Unhandled GraphQL Exception", HttpStatusCode.InternalServerError);
+                var summaryLog = string.Join(";", _scopedSummaryLogger.Select(x => x.Key + "=" + x.Value).ToArray());
+                Logger.LogError(ex, summaryLog);
+                return MakeObjectResult("Unable to process request", HttpStatusCode.NotFound);
             }
         }
         public static ObjectResult MakeObjectResult(string msg, HttpStatusCode httpStatusCode)

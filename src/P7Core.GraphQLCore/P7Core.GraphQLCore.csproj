@@ -27,6 +27,9 @@
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.5.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="netstandard">
       <HintPath>c:\program files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.2.0\ref\netcoreapp2.2\netstandard.dll</HintPath>
     </Reference>

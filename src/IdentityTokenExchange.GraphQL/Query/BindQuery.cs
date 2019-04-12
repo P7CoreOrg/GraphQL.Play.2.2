@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using GraphQL;
 using GraphQL.Types;
+using GraphQLPlay.Contracts;
 using IdentityModel;
 using IdentityModel.Client;
 using IdentityModelExtras;
@@ -22,6 +23,7 @@ namespace IdentityTokenExchangeGraphQL.Query
     public class BindQuery : IQueryFieldRegistration
     {
         private ITokenValidator _tokenValidator;
+        private IScopedSummaryLogger _scopedSummaryLogger;
         private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
         private DiscoverCacheContainer _discoveryContainer;
         private IMemoryCache _memoryCache;
@@ -37,7 +39,8 @@ namespace IdentityTokenExchangeGraphQL.Query
             IConfiguration configuration,
             DiscoverCacheContainerFactory discoverCacheContainerFactory,
             IMemoryCache memoryCache,
-            ITokenValidator tokenValidator)
+            ITokenValidator tokenValidator,
+            IScopedSummaryLogger scopedSummaryLogger)
         {
             _tokenMintingService = tokenMintingService;
             _principalEvaluatorRouter = principalEvaluatorRouter;
@@ -48,6 +51,7 @@ namespace IdentityTokenExchangeGraphQL.Query
             _memoryCache = memoryCache;
             _providerValidator = new ProviderValidator(_discoveryContainer, _memoryCache);
             _tokenValidator = tokenValidator;
+            _scopedSummaryLogger = scopedSummaryLogger;
         }
 
         string GetSubjectFromPincipal(ClaimsPrincipal principal)
@@ -69,7 +73,17 @@ namespace IdentityTokenExchangeGraphQL.Query
                 {
                     try
                     {
+                        _scopedSummaryLogger.Add("query", "bind");
                         var input = context.GetArgument<BindInputModel>("input");
+                        _scopedSummaryLogger.Add("tokenScheme", input.TokenScheme);
+
+                        var requestedFields = (from item in context.SubFields
+                            select item.Key).ToList();
+
+                        var summaryLog = string.Join(";", _scopedSummaryLogger.Select(x => x.Key + "=" + x.Value).ToArray());
+
+
+                        _scopedSummaryLogger.Add("requestedFields", string.Join(" ", requestedFields));
 
                         var principal = await _tokenValidator.ValidateTokenAsync(new TokenDescriptor
                         {
@@ -79,6 +93,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                         var subject = GetSubjectFromPincipal(principal);
                         if (string.IsNullOrEmpty(subject))
                         {
+                            _scopedSummaryLogger.Add("subject", "A subject was not found in the ClaimsPrincipal object!");
                             throw new Exception("A subject was not found in the ClaimsPrincipal object!");
                         }
 
@@ -94,7 +109,11 @@ namespace IdentityTokenExchangeGraphQL.Query
                             await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
                         if (response.IsError)
+                        {
+                            _scopedSummaryLogger.Add("tokenMintingServiceError", response.Error);
                             throw new Exception(response.Error);
+                        }
+                            
 
                      
                         var authorizationResultModel = new AuthorizationResultModel()
@@ -118,6 +137,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                     }
                     catch (Exception e)
                     {
+                        _scopedSummaryLogger.Add("exception", e.Message);
                         context.Errors.Add(new ExecutionError("Unable to process request", e));
                     }
 

@@ -2,6 +2,7 @@
 using GraphQL;
 using GraphQL.Http;
 using GraphQL.Types;
+using GraphQLPlay.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,7 @@ namespace IdentityServer4_Extension_Grants_App.Controllers
     [Route("api/v1/[controller]")]
     public class GraphQLController : GraphQLControllerBase<GraphQLController>
     {
-        public GraphQLController(IHttpContextAccessor httpContextAccessor, ILogger<GraphQLController> logger, IDocumentExecuter executer, IDocumentWriter writer, ISchema schema, IEnumerable<IPluginValidationRule> pluginValidationRules) : base(httpContextAccessor, logger, executer, writer, schema, pluginValidationRules)
+        public GraphQLController(IHttpContextAccessor httpContextAccessor, ILogger<GraphQLController> logger, IDocumentExecuter executer, IDocumentWriter writer, ISchema schema, IEnumerable<IPluginValidationRule> pluginValidationRules, IScopedSummaryLogger scopedSummaryLogger) : base(httpContextAccessor, logger, executer, writer, schema, pluginValidationRules, scopedSummaryLogger)
         {
         }
     }

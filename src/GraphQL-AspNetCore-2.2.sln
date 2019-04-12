@@ -119,6 +119,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E7FEF42F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OIDCWebApp", "OIDCWebApp\OIDCWebApp.csproj", "{DB3AD96F-273E-4547-A6FE-B84893F548C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQLPlay.Contracts", "GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj", "{02FDB48D-9E9B-47F4-A908-6159B21548FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +259,10 @@ Global
 		{DB3AD96F-273E-4547-A6FE-B84893F548C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB3AD96F-273E-4547-A6FE-B84893F548C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB3AD96F-273E-4547-A6FE-B84893F548C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02FDB48D-9E9B-47F4-A908-6159B21548FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02FDB48D-9E9B-47F4-A908-6159B21548FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02FDB48D-9E9B-47F4-A908-6159B21548FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02FDB48D-9E9B-47F4-A908-6159B21548FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

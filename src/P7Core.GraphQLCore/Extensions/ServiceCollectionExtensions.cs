@@ -6,10 +6,12 @@ using GraphQL.Http;
 using GraphQL.Types;
 using GraphQL.Validation;
 using GraphQL.Validation.Complexity;
+using GraphQLPlay.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using P7Core.GraphQLCore.Stores;
 using P7Core.GraphQLCore.Types;
 using P7Core.GraphQLCore.Validators;
 
@@ -19,6 +21,8 @@ namespace P7Core.GraphQLCore.Extensions
     {
         public static void AddGraphQLCoreTypes(this IServiceCollection services)
         {
+            services.AddScoped<IScopedSummaryLogger, DefaultScopedSummaryLogger>();
+
             services.AddTransient<IQueryFieldRegistrationStore,QueryFieldRecordRegistrationStore>();
             services.AddTransient<IMutationFieldRegistrationStore, MutationFieldRecordRegistrationStore>();
             services.AddTransient<ISubscriptionFieldRegistrationStore, SubscriptionFieldRecordRegistrationStore>();

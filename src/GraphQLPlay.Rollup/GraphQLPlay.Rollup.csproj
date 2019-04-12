@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj" />
     <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
