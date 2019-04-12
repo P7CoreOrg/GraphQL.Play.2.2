@@ -15,7 +15,13 @@ namespace GraphQLPlay.Rollup.Extensions
 {
     public static class AspNetCoreExtensions
     {
-        public static IServiceCollection AddGraphQLPlayRollup(this IServiceCollection services)
+        public interface IGraphQLRollupRegistrations
+        {
+            void AddGraphQLFieldAuthority(IServiceCollection services);
+        }
+        public static IServiceCollection AddGraphQLPlayRollup(
+            this IServiceCollection services,
+            IGraphQLRollupRegistrations graphQLRollupRegistrations)
         {
             services.AddGraphQLCoreTypes();
             services.AddGraphQLIdentityTokenExchangeTypes();
@@ -23,7 +29,8 @@ namespace GraphQLPlay.Rollup.Extensions
             services.AddInProcTokenMintingService();
             services.AddIdentityModelExtrasTypes();
             services.AddSingleton<DiscoverCacheContainerFactory>();
-          
+
+            graphQLRollupRegistrations.AddGraphQLFieldAuthority(services);
 
             return services;
         }
@@ -31,7 +38,6 @@ namespace GraphQLPlay.Rollup.Extensions
         {
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(configuration);
-            services.AddExtensionGrantsRollup(extensionGrantsRollupRegistrations,configuration);
             return services;
         }
     }

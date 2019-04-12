@@ -38,6 +38,8 @@ using Norton.Validator.Extensions;
 using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
+using P7Core.GraphQLCore.Extensions;
+using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using P7IdentityServer4.Extensions;
 using P7IdentityServer4.Validator.Extensions;
@@ -45,10 +47,13 @@ using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenExchange.Contracts.Extensions;
 using Utils.Extensions;
+using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 
 namespace IdentityServer4_Extension_Grants_App
 {
-    public class Startup: IExtensionGrantsRollupRegistrations
+    public class Startup : 
+        IExtensionGrantsRollupRegistrations, 
+        IGraphQLRollupRegistrations
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         public IConfiguration Configuration { get; }
@@ -73,8 +78,8 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddOptions();
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
-            services.AddGraphQLPlayRollup();
-            services.AddGraphQLPlayRollupInMemoryServices(this,Configuration);
+            services.AddGraphQLPlayRollup(this);
+            services.AddExtensionGrantsRollup(this);
 
             services.AddInMemoryOAuth2ConfigurationStore();
 
@@ -331,6 +336,12 @@ namespace IdentityServer4_Extension_Grants_App
                 _logger.LogInformation("AddSigningServices AddDeveloperSigningCredential");
                 builder.AddDeveloperSigningCredential();
             }
+        }
+
+        public void AddGraphQLFieldAuthority(IServiceCollection services)
+        {
+            services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
+            services.RegisterGraphQLCoreConfigurationServices(Configuration);
         }
     }
 }
