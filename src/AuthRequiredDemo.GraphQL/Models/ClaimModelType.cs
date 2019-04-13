@@ -1,7 +1,6 @@
 ﻿using GraphQL.Types;
-using IdentityTokenExchangeGraphQL.Models;
 
-namespace IdentityTokenExchangeGraphQL
+namespace AuthRequiredDemoGraphQL.Models
 {
     public class ClaimModelType : ObjectGraphType<ClaimModel>
     {
@@ -13,5 +12,4 @@ namespace IdentityTokenExchangeGraphQL
             Field(x => x.Value).Description("value of claim.");
         }
     }
-     
 }

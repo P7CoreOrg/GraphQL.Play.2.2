@@ -12,13 +12,7 @@ namespace IdentityTokenExchangeGraphQL.Extensions
         {
             services.AddSingleton<ITokenValidator, TokenValidator>();
             
-            
             services.AddTokenExchangeContracts();
-            // AuthRequired Query
-            services.AddTransient<IdentityModelType>();
-            services.AddTransient<ClaimModelType>();
-            services.AddTransient<IQueryFieldRegistration, AuthRequiredQuery>();
-
 
             // Bind Query
             

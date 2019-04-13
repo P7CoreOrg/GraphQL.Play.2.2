@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IdentityTokenExchangeGraphQL.Models
+namespace AuthRequiredDemoGraphQL.Models
 {
     public class IdentityModel
     {

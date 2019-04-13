@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using AuthRequiredDemoGraphQL.Models;
 using GraphQL;
-using IdentityTokenExchangeGraphQL.Models;
 using P7Core.GraphQLCore;
 
-namespace IdentityTokenExchangeGraphQL.Query
+namespace AuthRequiredDemoGraphQL.Query
 {
     public class AuthRequiredQuery : IQueryFieldRegistration
     {
@@ -21,7 +21,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                     try
                     {
                         var userContext = context.UserContext.As<GraphQLUserContext>();
-                        var result = new Models.IdentityModel {Claims = new List<ClaimModel>()};
+                        var result = new Models.IdentityModel { Claims = new List<ClaimModel>() };
                         foreach (var claim in userContext.HttpContextAccessor.HttpContext.User.Claims)
                         {
                             result.Claims.Add(new ClaimModel()

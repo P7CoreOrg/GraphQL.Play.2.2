@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace IdentityServer4_Extension_Grants_App
+namespace GraphQLPlayApiOnlyApp
 {
     public class Program
     {
@@ -44,14 +44,8 @@ namespace IdentityServer4_Extension_Grants_App
         {
             config
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.redis.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.keyVault.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environmentName}.IdentityResources.json", optional: true)
-            .AddJsonFile($"appsettings.{environmentName}.ApiResources.json", optional: true)
-            .AddJsonFile($"appsettings.{environmentName}.Clients.json", optional: true)
             .AddJsonFile($"appsettings.graphql.json", optional: false, reloadOnChange: true)
             .AddUserSecrets<Startup>();
         }
     }
 }
-

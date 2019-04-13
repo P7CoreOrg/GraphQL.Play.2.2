@@ -6,19 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AppIdentity.Extensions;
 using AuthRequiredDemoGraphQL.Extensions;
-using B2BPublisher.Extensions;
-using CustomerLoyaltyStore.Extensions;
-using CustomerLoyalyStore.GraphQL.Extensions;
-using DiscoveryHub.Extensions;
 using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
-using IdentityServer4ExtensionGrants.Rollup.Extensions;
-using IdentityServer4Extras.Extensions;
-using IdentityServerRequestTracker.Extensions;
-using Memstate.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,34 +17,24 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
-using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
-using P7IdentityServer4.Extensions;
-using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
-using TokenExchange.Contracts;
-using TokenExchange.Contracts.Extensions;
 using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
-using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
 
-namespace IdentityServer4_Extension_Grants_App
+namespace GraphQLPlayApiOnlyApp
 {
-    public class Startup :
-        IExtensionGrantsRollupRegistrations,
-        IGraphQLRollupRegistrations,
-        ITokenExchangeRegistrations
+    public class Startup: IGraphQLRollupRegistrations
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         public IConfiguration Configuration { get; }
@@ -67,13 +48,9 @@ namespace IdentityServer4_Extension_Grants_App
             _logger = logger;
         }
 
-
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddLogging();
             services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
@@ -81,9 +58,6 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddDistributedMemoryCache();
             services.AddIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
-            services.AddExtensionGrantsRollup(this);
-
-
 
             services.AddCors(options =>
             {
@@ -109,13 +83,11 @@ namespace IdentityServer4_Extension_Grants_App
                 options.AddPolicy("Daffy Duck",
                     policy => { policy.RequireClaim("client_namespace", "Daffy Duck"); });
             });
-
             var scheme = Configuration["authValidation:scheme"];
 
             var section = Configuration.GetSection("InMemoryOAuth2ConfigurationStore:oauth2");
             var oauth2Section = new Oauth2Section();
             section.Bind(oauth2Section);
-
 
             var query = from item in oauth2Section.Authorities
                         where item.Scheme == scheme
@@ -180,7 +152,7 @@ namespace IdentityServer4_Extension_Grants_App
             // Build the intermediate service provider then return it
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "IdentityServer4-Extensions-Grants-App", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "GraphQLPlayApiOnly", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -192,8 +164,6 @@ namespace IdentityServer4_Extension_Grants_App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
-
             app.UseLowercaseRewriter();
 
             if (env.IsDevelopment())
@@ -213,12 +183,7 @@ namespace IdentityServer4_Extension_Grants_App
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseIdentityServerRequestTrackerMiddleware();
-
             app.UseMvc();
-
-            //MEMSTATE Journal stays in memory
-            Config.Current.UseInMemoryFileSystem();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -227,142 +192,19 @@ namespace IdentityServer4_Extension_Grants_App
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "IdentityServer4-Extensions-Grants-App V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "GraphQLPlayApiOnly V1");
             });
-
         }
-
-        public void AddIdentityResources(IServiceCollection services, IIdentityServerBuilder builder)
-        {
-            _logger.LogInformation("AddIdentityResources to services");
-            var identityResources = Configuration.LoadIdentityResourcesFromSettings();
-            builder.AddInMemoryIdentityResources(identityResources);
-        }
-
-        public void AddClients(IServiceCollection services, IIdentityServerBuilder builder)
-        {
-            _logger.LogInformation("AddClients to services");
-            var clients = Configuration.LoadClientsFromSettings();
-            builder.AddInMemoryClientsExtra(clients);
-        }
-
-        public void AddApiResources(IServiceCollection services, IIdentityServerBuilder builder)
-        {
-            _logger.LogInformation("AddApiResources to services");
-            var apiResources = Configuration.LoadApiResourcesFromSettings();
-            builder.AddInMemoryApiResources(apiResources);
-        }
-
-        public void AddOperationalStore(IServiceCollection services, IIdentityServerBuilder builder)
-        {
-            _logger.LogInformation("AddOperationalStore to services");
-            bool useRedis = Convert.ToBoolean(Configuration["appOptions:redis:useRedis"]);
-            if (useRedis)
-            {
-                _logger.LogInformation("AddOperationalStore,Using Redis..");
-
-
-                var redisConnectionString = Configuration["appOptions:redis:redisConnectionString"];
-                _logger.LogInformation($"AddOperationalStore,redisConnectionString:{redisConnectionString.Substring(0, 70)}.....");
-                builder.AddOperationalStore(options =>
-                {
-                    options.RedisConnectionString = redisConnectionString;
-                    options.Db = 1;
-                })
-                .AddRedisCaching(options =>
-                    {
-                        options.RedisConnectionString = redisConnectionString;
-                        options.KeyPrefix = "prefix";
-                    });
-
-                services.AddDistributedRedisCache(options =>
-                {
-                    options.Configuration = redisConnectionString;
-                });
-            }
-            else
-            {
-                _logger.LogInformation("AddOperationalStore,Using AddInMemoryPersistedGrants..");
-                builder.AddInMemoryPersistedGrants();
-            }
-        }
-
-        public void AddSigningServices(IServiceCollection services, IIdentityServerBuilder builder)
-        {
-            _logger.LogInformation("AddSigningServices to services");
-
-            bool useKeyVault = Convert.ToBoolean(Configuration["appOptions:keyVault:useKeyVault"]);
-            bool useKeyVaultSigning = Convert.ToBoolean(Configuration["appOptions:keyVault:useKeyVaultSigning"]);
-
-            _logger.LogInformation($"AddSigningServices:useKeyVault:{useKeyVault}");
-            _logger.LogInformation($"AddSigningServices:useKeyVaultSigning:{useKeyVaultSigning}");
-
-            if (useKeyVault)
-            {
-                builder.AddKeyVaultCredentialStore();
-                services.AddKeyVaultTokenCreateServiceTypes();
-                services.AddKeyVaultTokenCreateServiceConfiguration(Configuration);
-                if (useKeyVaultSigning)
-                {
-                    // this signs the token using azure keyvault to do the actual signing
-                    builder.AddKeyVaultTokenCreateService();
-                }
-            }
-            else
-            {
-                _logger.LogInformation("AddSigningServices AddDeveloperSigningCredential");
-                builder.AddDeveloperSigningCredential();
-            }
-        }
-
         public void AddGraphQLFieldAuthority(IServiceCollection services)
         {
             services.TryAddSingleton<IGraphQLFieldAuthority, InMemoryGraphQLFieldAuthority>();
             services.RegisterGraphQLCoreConfigurationServices(Configuration);
         }
 
-        public void AddTokenValidators(IServiceCollection services)
-        {
-            services.AddInMemoryOAuth2ConfigurationStore();
-
-            services.AddGoogleIdentityPrincipalEvaluator();
-            services.AddSelfIdentityPrincipalEvaluator();
-            services.AddGoogleMyCustomIdentityPrincipalEvaluator();
-
-            services.AddSelfOIDCTokenValidator();
-            var schemes = Configuration
-                .GetSection("oidcSchemes")
-                .Get<List<string>>();
-
-            foreach(var scheme in schemes)
-            {
-                services.AddSingleton<ISchemeTokenValidator>(x =>
-                {
-                    var oidcTokenValidator =  x.GetRequiredService<OIDCTokenValidator>();
-                    oidcTokenValidator.TokenScheme = scheme;
-                    return oidcTokenValidator;
-                });
-
-            }
-
-           
-        }
-
         public void AddGraphQLApis(IServiceCollection services)
         {
-            // APIS
-            services.AddTokenExchangeRollup(this);
-
-            services.AddGraphQLCoreCustomLoyaltyTypes();
-            services.AddGraphQLOrders();
             services.AddBurnerGraphQL();
             services.AddBurnerGraphQL2();
-            services.AddGraphQLAppIdentityTypes();
-            services.AddGraphQLDiscoveryTypes();
-            services.AddInMemoryDiscoveryHubStore();
-            services.AddB2BPublisherTypes();
-            services.AddInMemoryB2BPlublisherStore();
-            services.AddCustomerLoyalty();
             services.AddGraphQLAuthRequiredQuery();
         }
     }

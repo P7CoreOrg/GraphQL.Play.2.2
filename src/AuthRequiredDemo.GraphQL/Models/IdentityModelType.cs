@@ -1,6 +1,6 @@
 ﻿using GraphQL.Types;
 
-namespace IdentityTokenExchangeGraphQL
+namespace AuthRequiredDemoGraphQL.Models
 {
     public class IdentityModelType : ObjectGraphType<Models.IdentityModel>
     {

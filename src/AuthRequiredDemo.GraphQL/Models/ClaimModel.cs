@@ -1,4 +1,4 @@
-﻿namespace IdentityTokenExchangeGraphQL.Models
+﻿namespace AuthRequiredDemoGraphQL.Models
 {
     public class ClaimModel
     {
