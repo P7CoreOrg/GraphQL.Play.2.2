@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>TokenExchange.Rollup</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityServer4ExtensionGrants.Rollup" Version="1.0.0-beta-20190412-145618" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj" />
+    <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
+    <ProjectReference Include="..\InProcTokenMintingService\InProcTokenMintingService.csproj" />
+  </ItemGroup>
+
+</Project>

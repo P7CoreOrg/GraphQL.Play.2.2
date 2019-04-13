@@ -9,14 +9,15 @@
     <PackageProjectUrl>https://github.com/P7CoreOrg/GraphQL.Play.2.2/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/P7CoreOrg/GraphQL.Play.2.2/</RepositoryUrl>
   </PropertyGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj" />
-    <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj">
+    <PackageReference Include="IdentityServer4ExtensionGrants.Rollup" Version="1.0.0-beta-20190412-145618" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphQLPlay.Rollup\GraphQLPlay.Rollup.csproj" />
+    <ProjectReference Include="..\TokenExchange.Rollup.Shadow\TokenExchange.Rollup.Shadow.csproj">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
   </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="echo -rootDir $(SolutionDir)..\ &#xD;&#xA;echo -targetDir $(TargetDir) &#xD;&#xA;echo -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;powershell -NoProfile -ExecutionPolicy RemoteSigned -file $(SolutionDir)..\tools\repack.ps1                -rootDir $(SolutionDir)..\  -targetDir $(TargetDir) -projectDir $(ProjectDir)&#xD;&#xA;&#xD;&#xA;" />
   </Target>

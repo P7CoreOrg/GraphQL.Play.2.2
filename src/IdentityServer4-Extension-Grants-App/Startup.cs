@@ -45,6 +45,7 @@ using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
 using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
+using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
 
 namespace IdentityServer4_Extension_Grants_App
 {
@@ -55,7 +56,8 @@ namespace IdentityServer4_Extension_Grants_App
 
     public class Startup :
         IExtensionGrantsRollupRegistrations,
-        IGraphQLRollupRegistrations
+        IGraphQLRollupRegistrations,
+        ITokenExchangeRegistrations
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         public IConfiguration Configuration { get; }
@@ -80,33 +82,12 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
-            services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddGraphQLPlayRollup(this);
             services.AddExtensionGrantsRollup(this);
 
             services.AddInMemoryOAuth2ConfigurationStore();
 
-            // APIS
-            services.AddGraphQLCoreCustomLoyaltyTypes();
-            services.AddGraphQLOrders();
-
-
-            services.AddBurnerGraphQL();
-            services.AddBurnerGraphQL2();
-            services.AddGraphQLAppIdentityTypes();
-            services.AddGraphQLDiscoveryTypes();
-            services.AddInMemoryDiscoveryHubStore();
-            services.AddB2BPublisherTypes();
-            services.AddInMemoryB2BPlublisherStore();
-            services.AddCustomerLoyalty();
-
-            // Token Exchange Validators          
-           
-
-            services.AddGoogleIdentityPrincipalEvaluator();
-            services.AddSelfIdentityPrincipalEvaluator();
-            services.AddGoogleMyCustomIdentityPrincipalEvaluator();
 
             services.AddCors(options =>
             {
@@ -347,6 +328,10 @@ namespace IdentityServer4_Extension_Grants_App
 
         public void AddTokenValidators(IServiceCollection services)
         {
+            services.AddGoogleIdentityPrincipalEvaluator();
+            services.AddSelfIdentityPrincipalEvaluator();
+            services.AddGoogleMyCustomIdentityPrincipalEvaluator();
+
             services.AddSelfOIDCTokenValidator();
             var schemes = Configuration
                 .GetSection("oidcSchemes")
@@ -364,6 +349,23 @@ namespace IdentityServer4_Extension_Grants_App
             }
 
            
+        }
+
+        public void AddGraphQLApis(IServiceCollection services)
+        {
+            // APIS
+            services.AddTokenExchangeRollup(this);
+
+            services.AddGraphQLCoreCustomLoyaltyTypes();
+            services.AddGraphQLOrders();
+            services.AddBurnerGraphQL();
+            services.AddBurnerGraphQL2();
+            services.AddGraphQLAppIdentityTypes();
+            services.AddGraphQLDiscoveryTypes();
+            services.AddInMemoryDiscoveryHubStore();
+            services.AddB2BPublisherTypes();
+            services.AddInMemoryB2BPlublisherStore();
+            services.AddCustomerLoyalty();
         }
     }
 }

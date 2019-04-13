@@ -6,15 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4ExtensionGrants.Rollup" Version="1.0.0-beta-20190412-145618" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj" />
-    <ProjectReference Include="..\IdentityTokenExchange.GraphQL\IdentityTokenExchange.GraphQL.csproj" />
-    <ProjectReference Include="..\InProcTokenMintingService\InProcTokenMintingService.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore\P7Core.GraphQLCore.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />

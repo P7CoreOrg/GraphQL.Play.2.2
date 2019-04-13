@@ -37,6 +37,7 @@
     <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
     <ProjectReference Include="..\Self.Validator\Self.Validator.csproj" />
+    <ProjectReference Include="..\TokenExchange.Rollup.Shadow\TokenExchange.Rollup.Shadow.csproj" />
   </ItemGroup>
 
 

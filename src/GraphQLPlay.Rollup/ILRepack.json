@@ -6,14 +6,6 @@
       "symbols": null
     },
     {
-      "assembly": "IdentityTokenExchange.GraphQL",
-      "symbols": null
-    },
-    {
-      "assembly": "InProcTokenMintingService",
-      "symbols": null
-    },
-    {
       "assembly": "P7Core.GraphQLCore",
       "symbols": null
     },
@@ -25,8 +17,5 @@
       "assembly": "Utils",
       "symbols": null
     }
-
-
-
   ]
 }

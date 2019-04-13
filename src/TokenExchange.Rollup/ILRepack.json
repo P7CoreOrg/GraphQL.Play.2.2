@@ -1,0 +1,17 @@
+{
+  "outputAssembly": "TokenExchange.Rollup",
+  "assembliesToMerge": [
+    {
+      "assembly": "TokenExchange.Rollup.Shadow",
+      "symbols": null
+    },
+    {
+      "assembly": "IdentityTokenExchange.GraphQL",
+      "symbols": null
+    },
+    {
+      "assembly": "InProcTokenMintingService",
+      "symbols": null
+    }
+  ]
+}
