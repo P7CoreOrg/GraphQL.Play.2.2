@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GraphQL.Client\GraphQL.Client.csproj" />
-    <ProjectReference Include="..\IdentityServer4-Extension-Grants-App\IdentityServer4-Extension-Grants-App.csproj" />
+    <ProjectReference Include="..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
     <ProjectReference Include="..\XUnitHelpers\XUnitHelpers.csproj" />
     <ProjectReference Include="..\XUnitTestServerBase\XUnitTestServerBase.csproj" />
   </ItemGroup>
