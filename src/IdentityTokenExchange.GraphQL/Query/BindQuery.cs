@@ -25,9 +25,7 @@ namespace IdentityTokenExchangeGraphQL.Query
         private ITokenValidator _tokenValidator;
         private IScopedSummaryLogger _scopedSummaryLogger;
         private DiscoverCacheContainerFactory _discoverCacheContainerFactory;
-        private DiscoverCacheContainer _discoveryContainer;
         private IMemoryCache _memoryCache;
-        private ProviderValidator _providerValidator;
         private ITokenMintingService _tokenMintingService;
         private IConfiguration _configuration;
         private string _scheme;
@@ -37,7 +35,6 @@ namespace IdentityTokenExchangeGraphQL.Query
             ITokenMintingService tokenMintingService,
             IPrincipalEvaluatorRouter principalEvaluatorRouter,
             IConfiguration configuration,
-            DiscoverCacheContainerFactory discoverCacheContainerFactory,
             IMemoryCache memoryCache,
             ITokenValidator tokenValidator,
             IScopedSummaryLogger scopedSummaryLogger)
@@ -46,10 +43,7 @@ namespace IdentityTokenExchangeGraphQL.Query
             _principalEvaluatorRouter = principalEvaluatorRouter;
             _configuration = configuration;
             _scheme = _configuration["authValidation:scheme"];
-            _discoverCacheContainerFactory = discoverCacheContainerFactory;
-            _discoveryContainer = _discoverCacheContainerFactory.Get(_scheme);
             _memoryCache = memoryCache;
-            _providerValidator = new ProviderValidator(_discoveryContainer, _memoryCache);
             _tokenValidator = tokenValidator;
             _scopedSummaryLogger = scopedSummaryLogger;
         }
@@ -73,6 +67,9 @@ namespace IdentityTokenExchangeGraphQL.Query
                 {
                     try
                     {
+                        var graphQLUserContext = context.UserContext as GraphQLUserContext;
+                     
+
                         _scopedSummaryLogger.Add("query", "bind");
                         var input = context.GetArgument<BindInputModel>("input");
                         _scopedSummaryLogger.Add("tokenScheme", input.TokenScheme);
@@ -97,7 +94,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                             throw new Exception("A subject was not found in the ClaimsPrincipal object!");
                         }
 
-                        var discoveryResponse = await _discoveryContainer.DiscoveryCache.GetAsync();
+                    //    var discoveryResponse = await _discoveryContainer.DiscoveryCache.GetAsync();
                         var clientId = "arbitrary-resource-owner-client";
 
                         var resourceOwnerTokenRequest = await _principalEvaluatorRouter.GenerateResourceOwnerTokenRequestAsync(
@@ -122,7 +119,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                             refresh_token = response.RefreshToken,
                             expires_in = response.ExpiresIn,
                             token_type = response.TokenType,
-                            authority = discoveryResponse.Issuer,
+                            authority = $"{graphQLUserContext.HttpContextAccessor.HttpContext.Request.Scheme}://{graphQLUserContext.HttpContextAccessor.HttpContext.Request.Host}",
                             HttpHeaders = new List<HttpHeader>
                             {
                                 new HttpHeader() {Name = "x-authScheme", Value = _scheme}
