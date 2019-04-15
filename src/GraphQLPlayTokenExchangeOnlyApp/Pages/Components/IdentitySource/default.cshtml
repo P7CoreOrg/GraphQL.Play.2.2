@@ -1,0 +1,94 @@
+﻿@model GraphQLPlayTokenExchangeOnlyApp.ViewComponents.IdentitySourceViewComponentModel
+<h3>Identity Source</h3>
+
+<div>
+@if (Model != null)
+{
+    <div class="table-responsive">
+        <table class="table  table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>Name: @Model.SchemeId</th>
+                <th>Value(s)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.AuthorizeEndpoint)</td>
+                <td>@Model.DiscoveryResponse.AuthorizeEndpoint</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.JwksUri)</td>
+                <td><a href="@Model.DiscoveryResponse.JwksUri">@Model.DiscoveryResponse.JwksUri</a></td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.Issuer)</td>
+                <td>@Model.DiscoveryResponse.Issuer</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.FrontChannelLogoutSessionSupported)</td>
+                <td>@Model.DiscoveryResponse.FrontChannelLogoutSessionSupported</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.FrontChannelLogoutSupported)</td>
+                <td>@Model.DiscoveryResponse.FrontChannelLogoutSupported</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.RevocationEndpoint)</td>
+                <td>@Model.DiscoveryResponse.RevocationEndpoint</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.CheckSessionIframe)</td>
+                <td>@Model.DiscoveryResponse.CheckSessionIframe</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.EndSessionEndpoint)</td>
+                <td>@Model.DiscoveryResponse.EndSessionEndpoint</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.TokenEndpointAuthenticationMethodsSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.TokenEndpointAuthenticationMethodsSupported)</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.TokenEndpoint)</td>
+                <td>@Model.DiscoveryResponse.TokenEndpoint</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.DeviceAuthorizationEndpoint)</td>
+                <td>@Model.DiscoveryResponse.DeviceAuthorizationEndpoint</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.GrantTypesSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.GrantTypesSupported)</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.ClaimsSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.ClaimsSupported)</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.CodeChallengeMethodsSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.CodeChallengeMethodsSupported)</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.RegistrationEndpoint)</td>
+                <td>@Model.DiscoveryResponse.RegistrationEndpoint</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.ResponseModesSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.ResponseModesSupported)</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.ScopesSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.ScopesSupported)</td>
+            </tr>
+            <tr>
+                <td>@nameof(Model.DiscoveryResponse.ResponseTypesSupported)</td>
+                <td>@string.Join(", ", Model.DiscoveryResponse.ResponseTypesSupported)</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+}
+</div>
+
+

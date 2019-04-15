@@ -1,0 +1,12 @@
+﻿@model Dictionary<string, GraphQLPlay.IdentityModelExtras.DiscoverCacheContainer>
+<h3>Identity Sources</h3>
+
+<ul class="list-group">
+    @foreach (var item in Model)
+    {
+        var url = $"/IdentitySources/{item.Key}";
+        <a href="@url" class="list-group-item list-group-item-action  ">@item.Key</a>
+    }
+</ul>
+
+
