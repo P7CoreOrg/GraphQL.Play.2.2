@@ -32,8 +32,8 @@
     <ProjectReference Include="..\CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj" />
     <ProjectReference Include="..\DiscoveryHub\DiscoveryHub.csproj" />
     <ProjectReference Include="..\graphql-dotnet\example-orders\Orders\Orders.csproj" />
+    <ProjectReference Include="..\GraphQLPlay.IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj" />
     <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj" />
-    <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
     <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />

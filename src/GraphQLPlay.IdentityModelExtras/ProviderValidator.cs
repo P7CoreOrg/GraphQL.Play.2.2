@@ -9,7 +9,7 @@ using IdentityModel.Client;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 
-namespace IdentityModelExtras
+namespace GraphQLPlay.IdentityModelExtras
 {
     public class ProviderValidator
     {

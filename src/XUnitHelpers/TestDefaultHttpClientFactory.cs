@@ -1,4 +1,5 @@
-﻿using IdentityModelExtras;
+﻿
+using GraphQLPlay.IdentityModelExtras;
 using Microsoft.AspNetCore.TestHost;
 using System.Net.Http;
 

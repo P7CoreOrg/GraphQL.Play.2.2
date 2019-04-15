@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GraphQLPlay.IdentityModelExtras;
 using IdentityModel;
 using IdentityModel.Client;
-using IdentityModelExtras;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using TokenExchange.Contracts;

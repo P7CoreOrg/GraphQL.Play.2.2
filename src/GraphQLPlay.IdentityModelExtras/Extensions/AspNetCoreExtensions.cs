@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace IdentityModelExtras.Extensions
+namespace GraphQLPlay.IdentityModelExtras.Extensions
 {
     public static class AspNetCoreExtensions
     {
-        public static void AddIdentityModelExtrasTypes(this IServiceCollection services)
+        public static void AddGraphQLPlayIdentityModelExtrasTypes(this IServiceCollection services)
         {
             services.TryAddTransient<IDefaultHttpClientFactory, NullDefaultHttpClientFactory>();
         }

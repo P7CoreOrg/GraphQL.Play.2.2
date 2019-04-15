@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IdentityModelExtras
+namespace GraphQLPlay.IdentityModelExtras
 {
     public interface IOAuth2ConfigurationStore
     {

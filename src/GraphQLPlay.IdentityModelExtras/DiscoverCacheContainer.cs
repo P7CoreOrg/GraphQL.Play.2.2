@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 
-namespace IdentityModelExtras
+namespace GraphQLPlay.IdentityModelExtras
 {
 
     public class DiscoverCacheContainer : IDiscoveryCacheContainer

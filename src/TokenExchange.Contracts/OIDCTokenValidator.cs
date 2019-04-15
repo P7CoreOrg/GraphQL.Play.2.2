@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityModelExtras;
+using GraphQLPlay.IdentityModelExtras;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 

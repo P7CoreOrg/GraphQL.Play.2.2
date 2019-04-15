@@ -1,6 +1,6 @@
 ﻿using IdentityModel.Client;
 
-namespace IdentityModelExtras
+namespace GraphQLPlay.IdentityModelExtras
 {
     public interface IDiscoveryCacheContainer
     {

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using GraphQLPlay.IdentityModelExtras;
 using IdentityModel.Client;
 using IdentityModelExtras;
 using Microsoft.AspNetCore.Mvc;

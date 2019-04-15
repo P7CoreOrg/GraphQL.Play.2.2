@@ -1,4 +1,4 @@
-﻿using IdentityModelExtras;
+﻿using GraphQLPlay.IdentityModelExtras;
 using IdentityModelExtras.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityTokenExchangeGraphQL.Extensions;

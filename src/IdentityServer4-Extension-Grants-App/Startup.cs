@@ -12,6 +12,8 @@ using B2BPublisher.Extensions;
 using CustomerLoyaltyStore.Extensions;
 using CustomerLoyalyStore.GraphQL.Extensions;
 using DiscoveryHub.Extensions;
+using GraphQLPlay.IdentityModelExtras;
+using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
@@ -79,7 +81,7 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddDistributedMemoryCache();
-            services.AddIdentityModelExtrasTypes();
+            services.AddGraphQLPlayIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
             services.AddExtensionGrantsRollup(this);
 

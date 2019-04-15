@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiAuthority.AccessTokenValidation", "MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj", "{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityModelExtras", "IdentityModelExtras\IdentityModelExtras.csproj", "{36CF6D4F-0814-4BA9-90B8-5EC743B9B7A1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerLoyalyStore.GraphQL", "CustomerLoyalyStore.GraphQL\CustomerLoyalyStore.GraphQL.csproj", "{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerLoyaltyStore", "CustomerLoyaltyStore\CustomerLoyaltyStore.csproj", "{CBA449A9-0844-4B0E-B6C4-1F1692ADF992}"
@@ -123,15 +121,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlay.Contracts", "Gr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rollups", "Rollups", "{4035B03A-D8BF-4C5B-A8CD-0B495BEF1B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenExchange.Rollup.Shadow", "TokenExchange.Rollup.Shadow\TokenExchange.Rollup.Shadow.csproj", "{11659606-BB24-476C-82F0-4FEA1B67F19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenExchange.Rollup.Shadow", "TokenExchange.Rollup.Shadow\TokenExchange.Rollup.Shadow.csproj", "{11659606-BB24-476C-82F0-4FEA1B67F19B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokenExchange.Rollup", "TokenExchange.Rollup\TokenExchange.Rollup.csproj", "{04720BBD-3DB1-41D5-BECC-9EB6FE1A5410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenExchange.Rollup", "TokenExchange.Rollup\TokenExchange.Rollup.csproj", "{04720BBD-3DB1-41D5-BECC-9EB6FE1A5410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQLPlayApiOnlyApp", "GraphQLPlayApiOnlyApp\GraphQLPlayApiOnlyApp.csproj", "{03827651-2B73-4821-8BF6-8E938A0BB7CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlayApiOnlyApp", "GraphQLPlayApiOnlyApp\GraphQLPlayApiOnlyApp.csproj", "{03827651-2B73-4821-8BF6-8E938A0BB7CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthRequiredApi", "AuthRequiredApi", "{14A1391F-8DDA-4C42-9189-AD87FBA0840F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthRequiredDemo.GraphQL", "AuthRequiredDemo.GraphQL\AuthRequiredDemo.GraphQL.csproj", "{5F58847A-F7E2-4888-88F6-2D893A267A2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthRequiredDemo.GraphQL", "AuthRequiredDemo.GraphQL\AuthRequiredDemo.GraphQL.csproj", "{5F58847A-F7E2-4888-88F6-2D893A267A2B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlayTokenExchangeOnlyApp", "GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj", "{2462DE42-34C5-466A-A9CF-0DFC22559A5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlay.IdentityModelExtras", "GraphQLPlay.IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj", "{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -143,10 +145,6 @@ Global
 		{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA3A7792-F9DE-4FC6-8772-A6F532DFE025}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36CF6D4F-0814-4BA9-90B8-5EC743B9B7A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36CF6D4F-0814-4BA9-90B8-5EC743B9B7A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36CF6D4F-0814-4BA9-90B8-5EC743B9B7A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36CF6D4F-0814-4BA9-90B8-5EC743B9B7A1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{416B973A-E61A-48D5-A6B5-D9242FCCFAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -291,6 +289,14 @@ Global
 		{5F58847A-F7E2-4888-88F6-2D893A267A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F58847A-F7E2-4888-88F6-2D893A267A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F58847A-F7E2-4888-88F6-2D893A267A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2462DE42-34C5-466A-A9CF-0DFC22559A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2462DE42-34C5-466A-A9CF-0DFC22559A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2462DE42-34C5-466A-A9CF-0DFC22559A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2462DE42-34C5-466A-A9CF-0DFC22559A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -339,6 +345,7 @@ Global
 		{03827651-2B73-4821-8BF6-8E938A0BB7CF} = {19418411-5334-4122-87E5-F80D747114AA}
 		{14A1391F-8DDA-4C42-9189-AD87FBA0840F} = {4CEE4042-2D8A-4594-9CCF-79B539115F22}
 		{5F58847A-F7E2-4888-88F6-2D893A267A2B} = {14A1391F-8DDA-4C42-9189-AD87FBA0840F}
+		{2462DE42-34C5-466A-A9CF-0DFC22559A5A} = {19418411-5334-4122-87E5-F80D747114AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}

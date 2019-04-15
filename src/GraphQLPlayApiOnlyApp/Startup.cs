@@ -7,9 +7,9 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AuthRequiredDemoGraphQL.Extensions;
+using GraphQLPlay.IdentityModelExtras;
+using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlay.Rollup.Extensions;
-using IdentityModelExtras;
-using IdentityModelExtras.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,7 +56,7 @@ namespace GraphQLPlayApiOnlyApp
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddDistributedMemoryCache();
-            services.AddIdentityModelExtrasTypes();
+            services.AddGraphQLPlayIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
 
             services.AddCors(options =>

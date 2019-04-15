@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IdentityModelExtras\IdentityModelExtras.csproj" />
+    <ProjectReference Include="..\GraphQLPlay.IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj" />
+    <ProjectReference Include="..\IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj" />
   </ItemGroup>
 
 </Project>
