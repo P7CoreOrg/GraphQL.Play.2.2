@@ -41,7 +41,7 @@ The kit allows you to author [custom exchanges](./docs/custom-bind-handler.md) a
 
 
 ## 2 Kits in One  
-For those that really love microservice you could spin up 2 version of this where your OAuth2 and TokenExchange are in one service and your [API ONLY WebApp](./src/GraphQLPlayApiOnlyApp) are in another.  Your apis micro service would simply refer to the first one as its auhorization authority.
+For those that really love microservice you could spin up 2 version of this where your [OAuth2 and TokenExchange](./src/GraphQLPlayTokenExchangeOnlyApp) are in one service and your [API ONLY WebApp](./src/GraphQLPlayApiOnlyApp) are in another.  Your apis micro service would simply refer to the first one as its auhorization authority.
 
 I personally like monoliths but in a pinch can spawn off a microservice.  In the end you are trading one problem for another.  
 For the monolith approach, start with the TokenExchange app and keep adding apis to it.
