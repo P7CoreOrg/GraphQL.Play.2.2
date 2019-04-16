@@ -8,7 +8,7 @@ namespace TokenExchange.Contracts
 {
     public interface IPrincipalEvaluator
     {
-        Task<TokenExchangeResponse> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest);
+        Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest);
         Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(ClaimsPrincipal principal, List<string> extras);
         string Name { get; }
     }

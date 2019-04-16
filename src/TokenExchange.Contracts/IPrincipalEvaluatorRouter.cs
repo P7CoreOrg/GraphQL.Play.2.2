@@ -8,7 +8,7 @@ namespace TokenExchange.Contracts
     {
         Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(string tokenScheme, 
             ClaimsPrincipal principal, List<string> extras);
-        Task<TokenExchangeResponse> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
+        Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
 
     }
 }

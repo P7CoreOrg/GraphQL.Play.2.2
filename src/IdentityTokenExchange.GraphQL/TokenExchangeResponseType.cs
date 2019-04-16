@@ -4,6 +4,7 @@ using TokenExchange.Contracts;
 
 namespace IdentityTokenExchangeGraphQL
 {
+    public class TokenExchangeResponsesType : ListGraphType<TokenExchangeResponseType> { }
     public class TokenExchangeResponseType : ObjectGraphType<TokenExchangeResponse>
     {
         public TokenExchangeResponseType()

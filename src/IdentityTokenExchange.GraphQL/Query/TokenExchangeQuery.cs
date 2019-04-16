@@ -51,7 +51,7 @@ namespace IdentityTokenExchangeGraphQL.Query
 
         public void AddGraphTypeFields(QueryCore queryCore)
         {
-            queryCore.FieldAsync<TokenExchangeResponseType>(name: "tokenExchange",
+            queryCore.FieldAsync<ListGraphType<TokenExchangeResponseType>>(name: "tokenExchange",
                 description: $"Given a proper list of OAuth2 Tokens, returns an authorization payload for downstream authorized calls.",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TokenExchangeInput>> {Name = "input"}),
                 resolve: async context =>
@@ -103,6 +103,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                             Extras = input.Extras
                         };
                         var tokenExchangeResponse = await _principalEvaluatorRouter.ProcessExchangeAsync(input.Exchange, tokenExchangeRequest);
+                     
                         return tokenExchangeResponse;
                     }
                     catch (Exception e)

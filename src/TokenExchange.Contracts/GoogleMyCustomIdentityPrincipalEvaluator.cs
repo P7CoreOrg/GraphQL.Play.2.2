@@ -47,7 +47,7 @@ namespace TokenExchange.Contracts
             return resourceOwnerTokenRequest;
         }
 
-        public async Task<TokenExchangeResponse> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
+        public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
             if (tokenExchangeRequest.Extras == null || tokenExchangeRequest.Extras.Count == 0)
             {
@@ -89,7 +89,7 @@ namespace TokenExchange.Contracts
                             }
 
             };
-            return tokenExchangeResponse;
+            return new List<TokenExchangeResponse>() { tokenExchangeResponse };
         }
     }
 }

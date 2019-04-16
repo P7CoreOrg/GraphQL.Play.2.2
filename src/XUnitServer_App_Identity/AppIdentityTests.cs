@@ -236,10 +236,11 @@ namespace XUnitServer_App_Identity
 
                 var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
                 graphQLResponse.ShouldNotBeNull();
-                var bindResponse = (TokenExchangeResponse)graphQLResponse.GetDataFieldAs<TokenExchangeResponse>("tokenExchange"); //data->appIdentityBind is casted as AppIdentityResponse
+                var bindResponse = (List<TokenExchangeResponse>)graphQLResponse.GetDataFieldAs<List<TokenExchangeResponse>>("tokenExchange"); //data->appIdentityBind is casted as AppIdentityResponse
                 bindResponse.ShouldNotBeNull();
+                bindResponse.Count.ShouldBeGreaterThan(0);
                 var handler = new JwtSecurityTokenHandler();
-                var tokenS = handler.ReadToken(bindResponse.access_token) as JwtSecurityToken;
+                var tokenS = handler.ReadToken(bindResponse[0].access_token) as JwtSecurityToken;
 
                 tokenS.ShouldNotBeNull();
             }
