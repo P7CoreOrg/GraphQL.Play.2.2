@@ -2,16 +2,13 @@
 
 namespace IdentityTokenExchangeGraphQL
 {
-    public class BindInput : InputObjectGraphType
+    public class IdentityTokenInput : InputObjectGraphType
     {
-       
-        public BindInput()
+        public IdentityTokenInput()
         {
-            Name = "bind";
+            Name = "identity_token";
             Field<NonNullGraphType<GraphQL.Types.StringGraphType>>("token");
             Field<NonNullGraphType<StringGraphType>>("tokenScheme");
-            Field<NonNullGraphType<StringGraphType>>("exchange");
-            Field<ListGraphType<StringGraphType>>("extras");
         }
     }
 }

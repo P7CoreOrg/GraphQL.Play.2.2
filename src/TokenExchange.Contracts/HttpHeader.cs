@@ -1,4 +1,4 @@
-﻿namespace IdentityTokenExchangeGraphQL.Models
+﻿namespace TokenExchange.Contracts
 {
     public class HttpHeader
     {

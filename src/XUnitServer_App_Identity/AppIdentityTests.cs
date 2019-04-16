@@ -14,6 +14,7 @@ using GraphQL.Client;
 using IdentityTokenExchangeGraphQL.Models;
 using Xunit;
 using XUnitTestServerBase;
+using TokenExchange.Contracts;
 
 namespace XUnitServer_App_Identity
 {
@@ -203,15 +204,13 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityBind = new GraphQLRequest(@"query q($input: bind!) {
-                                                            bind(input: $input){
-                                                                authorization{
-                                                                    authority
-                                                                    access_token
-                                                                    httpHeaders{
-                                                                        name
-                                                                        value
-                                                                    }
+                var appIdentityBind = new GraphQLRequest(@"query q($input: tokenExchange!) {
+                                                            tokenExchange(input: $input){
+                                                                authority
+                                                                access_token
+                                                                httpHeaders{
+                                                                    name
+                                                                    value
                                                                 }
                                                             }
                                                         }")
@@ -222,8 +221,13 @@ namespace XUnitServer_App_Identity
                     {
                         input = new
                         {
-                            token = appIdentityResponse.id_token,
-                            tokenScheme = "self",
+                            tokens = new[] {
+                                new {
+                                    token = appIdentityResponse.id_token,
+                                    tokenScheme = "self"
+                                    }
+                            },
+                           
                             exchange = "google-my-custom",
                             extras = new[] { "a", "b", "c" }
                         }
@@ -232,10 +236,10 @@ namespace XUnitServer_App_Identity
 
                 var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
                 graphQLResponse.ShouldNotBeNull();
-                var bindResponse = (BindResultModel)graphQLResponse.GetDataFieldAs<BindResultModel>("bind"); //data->appIdentityBind is casted as AppIdentityResponse
+                var bindResponse = (TokenExchangeResponse)graphQLResponse.GetDataFieldAs<TokenExchangeResponse>("tokenExchange"); //data->appIdentityBind is casted as AppIdentityResponse
                 bindResponse.ShouldNotBeNull();
                 var handler = new JwtSecurityTokenHandler();
-                var tokenS = handler.ReadToken(bindResponse.Authorization.access_token) as JwtSecurityToken;
+                var tokenS = handler.ReadToken(bindResponse.access_token) as JwtSecurityToken;
 
                 tokenS.ShouldNotBeNull();
             }

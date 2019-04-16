@@ -17,10 +17,10 @@ namespace IdentityTokenExchangeGraphQL.Extensions
             // Bind Query
             
             services.AddTransient<HttpHeaderType>();
-            services.AddTransient<BindInput>();
-            services.AddTransient<BindResultType>();
-            services.AddTransient<AuthorizationResultType>();
-            services.AddTransient<IQueryFieldRegistration, BindQuery>();
+            services.AddTransient<TokenExchangeInput>();
+            services.AddTransient<IdentityTokenInput>();
+            services.AddTransient<TokenExchangeResponseType>();
+            services.AddTransient<IQueryFieldRegistration, TokenExchangeQuery>();
 
         }
     }

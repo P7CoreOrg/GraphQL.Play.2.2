@@ -327,7 +327,6 @@ namespace IdentityServer4_Extension_Grants_App
         {
             services.AddInMemoryOAuth2ConfigurationStore();
 
-            services.AddGoogleIdentityPrincipalEvaluator();
             services.AddSelfIdentityPrincipalEvaluator();
             services.AddGoogleMyCustomIdentityPrincipalEvaluator();
 

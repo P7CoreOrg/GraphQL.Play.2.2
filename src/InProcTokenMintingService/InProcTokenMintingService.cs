@@ -46,7 +46,8 @@ namespace TokenMintingService
                 TokenType = "Bearer",
                 IsError = tokenRawResult.TokenErrorResult != null,
                 ErrorDescription = (tokenRawResult.TokenErrorResult == null)?"": tokenRawResult.TokenErrorResult.Response.ErrorDescription,
-                Error = (tokenRawResult.TokenErrorResult == null) ? "" : tokenRawResult.TokenErrorResult.Response.Error
+                Error = (tokenRawResult.TokenErrorResult == null) ? "" : tokenRawResult.TokenErrorResult.Response.Error,
+                Scheme = "self"
             };
         }
 

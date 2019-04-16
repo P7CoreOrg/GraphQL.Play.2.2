@@ -1,13 +1,14 @@
 ﻿using GraphQL.Types;
 using IdentityTokenExchangeGraphQL.Models;
+using TokenExchange.Contracts;
 
 namespace IdentityTokenExchangeGraphQL
 {
-    public class AuthorizationResultType : ObjectGraphType<AuthorizationResultModel>
+    public class TokenExchangeResponseType : ObjectGraphType<TokenExchangeResponse>
     {
-        public AuthorizationResultType()
+        public TokenExchangeResponseType()
         {
-            Name = "authorizationResult";
+            Name = "tokenExchangeResponse";
             Field(x => x.access_token).Description("The access_token.");
             Field(x => x.expires_in).Description("Expired in seconds.");
             Field(x => x.token_type).Description("The type of token.");

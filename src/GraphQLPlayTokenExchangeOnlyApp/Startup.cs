@@ -302,7 +302,6 @@ namespace GraphQLPlayTokenExchangeOnlyApp
         {
             services.AddInMemoryOAuth2ConfigurationStore();
 
-            services.AddGoogleIdentityPrincipalEvaluator();
             services.AddSelfIdentityPrincipalEvaluator();
             services.AddGoogleMyCustomIdentityPrincipalEvaluator();
 

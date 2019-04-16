@@ -43,7 +43,16 @@ namespace TokenExchange.Contracts
             throw new Exception($"{tokenScheme} is not mapped to an IPrincipalEvaluator");
         }
 
-
-      
+        public async Task<TokenExchangeResponse> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest)
+        {
+            if (_mapPrincipalEvaluators.ContainsKey(tokenScheme))
+            {
+                var response =
+                    await _mapPrincipalEvaluators[tokenScheme]
+                        .ProcessExchangeAsync(tokenExchangeRequest);
+                return response;
+            }
+            throw new Exception($"{tokenScheme} is not mapped to an IPrincipalEvaluator");
+        }
     }
 }

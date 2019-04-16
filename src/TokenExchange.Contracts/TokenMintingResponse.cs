@@ -28,5 +28,6 @@
         public int ExpiresIn { get; set; }
         public bool IsError { get; set; }
         public string Error { get; set; }
+        public string Scheme { get; set; }
     }
 }
