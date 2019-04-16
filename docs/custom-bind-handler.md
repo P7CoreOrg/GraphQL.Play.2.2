@@ -27,7 +27,9 @@ query q($input: tokenExchange!) {
 	tokenExchange(input: $input){
 		authority
 		access_token
-		httpHeaders{
+		token_type
+		httpHeaders
+		{
 			name
 			value
 		}
@@ -55,16 +57,19 @@ The **extras** are hints that are only known to the exchange.
 ```
 {
   "data": {
-    "tokenExchange": {
-      "authority": "https://localhost:5001",
-      "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjN2RmOWU1YjBjYzNkZDI1NmE1MWFiNzcwYmM2ZTAzIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTU0MzA5NzcsImV4cCI6MTU1NTQzNDU3NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyIsImdyYXBoUUxQbGF5Il0sImNsaWVudF9pZCI6ImFyYml0cmFyeS1yZXNvdXJjZS1vd25lci1jbGllbnQiLCJzdWIiOiIxMjliYWI4YS01N2E4LTQ1OTgtYmQ1OS1jNTQwOWU5ZGMwZGYiLCJhdXRoX3RpbWUiOjE1NTU0MzA5NzcsImlkcCI6ImxvY2FsIiwiY2xpZW50X25hbWVzcGFjZSI6IkRhZmZ5IER1Y2siLCJyb2xlIjpbImEiLCJiIiwiYyIsInVzZXIiXSwic2NvcGUiOlsiZ3JhcGhRTFBsYXkiLCJvZmZsaW5lX2FjY2VzcyJdLCJhbXIiOlsiYXJiaXRyYXJ5X3Jlc291cmNlX293bmVyIl19.HRylzTZpYKVk7ZLv75_GMSmP_89lrF6HoGEDSjYQn2L5lEgXTh_0U204bk0Kw9N2n91IO8JUR25RQiIfNvqHqfySVTzZf06aBPqd3Ky4I9Q8oHhBDlk1GLnqImeznM1BYswfvprHZJ0NCLRy-F9n6EhdJifDVAATqi2xySAFXJVZ3koTdOvUNJWNPyjY1BMvqaG7H7b27gag7gIj6EbT0onjIXLF_FPdIC7Z9gSCf4Yt776i4kxES7dti1ZhxEzQnM-AmWchcDrz0rhHyDCLos5jMF7Ww4YtHs3nRjH5l5hX3z-ZhHC-Md-xb-jDHCWPW3IwN9cpmq44oKVSJWHwvg",
-      "httpHeaders": [
-        {
-          "name": "x-authScheme",
-          "value": "self"
-        }
-      ]
-    }
+    "tokenExchange": [
+      {
+        "authority": "https://localhost:5001",
+        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjN2RmOWU1YjBjYzNkZDI1NmE1MWFiNzcwYmM2ZTAzIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTU0MzI3ODcsImV4cCI6MTU1NTQzNjM4NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyIsImdyYXBoUUxQbGF5Il0sImNsaWVudF9pZCI6ImFyYml0cmFyeS1yZXNvdXJjZS1vd25lci1jbGllbnQiLCJzdWIiOiIxMjliYWI4YS01N2E4LTQ1OTgtYmQ1OS1jNTQwOWU5ZGMwZGYiLCJhdXRoX3RpbWUiOjE1NTU0MzI3ODcsImlkcCI6ImxvY2FsIiwiY2xpZW50X25hbWVzcGFjZSI6IkRhZmZ5IER1Y2siLCJyb2xlIjpbImEiLCJiIiwiYyIsInVzZXIiXSwic2NvcGUiOlsiZ3JhcGhRTFBsYXkiLCJncmFwaFFMUGxheSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJhcmJpdHJhcnlfcmVzb3VyY2Vfb3duZXIiXX0.j0Ao7O40YixNv6LAst1fphIxMT5JUzX7nVYwQFMhspuUKpicByZzCck269HpLtQfsC6qDcd7dsuWMrGtETmz8Gv0i2Merkj_CZi9v7Pr9gW61hpUyeN10JQbNLKNcxQFesnKwVK_To7bxg2hzwTuDdFtjUGQQlYpP9MGZa4yMQ9JCK_4qpi38dJO3uQY82AhBEg_iKC60N5F56Snh0ODgn0iIe1x831dZeAlYzbFdV23m7jmwNGBDxMeP7CzKNsl0C6ostS6mVpuGWREWnd5-gt0YkHgAE6FVgQsWnHaVoVuXTa2otuWNJOAUeOHmIH15ErhuP0_l8j7Lbz9fSldfg",
+        "token_type": "Bearer",
+        "httpHeaders": [
+          {
+            "name": "x-authScheme",
+            "value": "self"
+          }
+        ]
+      }
+    ]
   }
 }
 ```
