@@ -25,13 +25,13 @@ public static IServiceCollection AddGoogleMyCustomIdentityPrincipalEvaluator(thi
 ```
 query q($input: tokenExchange!) {
 	tokenExchange(input: $input){
-	  authority
-      access_token
-      httpHeaders{
-	    name
-        value
- 	  }
-    }
+		authority
+		access_token
+		httpHeaders{
+			name
+			value
+		}
+	}
 }
 ```
 ## Variables  
