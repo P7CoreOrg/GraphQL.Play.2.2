@@ -303,7 +303,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddInMemoryOAuth2ConfigurationStore();
 
             services.AddSelfIdentityPrincipalEvaluator();
-            services.AddGoogleMyCustomIdentityPrincipalEvaluator();
+            services.AddDemoCustomIdentityPrincipalEvaluator();
 
             services.AddSelfOIDCTokenValidator();
             var schemes = Configuration

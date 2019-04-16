@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TokenExchange.Contracts.Extensions;
 
 namespace TokenExchange.Contracts
@@ -12,12 +13,14 @@ namespace TokenExchange.Contracts
     {
 
         private IHttpContextAccessor _httpContextAssessor;
-        private ITokenMintingService _tokenMintingService;
+        private IServiceProvider _serviceProvider;
 
-        public GoogleMyCustomIdentityPrincipalEvaluator(IHttpContextAccessor httpContextAssessor, ITokenMintingService tokenMintingService)
+        public GoogleMyCustomIdentityPrincipalEvaluator(
+            IServiceProvider serviceProvider,
+            IHttpContextAccessor httpContextAssessor)
         {
+            _serviceProvider = serviceProvider;
             _httpContextAssessor = httpContextAssessor;
-            _tokenMintingService = tokenMintingService;
         }
 
         public string Name => "google-my-custom";
@@ -44,7 +47,8 @@ namespace TokenExchange.Contracts
                 Subject = tokenExchangeRequest.ValidatedTokens[0].Principal.GetSubjectFromPincipal(),
                 ClientId = "arbitrary-resource-owner-client"
             };
-            var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
+            var tokenMintingService = _serviceProvider.GetRequiredService<ITokenMintingService>();
+            var response = await tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
             if (response.IsError)
             {

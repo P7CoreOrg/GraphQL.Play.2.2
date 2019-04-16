@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TokenExchange.Contracts.Extensions;
 
 namespace TokenExchange.Contracts
@@ -11,12 +12,14 @@ namespace TokenExchange.Contracts
     {
 
         private IHttpContextAccessor _httpContextAssessor;
-        private ITokenMintingService _tokenMintingService;
+        private IServiceProvider _serviceProvider;
 
-        public SelfIdentityPrincipalEvaluator(IHttpContextAccessor httpContextAssessor, ITokenMintingService tokenMintingService)
+        public SelfIdentityPrincipalEvaluator(
+            IServiceProvider serviceProvider,
+            IHttpContextAccessor httpContextAssessor)
         {
+            _serviceProvider = serviceProvider;
             _httpContextAssessor = httpContextAssessor;
-            _tokenMintingService = tokenMintingService;
         }
 
         public string Name => "self";
@@ -43,7 +46,8 @@ namespace TokenExchange.Contracts
                 Subject = tokenExchangeRequest.ValidatedTokens[0].Principal.GetSubjectFromPincipal(),
                 ClientId = "arbitrary-resource-owner-client"
             };
-            var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
+            var tokenMintingService = _serviceProvider.GetRequiredService<ITokenMintingService>();
+            var response = await tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
             if (response.IsError)
             {
