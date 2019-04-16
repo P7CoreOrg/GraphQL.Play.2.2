@@ -6,9 +6,6 @@ namespace TokenExchange.Contracts
 {
     public interface IPrincipalEvaluatorRouter
     {
-        Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(string tokenScheme, 
-            ClaimsPrincipal principal, List<string> extras);
-        Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
-
+          Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
     }
 }

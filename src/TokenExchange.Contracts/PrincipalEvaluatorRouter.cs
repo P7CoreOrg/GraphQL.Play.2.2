@@ -30,18 +30,6 @@ namespace TokenExchange.Contracts
 
         }
 
-        public async Task<ResourceOwnerTokenRequest> GenerateResourceOwnerTokenRequestAsync(string tokenScheme, ClaimsPrincipal principal, List<string> extras)
-
-        {
-            if (_mapPrincipalEvaluators.ContainsKey(tokenScheme))
-            {
-                var resourceOwnerTokenRequest =
-                    await _mapPrincipalEvaluators[tokenScheme]
-                        .GenerateResourceOwnerTokenRequestAsync(principal,extras);
-                return resourceOwnerTokenRequest;
-            }
-            throw new Exception($"{tokenScheme} is not mapped to an IPrincipalEvaluator");
-        }
 
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest)
         {
