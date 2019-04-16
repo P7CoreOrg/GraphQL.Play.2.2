@@ -13,11 +13,11 @@ namespace AppIdentity.Extensions
 
             //Application Identity Bind Query
 
-            services.AddTransient<AppIdentityBindInput>();
+            services.AddTransient<AppIdentityCreateInput>();
             services.AddTransient<AppIdentityResultType>();
             services.AddTransient<AppIdentityRefreshInput>();
             
-            services.AddTransient<IQueryFieldRegistration, AppIdentityBindQuery>();
+            services.AddTransient<IQueryFieldRegistration, AppIdentityQuery>();
 
         }
     }

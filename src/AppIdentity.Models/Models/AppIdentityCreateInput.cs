@@ -3,11 +3,11 @@ using System;
 
 namespace AppIdentity.Models
 {
-    public class AppIdentityBindInput : InputObjectGraphType
+    public class AppIdentityCreateInput : InputObjectGraphType
     {
-        public AppIdentityBindInput()
+        public AppIdentityCreateInput()
         {
-            Name = "appIdentityBind";
+            Name = "appIdentityCreate";
             Field<NonNullGraphType<StringGraphType>>("appId");
             Field<NonNullGraphType<StringGraphType>>("machineId");
         }

@@ -56,8 +56,8 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityBind = new GraphQLRequest(@"query q($input: appIdentityBind!) {
-                          appIdentityBind(input: $input){
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
                             authority
                               expires_in
                               id_token
@@ -76,9 +76,9 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
                 graphQLResponse.ShouldNotBeNull();
-                var appIdentityResponse = graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityBind"); //data->appIdentityBind is casted as AppIdentityResponse
+                var appIdentityResponse = graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
                 appIdentityResponse.ShouldNotBeNull();
                 var handler = new JwtSecurityTokenHandler();
                 var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
@@ -93,8 +93,8 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityBind = new GraphQLRequest(@"query q($input: appIdentityBind!) {
-                          appIdentityBind(input: $input){
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
                             authority
                               expires_in
                               id_token
@@ -113,8 +113,8 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
-                appIdentityResponse = (AppIdentityResultModel)graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityBind"); //data->appIdentityBind is casted as AppIdentityResponse
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                appIdentityResponse = (AppIdentityResultModel)graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
                 appIdentityResponse.ShouldNotBeNull();
                 var handler = new JwtSecurityTokenHandler();
                 var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
@@ -130,7 +130,7 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityBind = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
                                                                       appIdentityRefresh(input: $input){
                                                                         authority
                                                                         expires_in
@@ -149,9 +149,9 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
                 graphQLResponse.ShouldNotBeNull();
-                appIdentityResponse = graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityRefresh"); //data->appIdentityBind is casted as AppIdentityResultModel
+                appIdentityResponse = graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityRefresh"); //data->appIdentityCreate is casted as AppIdentityResultModel
                 appIdentityResponse.ShouldNotBeNull();
                 var handler = new JwtSecurityTokenHandler();
                 var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
@@ -167,8 +167,8 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityBind = new GraphQLRequest(@"query q($input: appIdentityBind!) {
-                          appIdentityBind(input: $input){
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
                             authority
                               expires_in
                               id_token
@@ -187,8 +187,8 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
-                appIdentityResponse = (AppIdentityResultModel)graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityBind"); //data->appIdentityBind is casted as AppIdentityResponse
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                appIdentityResponse = (AppIdentityResultModel)graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
                 appIdentityResponse.ShouldNotBeNull();
                 var handler = new JwtSecurityTokenHandler();
                 var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
@@ -204,7 +204,7 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityBind = new GraphQLRequest(@"query q($input: tokenExchange!) {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: tokenExchange!) {
                                                             tokenExchange(input: $input){
                                                                 authority
                                                                 access_token
@@ -234,9 +234,9 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityBind);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
                 graphQLResponse.ShouldNotBeNull();
-                var bindResponse = (List<TokenExchangeResponse>)graphQLResponse.GetDataFieldAs<List<TokenExchangeResponse>>("tokenExchange"); //data->appIdentityBind is casted as AppIdentityResponse
+                var bindResponse = (List<TokenExchangeResponse>)graphQLResponse.GetDataFieldAs<List<TokenExchangeResponse>>("tokenExchange"); //data->appIdentityCreate is casted as AppIdentityResponse
                 bindResponse.ShouldNotBeNull();
                 bindResponse.Count.ShouldBeGreaterThan(0);
                 var handler = new JwtSecurityTokenHandler();

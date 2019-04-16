@@ -12,12 +12,12 @@ using TokenExchange.Contracts;
 
 namespace AppIdentity.Query
 {
-    public class AppIdentityBindQuery : IQueryFieldRegistration
+    public class AppIdentityQuery : IQueryFieldRegistration
     {
         private ITokenMintingService _tokenMintingService;
         private ITokenValidator _tokenValidator;
 
-        public AppIdentityBindQuery(ITokenMintingService tokenMintingService, ITokenValidator tokenValidator)
+        public AppIdentityQuery(ITokenMintingService tokenMintingService, ITokenValidator tokenValidator)
         {
             _tokenMintingService = tokenMintingService;
             _tokenValidator = tokenValidator;
@@ -106,14 +106,14 @@ namespace AppIdentity.Query
                 },
                 deprecationReason: null);
 
-            queryCore.FieldAsync<AppIdentityResultType>(name: "appIdentityBind",
+            queryCore.FieldAsync<AppIdentityResultType>(name: "appIdentityCreate",
                description: $"Issues an application identity.",
-               arguments: new QueryArguments(new QueryArgument<NonNullGraphType<AppIdentityBindInput>> { Name = "input" }),
+               arguments: new QueryArguments(new QueryArgument<NonNullGraphType<AppIdentityCreateInput>> { Name = "input" }),
                resolve: async context =>
                {
                    try
                    {
-                       var input = context.GetArgument<AppIdentityBindInputModel>("input");
+                       var input = context.GetArgument<AppIdentityCreateInputModel>("input");
                        var identityRequest = new IdentityTokenRequest()
                        {
                            Subject = Guid.NewGuid().ToString(),

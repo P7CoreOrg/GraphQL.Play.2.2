@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AppIdentity.Models
 {
-    public class AppIdentityBindInputModel
+    public class AppIdentityCreateInputModel
     {
         /// <summary>
         /// The AppId
