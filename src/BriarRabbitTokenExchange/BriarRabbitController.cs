@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TokenExchange.Contracts;
@@ -23,6 +24,7 @@ namespace BriarRabbitTokenExchange
         }
 
         [HttpPost]
+        [Authorize]
         [Route("briar_rabbit")]
         public async Task<List<TokenExchangeResponse>> PostProcessTokenExchangeAsync(ExternalTokenExchangeRequest tokenExchangeRequest)
         {

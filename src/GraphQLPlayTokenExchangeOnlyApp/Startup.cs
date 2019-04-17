@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AppIdentity.Extensions;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlay.IdentityModelExtras.Extensions;
+using GraphQLPlayTokenExchangeOnlyApp.Filter;
 using IdentityModelExtras.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServer4Extras.Extensions;
@@ -164,13 +165,14 @@ namespace GraphQLPlayTokenExchangeOnlyApp
 
 
             // Build the intermediate service provider then return it
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(config =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "GraphQLPlayTokenExchangeOnlyApp", Version = "v1" });
+                config.SwaggerDoc("v1", new Info { Title = "GraphQLPlayTokenExchangeOnlyApp", Version = "v1" });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                config.IncludeXmlComments(xmlPath);
+                config.OperationFilter<MultiAuthorityOperationFilter>();
             });
             return services.BuildServiceProvider();
 
