@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using TokenExchange.Contracts.Models;
+using Utils.Models;
 
 namespace TokenExchange.Contracts
 {

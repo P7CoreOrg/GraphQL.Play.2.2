@@ -135,6 +135,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlayTokenExchangeOnl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlay.IdentityModelExtras", "GraphQLPlay.IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj", "{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BriarRabbit", "BriarRabbit", "{ADC5B3CC-8F13-44AF-B37D-D33CDA62FA4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BriarRabbitTokenExchange", "BriarRabbitTokenExchange\BriarRabbitTokenExchange.csproj", "{E4919F02-A488-4169-92BA-C4246C32A349}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -297,6 +301,10 @@ Global
 		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BB3B713-FA9C-46CD-AE1F-8204D4A20DD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4919F02-A488-4169-92BA-C4246C32A349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4919F02-A488-4169-92BA-C4246C32A349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4919F02-A488-4169-92BA-C4246C32A349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4919F02-A488-4169-92BA-C4246C32A349}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -346,6 +354,8 @@ Global
 		{14A1391F-8DDA-4C42-9189-AD87FBA0840F} = {4CEE4042-2D8A-4594-9CCF-79B539115F22}
 		{5F58847A-F7E2-4888-88F6-2D893A267A2B} = {14A1391F-8DDA-4C42-9189-AD87FBA0840F}
 		{2462DE42-34C5-466A-A9CF-0DFC22559A5A} = {19418411-5334-4122-87E5-F80D747114AA}
+		{ADC5B3CC-8F13-44AF-B37D-D33CDA62FA4C} = {4CEE4042-2D8A-4594-9CCF-79B539115F22}
+		{E4919F02-A488-4169-92BA-C4246C32A349} = {ADC5B3CC-8F13-44AF-B37D-D33CDA62FA4C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}

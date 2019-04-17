@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Utils.Models;
 
 namespace TokenExchange.Contracts.Models
 {

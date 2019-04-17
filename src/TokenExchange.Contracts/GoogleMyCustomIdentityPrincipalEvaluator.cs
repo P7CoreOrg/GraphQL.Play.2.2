@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TokenExchange.Contracts.Extensions;
 using TokenExchange.Contracts.Models;
+using Utils.Models;
 
 namespace TokenExchange.Contracts
 {

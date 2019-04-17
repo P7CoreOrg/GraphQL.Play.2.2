@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using GraphQLPlay.Contracts;
 using IdentityModel.Client;
@@ -8,7 +11,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using TokenExchange.Contracts.Models;
+using Utils.Models;
 
 namespace TokenExchange.Contracts
 {
@@ -107,33 +112,34 @@ namespace TokenExchange.Contracts
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
             var access_token = await GetTokenAsync();
-
-            if (tokenExchangeRequest.Extras == null || tokenExchangeRequest.Extras.Count == 0)
+            if (string.IsNullOrEmpty(access_token))
             {
-                throw new Exception($"{Name}: We require that extras be populated!");
+                throw new Exception("Unable to fetch client_credentials access_token");
             }
 
-            // for this demo, lets assume all the extras are roles.
-            var response = new List<TokenExchangeResponse>();
-            for (int i = 0; i < 2; i++)
+            var headers = new List<HttpHeader>(_externalExchangeClientCredentials.AdditionalHeaders)
             {
-                var tokenExchangeResponse = new TokenExchangeResponse()
-                {
-                    access_token = $"Alien_access_token_{access_token}",
-                    refresh_token = $"Alien_refresh_token_{Guid.NewGuid().ToString()}",
-                    expires_in = 1234+i,
-                    token_type = $"Alien_{Guid.NewGuid().ToString()}",
-                    authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}/Alien",
-                    HttpHeaders = new List<HttpHeader>
-                    {
-                        new HttpHeader() {Name = "x-authScheme", Value = "Alien"}
-                    }
+                new HttpHeader() {Name = "Authorization", Value = $"Bearer {access_token}"},
+                new HttpHeader() {Name = "Accept", Value = $"application/json"}
 
-                };
-                response.Add(tokenExchangeResponse);
+            };
+            var q = from item in tokenExchangeRequest.ValidatedTokens
+                let c = new TokenWithScheme() { Token = item.Token,TokenScheme = item.TokenScheme}
+                select c;
+            ExternalTokenExchangeRequest etcr = new ExternalTokenExchangeRequest()
+            {
+                Extras = tokenExchangeRequest.Extras, Tokens = q.ToList()
+            };
+            var externalResponse = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
+                _externalExchangeClientCredentials.ExchangeUrl,
+                headers, etcr, CancellationToken.None);
+            if (externalResponse.statusCode == HttpStatusCode.OK)
+            {
+                var finalResult = JsonConvert.DeserializeObject<List<TokenExchangeResponse>>(externalResponse.content);
+                return finalResult;
             }
-            
-            return response;
+
+            return null;
         }
 
         public static void RegisterServices(Microsoft.Extensions.DependencyInjection.IServiceCollection services, IExternalExchangeStore tempExternalExchangeStore)

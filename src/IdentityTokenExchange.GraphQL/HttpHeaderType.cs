@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
 using IdentityTokenExchangeGraphQL.Models;
 using TokenExchange.Contracts.Models;
+using Utils.Models;
 
 namespace IdentityTokenExchangeGraphQL
 {
