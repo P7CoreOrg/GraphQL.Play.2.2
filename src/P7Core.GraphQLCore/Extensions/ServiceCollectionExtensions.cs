@@ -21,7 +21,10 @@ namespace P7Core.GraphQLCore.Extensions
     {
         public static void AddGraphQLCoreTypes(this IServiceCollection services)
         {
-            services.AddScoped<IScopedSummaryLogger, DefaultScopedSummaryLogger>();
+            services.AddScoped<DefaultScopedSummaryLogger>();
+            services.AddScoped<IScopedSummaryLogger>(x => x.GetService<DefaultScopedSummaryLogger>());
+            services.AddTransient<ISummaryLogger>(x => x.GetService<DefaultScopedSummaryLogger>());
+          
 
             services.AddTransient<IQueryFieldRegistrationStore,QueryFieldRecordRegistrationStore>();
             services.AddTransient<IMutationFieldRegistrationStore, MutationFieldRecordRegistrationStore>();

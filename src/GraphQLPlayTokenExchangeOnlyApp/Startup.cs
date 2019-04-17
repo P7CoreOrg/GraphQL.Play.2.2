@@ -34,6 +34,7 @@ using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
+using TokenExchange.Contracts.Stores;
 using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
@@ -61,6 +62,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+ 
             services.AddLogging();
             services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
@@ -321,7 +323,10 @@ namespace GraphQLPlayTokenExchangeOnlyApp
 
             }
 
-
+            services.AddInMemoryExternalExchangeStore();
+            var tempExternalExchangeStore = InMemoryExternalExchangeStore.MakeStore(Configuration);
+            ExternalExchangePrincipalEvaluator.RegisterServices(services,tempExternalExchangeStore);
+            
         }
 
         public void AddGraphQLApis(IServiceCollection services)

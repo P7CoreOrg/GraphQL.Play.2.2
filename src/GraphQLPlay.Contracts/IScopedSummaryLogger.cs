@@ -4,7 +4,11 @@ using System.Collections.Generic;
 
 namespace GraphQLPlay.Contracts
 {
-    public interface IScopedSummaryLogger : IDictionary<string, string>
+    public interface ISummaryLogger : IDictionary<string, string>
+    {
+
+    }
+    public interface IScopedSummaryLogger : ISummaryLogger
     {
 
     }

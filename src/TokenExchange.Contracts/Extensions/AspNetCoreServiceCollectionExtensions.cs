@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TokenExchange.Contracts.Stores;
 
 namespace TokenExchange.Contracts.Extensions
 {
@@ -7,19 +8,25 @@ namespace TokenExchange.Contracts.Extensions
         public static IServiceCollection AddTokenExchangeContracts(this IServiceCollection services)
         {
             services.AddTransient<OIDCTokenValidator>();
-            services.AddSingleton<IPrincipalEvaluatorRouter, PrincipalEvaluatorRouter>();
+            services.AddTransient<IPrincipalEvaluatorRouter, PrincipalEvaluatorRouter>();
             return services;
         }
-        
+       
         public static IServiceCollection AddDemoCustomIdentityPrincipalEvaluator(this IServiceCollection services)
         {
-            services.AddSingleton<IPrincipalEvaluator, AlienCustomIdentityPrincipalEvaluator>();
-            services.AddSingleton<IPrincipalEvaluator, GoogleMyCustomIdentityPrincipalEvaluator>();
+            services.AddTransient<IPrincipalEvaluator, AlienCustomIdentityPrincipalEvaluator>();
+            services.AddTransient<IPrincipalEvaluator, GoogleMyCustomIdentityPrincipalEvaluator>();
             return services;
         }
         public static IServiceCollection AddSelfIdentityPrincipalEvaluator(this IServiceCollection services)
         {
-            services.AddSingleton<IPrincipalEvaluator, SelfIdentityPrincipalEvaluator>();
+            services.AddTransient<IPrincipalEvaluator, SelfIdentityPrincipalEvaluator>();
+            return services;
+        }
+        public static IServiceCollection AddInMemoryExternalExchangeStore(this IServiceCollection services)
+        {
+            services.AddTransient<ExternalExchangePrincipalEvaluator>();
+            services.AddSingleton<IExternalExchangeStore, InMemoryExternalExchangeStore>();
             return services;
         }
     }

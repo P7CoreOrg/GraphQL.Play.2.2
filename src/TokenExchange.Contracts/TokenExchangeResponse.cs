@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TokenExchange.Contracts.Models;
 
 namespace TokenExchange.Contracts
 {

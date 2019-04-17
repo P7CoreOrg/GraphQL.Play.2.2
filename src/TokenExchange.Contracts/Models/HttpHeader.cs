@@ -1,4 +1,4 @@
-﻿namespace TokenExchange.Contracts
+﻿namespace TokenExchange.Contracts.Models
 {
     public class HttpHeader
     {

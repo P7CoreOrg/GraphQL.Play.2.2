@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using TokenExchange.Contracts.Extensions;
+using TokenExchange.Contracts.Models;
 
 namespace TokenExchange.Contracts
 {
