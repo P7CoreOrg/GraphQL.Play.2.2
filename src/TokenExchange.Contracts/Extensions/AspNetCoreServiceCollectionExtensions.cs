@@ -19,7 +19,7 @@ namespace TokenExchange.Contracts.Extensions
             services.AddTransient<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
             return services;
         }
-        public static IServiceCollection AddSelfIdentityPrincipalEvaluator(this IServiceCollection services)
+        public static IServiceCollection AddSelfTokenExchangeHandler(this IServiceCollection services)
         {
             services.AddTransient<ITokenExchangeHandler, SelfIdentityTokenExchangeHandler>();
             return services;

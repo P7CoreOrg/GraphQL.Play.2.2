@@ -327,7 +327,7 @@ namespace IdentityServer4_Extension_Grants_App
         {
             services.AddInMemoryOAuth2ConfigurationStore();
 
-            services.AddSelfIdentityPrincipalEvaluator();
+            services.AddSelfTokenExchangeHandler();
             services.AddDemoTokenExchangeHandlers();
 
             services.AddSelfOIDCTokenValidator();
