@@ -1,7 +1,7 @@
 # Custom Bind
 
 
-1. Introduce a new [IdentityPrincipalEvaluator](../src/TokenExchange.Contracts/GoogleMyCustomIdentityPrincipalEvaluator.cs) where you use the scheme name *google-my-custom" in the constructor to name the IdentityPrincipalEvaluator.  
+1. Introduce a new [ITokenExchangeHandler](../src/TokenExchange.Contracts/Services/GoogleMyCustomIdentityTokenExchangeHandler.cs) where you use the scheme name *google-my-custom" in the constructor to name the IdentityPrincipalEvaluator.  
 This is where the real customization happens.  Here you can evaluate the claims, and with an optional string array called "Extras" that is passed in via the bind call, you can decide exactly what the following access_token will look like.
 You can reject the bind here as well.  
 
