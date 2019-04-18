@@ -21,7 +21,7 @@ namespace TokenExchange.Contracts
     {
 
         private IHttpContextAccessor _httpContextAssessor;
-       
+        private ITokenMintingService _tokenMintingService;
         private ISummaryLogger _summaryLogger;
         private object _cacheKey;
         private IOptionsSnapshot<TokenClientOptions> _optionsSnapshot;
@@ -30,10 +30,11 @@ namespace TokenExchange.Contracts
         private TokenClientOptions _settings;
         private string _name;
         private IDiscoveryCache _discoveryCache;
-      
+
 
         public ExternalExchangePrincipalEvaluator(
             IOptionsSnapshot<TokenClientOptions> optionsSnapshot,
+            ITokenMintingService tokenMintingService,
             IMemoryCache memoryCache,
             IHttpContextAccessor httpContextAssessor,
             ISummaryLogger summaryLogger
@@ -43,7 +44,8 @@ namespace TokenExchange.Contracts
             _optionsSnapshot = optionsSnapshot;
             _memoryCache = memoryCache;
             _httpContextAssessor = httpContextAssessor;
-             
+            _tokenMintingService = tokenMintingService;
+
             _summaryLogger = summaryLogger;
         }
         async Task<string> GetTokenAsync()
@@ -87,7 +89,7 @@ namespace TokenExchange.Contracts
                         ValidateIssuerName = false,
                         ValidateEndpoints = false,
                     };
-                    
+
                     _discoveryCache = new DiscoveryCache(
                         _settings.Authority,
                         httpClient,
@@ -120,15 +122,51 @@ namespace TokenExchange.Contracts
                 new HttpHeader() {Name = "Accept", Value = $"application/json"}
 
             };
-             
-          
+            var passThrough = _externalExchangeRecord.MintType == "passThroughMint";
+            var externalUrl = passThrough ? _externalExchangeRecord.PassThroughMint.ExchangeUrl : _externalExchangeRecord.SelfMint.ExchangeUrl;
+
+
+
             var externalResponse = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
-                _externalExchangeRecord.PassThroughMint.ExchangeUrl,
+                externalUrl,
                 headers, tokenExchangeRequest, CancellationToken.None);
             if (externalResponse.statusCode == HttpStatusCode.OK)
             {
-                var finalResult = JsonConvert.DeserializeObject<List<TokenExchangeResponse>>(externalResponse.content);
-                return finalResult;
+                if (passThrough)
+                {
+                    var passThroughResult = JsonConvert.DeserializeObject<List<TokenExchangeResponse>>(externalResponse.content);
+                    return passThroughResult;
+                }
+                else
+                {
+                    var tokenExchangeResponses = new List<TokenExchangeResponse>();
+                    var resourceOwnerTokenRequests = JsonConvert.DeserializeObject<List<ResourceOwnerTokenRequest>>(externalResponse.content);
+
+                    foreach (var resourceOwnerTokenRequest in resourceOwnerTokenRequests)
+                    {
+                        resourceOwnerTokenRequest.ClientId = _externalExchangeRecord.SelfMint.ClientId;
+                        var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
+                        if (response.IsError)
+                        {
+                            throw new Exception(response.Error);
+                        }
+
+                        var tokenExchangeResponse = new TokenExchangeResponse()
+                        {
+                            access_token = response.AccessToken,
+                            refresh_token = response.RefreshToken,
+                            expires_in = response.ExpiresIn,
+                            token_type = response.TokenType,
+                            authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
+                            HttpHeaders = new List<HttpHeader>
+                            {
+                                new HttpHeader() {Name = "x-authScheme", Value = response.Scheme}
+                            }
+                        };
+                        tokenExchangeResponses.Add(tokenExchangeResponse);
+                    }
+                    return tokenExchangeResponses;
+                }
             }
 
             return null;
@@ -138,12 +176,12 @@ namespace TokenExchange.Contracts
         {
             foreach (var exchange in tempExternalExchangeStore.GetExternalExchangeRecordAsync().GetAwaiter().GetResult())
             {
-                services.Configure<TokenClientOptions>(exchange.ExchangeName,options =>
-                {
-                    options.Authority = exchange.oAuth2_client_credentials.Authority;
-                    options.ClientId = exchange.oAuth2_client_credentials.ClientId;
-                    options.ClientSecret = exchange.oAuth2_client_credentials.ClientSecret;
-                });
+                services.Configure<TokenClientOptions>(exchange.ExchangeName, options =>
+                 {
+                     options.Authority = exchange.oAuth2_client_credentials.Authority;
+                     options.ClientId = exchange.oAuth2_client_credentials.ClientId;
+                     options.ClientSecret = exchange.oAuth2_client_credentials.ClientSecret;
+                 });
                 services.AddTransient<IPrincipalEvaluator>(x =>
                 {
                     var externalExchangePrincipalEvaluator = x.GetRequiredService<ExternalExchangePrincipalEvaluator>();

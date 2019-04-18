@@ -17,16 +17,16 @@ namespace TokenExchange.Contracts
         private IHttpContextAccessor _httpContextAssessor;
         private ISummaryLogger _summaryLogger;
         private ITokenValidator _tokenValidator;
-        private IServiceProvider _serviceProvider;
+        private ITokenMintingService _tokenMintingService;
 
         public GoogleMyCustomIdentityPrincipalEvaluator(
             ITokenValidator tokenValidator,
-            IServiceProvider serviceProvider,
+            ITokenMintingService tokenMintingService,
             IHttpContextAccessor httpContextAssessor,
             ISummaryLogger summaryLogger)
         {
             _tokenValidator = tokenValidator;
-            _serviceProvider = serviceProvider;
+            _tokenMintingService = tokenMintingService;
             _httpContextAssessor = httpContextAssessor;
             _summaryLogger = summaryLogger;
         }
@@ -76,8 +76,8 @@ namespace TokenExchange.Contracts
                 Subject = validatedIdentityTokens[0].Principal.GetSubjectFromPincipal(),
                 ClientId = "arbitrary-resource-owner-client"
             };
-            var tokenMintingService = _serviceProvider.GetRequiredService<ITokenMintingService>();
-            var response = await tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
+
+            var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
             if (response.IsError)
             {

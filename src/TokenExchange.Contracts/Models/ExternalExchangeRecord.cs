@@ -6,8 +6,15 @@ using Utils.Models;
 
 namespace TokenExchange.Contracts.Models
 {
-    
-    public partial class Mint
+
+    public partial class SelfMint
+    {
+        [JsonProperty("exchangeUrl")]
+        public string ExchangeUrl { get; set; }
+        [JsonProperty("clientId")]
+        public string ClientId { get; set; }
+    }
+    public partial class PassThroughMint
     {
         [JsonProperty("exchangeUrl")]
         public string ExchangeUrl { get; set; }
@@ -21,10 +28,10 @@ namespace TokenExchange.Contracts.Models
         public string MintType { get; set; }
 
         [JsonProperty("selfMint")]
-        public Mint SelfMint { get; set; }
+        public SelfMint SelfMint { get; set; }
 
         [JsonProperty("passThroughMint")]
-        public Mint PassThroughMint { get; set; }
+        public PassThroughMint PassThroughMint { get; set; }
 
         [JsonProperty("oAuth2_client_credentials")]
         public OAuth2ClientCredentials oAuth2_client_credentials { get; set; }
