@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts
 {
-    public interface IPrincipalEvaluator
+    public interface ITokenExchangeHandler
     {
         Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest);
          string Name { get; }

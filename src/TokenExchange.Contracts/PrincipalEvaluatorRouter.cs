@@ -8,12 +8,12 @@ namespace TokenExchange.Contracts
 {
     public class PrincipalEvaluatorRouter : IPrincipalEvaluatorRouter
     {
-        private IEnumerable<IPrincipalEvaluator> _principalEvaluators;
+        private IEnumerable<ITokenExchangeHandler> _principalEvaluators;
 
-        readonly Dictionary<string, IPrincipalEvaluator> _mapPrincipalEvaluators;
-        public PrincipalEvaluatorRouter(IEnumerable<IPrincipalEvaluator> principalEvaluators)
+        readonly Dictionary<string, ITokenExchangeHandler> _mapPrincipalEvaluators;
+        public PrincipalEvaluatorRouter(IEnumerable<ITokenExchangeHandler> principalEvaluators)
         {
-            _mapPrincipalEvaluators = new Dictionary<string, IPrincipalEvaluator>();
+            _mapPrincipalEvaluators = new Dictionary<string, ITokenExchangeHandler>();
             _principalEvaluators = principalEvaluators;
             foreach (var principalEvaluator in _principalEvaluators)
             {
@@ -40,7 +40,7 @@ namespace TokenExchange.Contracts
                         .ProcessExchangeAsync(tokenExchangeRequest);
                 return response;
             }
-            throw new Exception($"{tokenScheme} is not mapped to an IPrincipalEvaluator");
+            throw new Exception($"{tokenScheme} is not mapped to an ITokenExchangeHandler");
         }
     }
 }

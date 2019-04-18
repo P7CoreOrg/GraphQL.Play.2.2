@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TokenExchange.Contracts.Models;
 using Utils.Models;
 
-namespace TokenExchange.Contracts
+namespace TokenExchange.Contracts.Services
 {
-    public class AlienCustomIdentityPrincipalEvaluator : IPrincipalEvaluator
+    public class AlienCustomIdentityTokenExchangeHandler : ITokenExchangeHandler
     {
 
         private IHttpContextAccessor _httpContextAssessor;
         private IServiceProvider _serviceProvider;
 
-        public AlienCustomIdentityPrincipalEvaluator(
+        public AlienCustomIdentityTokenExchangeHandler(
             IServiceProvider serviceProvider,
             IHttpContextAccessor httpContextAssessor)
         {

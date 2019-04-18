@@ -35,6 +35,7 @@ using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
+using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
 using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
@@ -327,7 +328,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
 
             services.AddInMemoryExternalExchangeStore();
             var tempExternalExchangeStore = InMemoryExternalExchangeStore.MakeStore(Configuration);
-            ExternalExchangePrincipalEvaluator.RegisterServices(services,tempExternalExchangeStore);
+            ExternalExchangeTokenExchangeHandler.RegisterServices(services,tempExternalExchangeStore);
             
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -15,9 +14,9 @@ using Newtonsoft.Json;
 using TokenExchange.Contracts.Models;
 using Utils.Models;
 
-namespace TokenExchange.Contracts
+namespace TokenExchange.Contracts.Services
 {
-    public class ExternalExchangePrincipalEvaluator : IPrincipalEvaluator
+    public class ExternalExchangeTokenExchangeHandler : ITokenExchangeHandler
     {
 
         private IHttpContextAccessor _httpContextAssessor;
@@ -32,7 +31,7 @@ namespace TokenExchange.Contracts
         private IDiscoveryCache _discoveryCache;
 
 
-        public ExternalExchangePrincipalEvaluator(
+        public ExternalExchangeTokenExchangeHandler(
             IOptionsSnapshot<TokenClientOptions> optionsSnapshot,
             ITokenMintingService tokenMintingService,
             IMemoryCache memoryCache,
@@ -182,9 +181,9 @@ namespace TokenExchange.Contracts
                      options.ClientId = exchange.oAuth2_client_credentials.ClientId;
                      options.ClientSecret = exchange.oAuth2_client_credentials.ClientSecret;
                  });
-                services.AddTransient<IPrincipalEvaluator>(x =>
+                services.AddTransient<ITokenExchangeHandler>(x =>
                 {
-                    var externalExchangePrincipalEvaluator = x.GetRequiredService<ExternalExchangePrincipalEvaluator>();
+                    var externalExchangePrincipalEvaluator = x.GetRequiredService<ExternalExchangeTokenExchangeHandler>();
                     externalExchangePrincipalEvaluator.Configure(exchange);
                     return externalExchangePrincipalEvaluator;
                 });

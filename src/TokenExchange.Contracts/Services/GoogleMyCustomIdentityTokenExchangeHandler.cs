@@ -1,25 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using TokenExchange.Contracts.Extensions;
-using TokenExchange.Contracts.Models;
-using Utils.Models;
 using GraphQLPlay.Contracts;
+using Microsoft.AspNetCore.Http;
+using TokenExchange.Contracts.Extensions;
+using Utils.Models;
 
-namespace TokenExchange.Contracts
+namespace TokenExchange.Contracts.Services
 {
-    public class SelfIdentityPrincipalEvaluator : IPrincipalEvaluator
+    public class GoogleMyCustomIdentityTokenExchangeHandler : ITokenExchangeHandler
     {
-
         private IHttpContextAccessor _httpContextAssessor;
         private ISummaryLogger _summaryLogger;
         private ITokenValidator _tokenValidator;
         private ITokenMintingService _tokenMintingService;
 
-        public SelfIdentityPrincipalEvaluator(
+        public GoogleMyCustomIdentityTokenExchangeHandler(
             ITokenValidator tokenValidator,
             ITokenMintingService tokenMintingService,
             IHttpContextAccessor httpContextAssessor,
@@ -31,7 +27,7 @@ namespace TokenExchange.Contracts
             _summaryLogger = summaryLogger;
         }
 
-        public string Name => "self";
+        public string Name => "google-my-custom";
 
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
@@ -39,7 +35,6 @@ namespace TokenExchange.Contracts
             {
                 throw new Exception($"{Name}: We require that extras be populated!");
             }
-
             List<ValidatedToken> validatedIdentityTokens = new List<ValidatedToken>();
             foreach (var item in tokenExchangeRequest.Tokens)
             {
@@ -66,7 +61,6 @@ namespace TokenExchange.Contracts
             var roles = tokenExchangeRequest.Extras;
             roles.Add("user");
 
-
             ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
             {
                 AccessTokenLifetime = 3600,
@@ -78,6 +72,7 @@ namespace TokenExchange.Contracts
                 Subject = validatedIdentityTokens[0].Principal.GetSubjectFromPincipal(),
                 ClientId = "arbitrary-resource-owner-client"
             };
+
             var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
             if (response.IsError)
@@ -98,7 +93,7 @@ namespace TokenExchange.Contracts
                             }
 
             };
-            return new List<TokenExchangeResponse> { tokenExchangeResponse };
+            return new List<TokenExchangeResponse>() { tokenExchangeResponse };
         }
     }
 }

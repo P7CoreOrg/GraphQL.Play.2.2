@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
 
 namespace TokenExchange.Contracts.Extensions
@@ -14,18 +15,18 @@ namespace TokenExchange.Contracts.Extensions
        
         public static IServiceCollection AddDemoCustomIdentityPrincipalEvaluator(this IServiceCollection services)
         {
-            services.AddTransient<IPrincipalEvaluator, AlienCustomIdentityPrincipalEvaluator>();
-            services.AddTransient<IPrincipalEvaluator, GoogleMyCustomIdentityPrincipalEvaluator>();
+            services.AddTransient<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
+            services.AddTransient<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
             return services;
         }
         public static IServiceCollection AddSelfIdentityPrincipalEvaluator(this IServiceCollection services)
         {
-            services.AddTransient<IPrincipalEvaluator, SelfIdentityPrincipalEvaluator>();
+            services.AddTransient<ITokenExchangeHandler, SelfIdentityTokenExchangeHandler>();
             return services;
         }
         public static IServiceCollection AddInMemoryExternalExchangeStore(this IServiceCollection services)
         {
-            services.AddTransient<ExternalExchangePrincipalEvaluator>();
+            services.AddTransient<ExternalExchangeTokenExchangeHandler>();
             services.AddSingleton<IExternalExchangeStore, InMemoryExternalExchangeStore>();
             return services;
         }
