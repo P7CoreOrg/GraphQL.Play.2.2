@@ -7,17 +7,17 @@ You can reject the bind here as well.
 
 2. Add a registration extension [here](../src/TokenExchange.Contracts/Extensions/AspNetCoreServiceCollectionExtensions.cs)  
 ```
-public static IServiceCollection AddGoogleMyCustomIdentityPrincipalEvaluator(this IServiceCollection services)
+ public static IServiceCollection AddDemoTokenExchangeHandlers(this IServiceCollection services)
 {
-
-    services.AddSingleton<IPrincipalEvaluator, GoogleMyCustomIdentityPrincipalEvaluator>();
+    services.AddTransient<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
+    services.AddTransient<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
     return services;
 }
 ```
 
 7. Register the handler in [Startup.cs](../src/IdentityServer4-Extension-Grants-App/Startup.cs).
 ```
-  services.AddGoogleMyCustomIdentityPrincipalEvaluator();
+  services.AddDemoTokenExchangeHandlers();
 ```
 
 8. GraphQL tokenExchange Call  
