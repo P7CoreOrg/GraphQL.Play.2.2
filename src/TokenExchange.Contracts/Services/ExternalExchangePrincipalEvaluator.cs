@@ -26,7 +26,7 @@ namespace TokenExchange.Contracts
         private object _cacheKey;
         private IOptionsSnapshot<TokenClientOptions> _optionsSnapshot;
         private IMemoryCache _memoryCache;
-        private ExternalExchangeClientCredentials _externalExchangeClientCredentials;
+        private ExternalExchangeRecord _externalExchangeRecord;
         private TokenClientOptions _settings;
         private string _name;
         private IDiscoveryCache _discoveryCache;
@@ -96,15 +96,15 @@ namespace TokenExchange.Contracts
                 return _discoveryCache;
             }
         }
-        public void Configure(ExternalExchangeClientCredentials externalExchangeClientCredentials)
+        public void Configure(ExternalExchangeRecord externalExchangeRecord)
         {
-            _externalExchangeClientCredentials = externalExchangeClientCredentials;
-            _settings = _optionsSnapshot.Get(_externalExchangeClientCredentials.ExchangeName);
-            _cacheKey = $"{_externalExchangeClientCredentials.ExchangeName}_{_cacheKey}";
+            _externalExchangeRecord = externalExchangeRecord;
+            _settings = _optionsSnapshot.Get(_externalExchangeRecord.ExchangeName);
+            _cacheKey = $"{_externalExchangeRecord.ExchangeName}_{_cacheKey}";
 
 
         }
-        public string Name => _externalExchangeClientCredentials.ExchangeName;
+        public string Name => _externalExchangeRecord.ExchangeName;
 
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
@@ -114,7 +114,7 @@ namespace TokenExchange.Contracts
                 throw new Exception("Unable to fetch client_credentials access_token");
             }
 
-            var headers = new List<HttpHeader>(_externalExchangeClientCredentials.AdditionalHeaders)
+            var headers = new List<HttpHeader>(_externalExchangeRecord.oAuth2_client_credentials.AdditionalHeaders)
             {
                 new HttpHeader() {Name = "Authorization", Value = $"Bearer {access_token}"},
                 new HttpHeader() {Name = "Accept", Value = $"application/json"}
@@ -123,7 +123,7 @@ namespace TokenExchange.Contracts
              
           
             var externalResponse = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
-                _externalExchangeClientCredentials.ExchangeUrl,
+                _externalExchangeRecord.PassThroughMint.ExchangeUrl,
                 headers, tokenExchangeRequest, CancellationToken.None);
             if (externalResponse.statusCode == HttpStatusCode.OK)
             {
@@ -136,13 +136,13 @@ namespace TokenExchange.Contracts
 
         public static void RegisterServices(Microsoft.Extensions.DependencyInjection.IServiceCollection services, IExternalExchangeStore tempExternalExchangeStore)
         {
-            foreach (var exchange in tempExternalExchangeStore.GetClientCredentialExchangesAsync().GetAwaiter().GetResult())
+            foreach (var exchange in tempExternalExchangeStore.GetExternalExchangeRecordAsync().GetAwaiter().GetResult())
             {
                 services.Configure<TokenClientOptions>(exchange.ExchangeName,options =>
                 {
-                    options.Authority = exchange.Authority;
-                    options.ClientId = exchange.ClientId;
-                    options.ClientSecret = exchange.ClientSecret;
+                    options.Authority = exchange.oAuth2_client_credentials.Authority;
+                    options.ClientId = exchange.oAuth2_client_credentials.ClientId;
+                    options.ClientSecret = exchange.oAuth2_client_credentials.ClientSecret;
                 });
                 services.AddTransient<IPrincipalEvaluator>(x =>
                 {

@@ -8,6 +8,6 @@ namespace TokenExchange.Contracts
 {
     public interface IExternalExchangeStore
     {
-        Task<List<ExternalExchangeClientCredentials>> GetClientCredentialExchangesAsync();
+        Task<List<ExternalExchangeRecord>> GetExternalExchangeRecordAsync();
     }
 }

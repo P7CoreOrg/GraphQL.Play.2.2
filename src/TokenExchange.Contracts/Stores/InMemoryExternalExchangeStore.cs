@@ -14,19 +14,19 @@ namespace TokenExchange.Contracts.Stores
             return new InMemoryExternalExchangeStore(configuration);
         }
         private IConfiguration _configuration;
-        private List<ExternalExchangeClientCredentials> _externalExchangeClientCredentials;
+        private List<ExternalExchangeRecord> _externalExchangeRecords;
 
         public InMemoryExternalExchangeStore(IConfiguration configuration)
         {
             _configuration = configuration;
-            IConfigurationSection section = configuration.GetSection("tokenExchange:externalExchanges:oAuth2_client_credentials");
-            _externalExchangeClientCredentials = new List<ExternalExchangeClientCredentials>();
-            section.Bind(_externalExchangeClientCredentials);
+            IConfigurationSection section = configuration.GetSection("tokenExchange:extExchanges");
+            _externalExchangeRecords = new List<ExternalExchangeRecord>();
+            section.Bind(_externalExchangeRecords);
         }
 
-        public async Task<List<ExternalExchangeClientCredentials>> GetClientCredentialExchangesAsync()
+        public async Task<List<ExternalExchangeRecord>> GetExternalExchangeRecordAsync()
         {
-            return _externalExchangeClientCredentials;
+            return _externalExchangeRecords;
         }
     }
 }
