@@ -1,4 +1,4 @@
-# Custom Bind
+# Custom ITokenExchangeHandler
 
 
 1. Introduce a new [ITokenExchangeHandler](../src/TokenExchange.Contracts/Services/GoogleMyCustomIdentityTokenExchangeHandler.cs) where you use the scheme name *google-my-custom" in the constructor to name the IdentityPrincipalEvaluator.  
