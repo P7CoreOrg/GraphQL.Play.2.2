@@ -26,7 +26,7 @@ namespace BriarRabbitTokenExchange
         [HttpPost]
         [Authorize]
         [Route("briar_rabbit")]
-        public async Task<List<TokenExchangeResponse>> PostProcessTokenExchangeAsync(ExternalTokenExchangeRequest tokenExchangeRequest)
+        public async Task<List<TokenExchangeResponse>> PostProcessTokenExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
             return new List<TokenExchangeResponse>()
             {

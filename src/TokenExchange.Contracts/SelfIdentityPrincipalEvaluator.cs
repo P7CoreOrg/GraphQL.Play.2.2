@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TokenExchange.Contracts.Extensions;
 using TokenExchange.Contracts.Models;
 using Utils.Models;
+using GraphQLPlay.Contracts;
 
 namespace TokenExchange.Contracts
 {
@@ -14,14 +15,20 @@ namespace TokenExchange.Contracts
     {
 
         private IHttpContextAccessor _httpContextAssessor;
-        private IServiceProvider _serviceProvider;
+        private ISummaryLogger _summaryLogger;
+        private ITokenValidator _tokenValidator;
+        private ITokenMintingService _tokenMintingService;
 
         public SelfIdentityPrincipalEvaluator(
-            IServiceProvider serviceProvider,
-            IHttpContextAccessor httpContextAssessor)
+            ITokenValidator tokenValidator,
+            ITokenMintingService tokenMintingService,
+            IHttpContextAccessor httpContextAssessor,
+            ISummaryLogger summaryLogger)
         {
-            _serviceProvider = serviceProvider;
+            _tokenValidator = tokenValidator;
+            _tokenMintingService = tokenMintingService;
             _httpContextAssessor = httpContextAssessor;
+            _summaryLogger = summaryLogger;
         }
 
         public string Name => "self";
@@ -33,9 +40,32 @@ namespace TokenExchange.Contracts
                 throw new Exception($"{Name}: We require that extras be populated!");
             }
 
+            List<ValidatedToken> validatedIdentityTokens = new List<ValidatedToken>();
+            foreach (var item in tokenExchangeRequest.Tokens)
+            {
+                var prince = await _tokenValidator.ValidateTokenAsync(new TokenDescriptor
+                {
+                    TokenScheme = item.TokenScheme,
+                    Token = item.Token
+                });
+                var sub = prince.GetSubjectFromPincipal();
+                if (string.IsNullOrEmpty(sub))
+                {
+                    _summaryLogger.Add("subject", "A subject was not found in the ClaimsPrincipal object!");
+                    throw new Exception("A subject was not found in the ClaimsPrincipal object!");
+                }
+                validatedIdentityTokens.Add(new ValidatedToken
+                {
+                    Token = item.Token,
+                    TokenScheme = item.TokenScheme,
+                    Principal = prince
+                });
+            }
+
             // for this demo, lets assume all the extras are roles.
             var roles = tokenExchangeRequest.Extras;
             roles.Add("user");
+
 
             ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
             {
@@ -45,11 +75,10 @@ namespace TokenExchange.Contracts
                     { "role", roles }
                 },
                 Scope = "offline_access graphQLPlay",
-                Subject = tokenExchangeRequest.ValidatedTokens[0].Principal.GetSubjectFromPincipal(),
+                Subject = validatedIdentityTokens[0].Principal.GetSubjectFromPincipal(),
                 ClientId = "arbitrary-resource-owner-client"
             };
-            var tokenMintingService = _serviceProvider.GetRequiredService<ITokenMintingService>();
-            var response = await tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
+            var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
 
             if (response.IsError)
             {
@@ -72,7 +101,4 @@ namespace TokenExchange.Contracts
             return new List<TokenExchangeResponse> { tokenExchangeResponse };
         }
     }
-    
-
-  
 }

@@ -26,7 +26,6 @@ namespace TokenExchange.Contracts
         private object _cacheKey;
         private IOptionsSnapshot<TokenClientOptions> _optionsSnapshot;
         private IMemoryCache _memoryCache;
-        private IServiceProvider _serviceProvider;
         private ExternalExchangeClientCredentials _externalExchangeClientCredentials;
         private TokenClientOptions _settings;
         private string _name;
@@ -36,7 +35,6 @@ namespace TokenExchange.Contracts
         public ExternalExchangePrincipalEvaluator(
             IOptionsSnapshot<TokenClientOptions> optionsSnapshot,
             IMemoryCache memoryCache,
-            IServiceProvider serviceProvider,
             IHttpContextAccessor httpContextAssessor,
             ISummaryLogger summaryLogger
             )
@@ -44,7 +42,6 @@ namespace TokenExchange.Contracts
             _cacheKey = "a9c4c7b7-dbb1-4d24-a78d-b8f89cc9ca83";
             _optionsSnapshot = optionsSnapshot;
             _memoryCache = memoryCache;
-            _serviceProvider = serviceProvider;
             _httpContextAssessor = httpContextAssessor;
              
             _summaryLogger = summaryLogger;
@@ -123,16 +120,11 @@ namespace TokenExchange.Contracts
                 new HttpHeader() {Name = "Accept", Value = $"application/json"}
 
             };
-            var q = from item in tokenExchangeRequest.ValidatedTokens
-                let c = new TokenWithScheme() { Token = item.Token,TokenScheme = item.TokenScheme}
-                select c;
-            ExternalTokenExchangeRequest etcr = new ExternalTokenExchangeRequest()
-            {
-                Extras = tokenExchangeRequest.Extras, Tokens = q.ToList()
-            };
+             
+          
             var externalResponse = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
                 _externalExchangeClientCredentials.ExchangeUrl,
-                headers, etcr, CancellationToken.None);
+                headers, tokenExchangeRequest, CancellationToken.None);
             if (externalResponse.statusCode == HttpStatusCode.OK)
             {
                 var finalResult = JsonConvert.DeserializeObject<List<TokenExchangeResponse>>(externalResponse.content);
