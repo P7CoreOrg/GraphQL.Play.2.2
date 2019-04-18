@@ -9,11 +9,11 @@ namespace TokenExchange.Contracts.Extensions
         public static IServiceCollection AddTokenExchangeContracts(this IServiceCollection services)
         {
             services.AddTransient<OIDCTokenValidator>();
-            services.AddTransient<IPrincipalEvaluatorRouter, PrincipalEvaluatorRouter>();
+            services.AddTransient<ITokenExchangeHandlerRouter, TokenExchangeHandlerRouter>();
             return services;
         }
        
-        public static IServiceCollection AddDemoCustomIdentityPrincipalEvaluator(this IServiceCollection services)
+        public static IServiceCollection AddDemoTokenExchangeHandlers(this IServiceCollection services)
         {
             services.AddTransient<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
             services.AddTransient<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();

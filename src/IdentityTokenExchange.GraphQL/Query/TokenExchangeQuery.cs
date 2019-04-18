@@ -20,13 +20,13 @@ namespace IdentityTokenExchangeGraphQL.Query
     public class TokenExchangeQuery : IQueryFieldRegistration
     {
         private ISummaryLogger _summaryLogger;
-        private IPrincipalEvaluatorRouter _principalEvaluatorRouter;
+        private ITokenExchangeHandlerRouter _tokenExchangeHandlerRouter;
 
         public TokenExchangeQuery(
-            IPrincipalEvaluatorRouter principalEvaluatorRouter,
+            ITokenExchangeHandlerRouter tokenExchangeHandlerRouter,
             ISummaryLogger summaryLogger)
         {
-            _principalEvaluatorRouter = principalEvaluatorRouter;
+            _tokenExchangeHandlerRouter = tokenExchangeHandlerRouter;
             _summaryLogger = summaryLogger;
         }
 
@@ -70,7 +70,7 @@ namespace IdentityTokenExchangeGraphQL.Query
                             Tokens = tokens,
                             Extras = input.Extras
                         };
-                        var tokenExchangeResponse = await _principalEvaluatorRouter.ProcessExchangeAsync(input.Exchange, tokenExchangeRequest);
+                        var tokenExchangeResponse = await _tokenExchangeHandlerRouter.ProcessExchangeAsync(input.Exchange, tokenExchangeRequest);
 
                         return tokenExchangeResponse;
                     }

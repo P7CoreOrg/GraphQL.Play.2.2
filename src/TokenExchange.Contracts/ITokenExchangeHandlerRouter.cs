@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts
 {
-    public interface IPrincipalEvaluatorRouter
+    public interface ITokenExchangeHandlerRouter
     {
           Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
     }

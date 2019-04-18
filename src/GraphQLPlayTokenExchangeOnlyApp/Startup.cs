@@ -308,7 +308,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddInMemoryOAuth2ConfigurationStore();
 
             services.AddSelfIdentityPrincipalEvaluator();
-            services.AddDemoCustomIdentityPrincipalEvaluator();
+            services.AddDemoTokenExchangeHandlers();
 
             services.AddSelfOIDCTokenValidator();
             var schemes = Configuration

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts
 {
-    public class PrincipalEvaluatorRouter : IPrincipalEvaluatorRouter
+    public class TokenExchangeHandlerRouter : ITokenExchangeHandlerRouter
     {
         private IEnumerable<ITokenExchangeHandler> _principalEvaluators;
 
         readonly Dictionary<string, ITokenExchangeHandler> _mapPrincipalEvaluators;
-        public PrincipalEvaluatorRouter(IEnumerable<ITokenExchangeHandler> principalEvaluators)
+        public TokenExchangeHandlerRouter(IEnumerable<ITokenExchangeHandler> principalEvaluators)
         {
             _mapPrincipalEvaluators = new Dictionary<string, ITokenExchangeHandler>();
             _principalEvaluators = principalEvaluators;
