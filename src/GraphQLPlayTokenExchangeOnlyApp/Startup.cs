@@ -10,7 +10,7 @@ using AppIdentity.Extensions;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlayTokenExchangeOnlyApp.Filter;
-using IdentityModelExtras.Extensions;
+using IdentityServer4.Configuration;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServer4Extras.Extensions;
 using IdentityServerRequestTracker.Extensions;
@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -64,7 +63,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
- 
+
             services.AddLogging();
             services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
@@ -328,8 +327,8 @@ namespace GraphQLPlayTokenExchangeOnlyApp
 
             services.AddInMemoryExternalExchangeStore();
             var tempExternalExchangeStore = InMemoryExternalExchangeStore.MakeStore(Configuration);
-            ExternalExchangeTokenExchangeHandler.RegisterServices(services,tempExternalExchangeStore);
-            
+            ExternalExchangeTokenExchangeHandler.RegisterServices(services, tempExternalExchangeStore);
+
         }
 
         public void AddGraphQLApis(IServiceCollection services)
@@ -337,6 +336,16 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             // APIS
             services.AddTokenExchangeRollup(this);
             services.AddGraphQLAppIdentityTypes();
+        }
+
+        public Action<IdentityServerOptions> GetIdentityServerOptions()
+        {
+            Action<IdentityServerOptions> identityServerOptions = options =>
+            {
+                options.InputLengthRestrictions.RefreshToken = 256;
+                options.Caching.ClientStoreExpiration = TimeSpan.FromMinutes(1);
+            };
+            return identityServerOptions;
         }
     }
 }

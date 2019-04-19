@@ -137,7 +137,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQLPlay.IdentityModelEx
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BriarRabbit", "BriarRabbit", "{ADC5B3CC-8F13-44AF-B37D-D33CDA62FA4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BriarRabbitTokenExchange", "BriarRabbitTokenExchange\BriarRabbitTokenExchange.csproj", "{E4919F02-A488-4169-92BA-C4246C32A349}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BriarRabbitTokenExchange", "BriarRabbitTokenExchange\BriarRabbitTokenExchange.csproj", "{E4919F02-A488-4169-92BA-C4246C32A349}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

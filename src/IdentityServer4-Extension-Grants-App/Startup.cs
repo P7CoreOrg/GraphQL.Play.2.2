@@ -17,6 +17,7 @@ using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlay.Rollup.Extensions;
 using IdentityModelExtras;
 using IdentityModelExtras.Extensions;
+using IdentityServer4.Configuration;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServer4Extras.Extensions;
 using IdentityServerRequestTracker.Extensions;
@@ -335,18 +336,18 @@ namespace IdentityServer4_Extension_Grants_App
                 .GetSection("oidcSchemes")
                 .Get<List<string>>();
 
-            foreach(var scheme in schemes)
+            foreach (var scheme in schemes)
             {
                 services.AddSingleton<ISchemeTokenValidator>(x =>
                 {
-                    var oidcTokenValidator =  x.GetRequiredService<OIDCTokenValidator>();
+                    var oidcTokenValidator = x.GetRequiredService<OIDCTokenValidator>();
                     oidcTokenValidator.TokenScheme = scheme;
                     return oidcTokenValidator;
                 });
 
             }
 
-           
+
         }
 
         public void AddGraphQLApis(IServiceCollection services)
@@ -365,6 +366,16 @@ namespace IdentityServer4_Extension_Grants_App
             services.AddInMemoryB2BPlublisherStore();
             services.AddCustomerLoyalty();
             services.AddGraphQLAuthRequiredQuery();
+        }
+
+        public Action<IdentityServerOptions> GetIdentityServerOptions()
+        {
+            Action<IdentityServerOptions> identityServerOptions = options =>
+            {
+                options.InputLengthRestrictions.RefreshToken = 256;
+                options.Caching.ClientStoreExpiration = TimeSpan.FromMinutes(5);
+            };
+            return identityServerOptions;
         }
     }
 }
