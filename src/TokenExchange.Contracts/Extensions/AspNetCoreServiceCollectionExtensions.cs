@@ -6,13 +6,15 @@ namespace TokenExchange.Contracts.Extensions
 {
     public static class AspNetCoreServiceCollectionExtensions
     {
+
         public static IServiceCollection AddTokenExchangeContracts(this IServiceCollection services)
         {
+            services.AddTransient<ITokenExchangeHandlerPreProcessor, StripSignatureTokenExchangeHandlerPreProcessor>();
+            services.AddTransient<ITokenExchangeHandlerPreProcessorStore, TokenExchangeHandlerPreProcessorStore>();
             services.AddTransient<OIDCTokenValidator>();
             services.AddTransient<ITokenExchangeHandlerRouter, TokenExchangeHandlerRouter>();
             return services;
         }
-       
         public static IServiceCollection AddDemoTokenExchangeHandlers(this IServiceCollection services)
         {
             services.AddTransient<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();

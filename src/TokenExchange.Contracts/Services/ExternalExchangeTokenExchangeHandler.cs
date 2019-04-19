@@ -29,6 +29,8 @@ namespace TokenExchange.Contracts.Services
         private TokenClientOptions _settings;
         private string _name;
         private IDiscoveryCache _discoveryCache;
+        private ITokenExchangeHandlerPreProcessorStore _tokenExchangeHandlerPreProcessorStore;
+        
 
 
         public ExternalExchangeTokenExchangeHandler(
@@ -36,6 +38,7 @@ namespace TokenExchange.Contracts.Services
             ITokenMintingService tokenMintingService,
             IMemoryCache memoryCache,
             IHttpContextAccessor httpContextAssessor,
+            ITokenExchangeHandlerPreProcessorStore tokenExchangeHandlerPreProcessorStore,
             ISummaryLogger summaryLogger
             )
         {
@@ -44,7 +47,7 @@ namespace TokenExchange.Contracts.Services
             _memoryCache = memoryCache;
             _httpContextAssessor = httpContextAssessor;
             _tokenMintingService = tokenMintingService;
-
+            _tokenExchangeHandlerPreProcessorStore = tokenExchangeHandlerPreProcessorStore;
             _summaryLogger = summaryLogger;
         }
         async Task<string> GetTokenAsync()
