@@ -47,11 +47,11 @@ namespace BriarRabbitTokenExchange
         [HttpPost]
         [Authorize]
         [Route("briar_rabbit/half_ownership")]
-        public async Task<List<ResourceOwnerTokenRequest>> PostProcessHalfOwnesrshipTokenExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
+        public async Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostProcessHalfOwnesrshipTokenExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
-            return new List<ResourceOwnerTokenRequest>()
+            return new List<ExternalExchangeResourceOwnerTokenRequest>()
             {
-                new ResourceOwnerTokenRequest()
+                new ExternalExchangeResourceOwnerTokenRequest()
                 {
                     AccessTokenLifetime = 3600,
                     ArbitraryClaims = new Dictionary<string, List<string>>()

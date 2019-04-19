@@ -10,4 +10,11 @@ namespace TokenExchange.Contracts
         public int AccessTokenLifetime { get; set; }
         public string ClientId { get; set; }
     }
+    public class ExternalExchangeResourceOwnerTokenRequest
+    {
+        public string Scope { get; set; }
+        public Dictionary<string, List<string>> ArbitraryClaims { get; set; }
+        public string Subject { get; set; }
+        public int AccessTokenLifetime { get; set; }
+    }
 }
