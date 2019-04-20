@@ -9,6 +9,7 @@ namespace TokenExchange.Contracts.Extensions
 
         public static IServiceCollection AddTokenExchangeContracts(this IServiceCollection services)
         {
+            services.AddTransient<ITokenExchangeHandlerPreProcessor, ValidateAndStripSignatureTokenExchangeHandlerPreProcessor>();
             services.AddTransient<ITokenExchangeHandlerPreProcessor, StripSignatureTokenExchangeHandlerPreProcessor>();
             services.AddTransient<ITokenExchangeHandlerPreProcessorStore, TokenExchangeHandlerPreProcessorStore>();
             services.AddTransient<OIDCTokenValidator>();
@@ -32,5 +33,12 @@ namespace TokenExchange.Contracts.Extensions
             services.AddSingleton<IExternalExchangeStore, InMemoryExternalExchangeStore>();
             return services;
         }
+        public static IServiceCollection AddInMemoryPipelineExchangeStore(this IServiceCollection services)
+        {
+            services.AddTransient<PipelineTokenExchangeHandler>();
+            services.AddSingleton<IPipelineExchangeStore, InMemoryPipelineExchangeStore>();
+            return services;
+        }
+
     }
 }

@@ -329,6 +329,9 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             var tempExternalExchangeStore = InMemoryExternalExchangeStore.MakeStore(Configuration);
             ExternalExchangeTokenExchangeHandler.RegisterServices(services, tempExternalExchangeStore);
 
+            services.AddInMemoryPipelineExchangeStore();
+            var pipelineExchangeStore = InMemoryPipelineExchangeStore.MakeStore(Configuration);
+            PipelineTokenExchangeHandler.RegisterServices(services, pipelineExchangeStore);
         }
 
         public void AddGraphQLApis(IServiceCollection services)

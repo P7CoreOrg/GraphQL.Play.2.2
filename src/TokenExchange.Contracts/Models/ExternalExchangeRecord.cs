@@ -35,6 +35,7 @@ namespace TokenExchange.Contracts.Models
 
         [JsonProperty("oAuth2_client_credentials")]
         public OAuth2ClientCredentials oAuth2_client_credentials { get; set; }
+
     }
 
     public class OAuth2ClientCredentials

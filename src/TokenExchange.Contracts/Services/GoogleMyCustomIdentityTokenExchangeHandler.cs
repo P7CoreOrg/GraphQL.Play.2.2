@@ -38,12 +38,12 @@ namespace TokenExchange.Contracts.Services
             List<ValidatedToken> validatedIdentityTokens = new List<ValidatedToken>();
             foreach (var item in tokenExchangeRequest.Tokens)
             {
-                var prince = await _tokenValidator.ValidateTokenAsync(new TokenDescriptor
+                var principal = await _tokenValidator.ValidateTokenAsync(new TokenDescriptor
                 {
                     TokenScheme = item.TokenScheme,
                     Token = item.Token
                 });
-                var sub = prince.GetSubjectFromPincipal();
+                var sub = principal.GetSubjectFromPincipal();
                 if (string.IsNullOrEmpty(sub))
                 {
                     _summaryLogger.Add("subject", "A subject was not found in the ClaimsPrincipal object!");
@@ -53,7 +53,7 @@ namespace TokenExchange.Contracts.Services
                 {
                     Token = item.Token,
                     TokenScheme = item.TokenScheme,
-                    Principal = prince
+                    Principal = principal
                 });
             }
 

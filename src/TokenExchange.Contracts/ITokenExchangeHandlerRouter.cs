@@ -6,6 +6,7 @@ namespace TokenExchange.Contracts
 {
     public interface ITokenExchangeHandlerRouter
     {
-          Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
+        Task<bool> ExistsAsync(string tokenScheme);
+        Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest);
     }
 }

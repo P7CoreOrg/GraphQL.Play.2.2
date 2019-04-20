@@ -9,6 +9,7 @@ using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using TokenExchange.Contracts.Models;
@@ -18,28 +19,27 @@ namespace TokenExchange.Contracts.Services
 {
     public class ExternalExchangeTokenExchangeHandler : ITokenExchangeHandler
     {
+        public string Name => _externalExchangeRecord.ExchangeName;
 
         private IHttpContextAccessor _httpContextAssessor;
         private ITokenMintingService _tokenMintingService;
         private ISummaryLogger _summaryLogger;
-        private object _cacheKey;
+        private ILogger<ExternalExchangeTokenExchangeHandler> _logger;
+        private string _cacheKey;
         private IOptionsSnapshot<TokenClientOptions> _optionsSnapshot;
         private IMemoryCache _memoryCache;
         private ExternalExchangeRecord _externalExchangeRecord;
         private TokenClientOptions _settings;
         private string _name;
         private IDiscoveryCache _discoveryCache;
-        private ITokenExchangeHandlerPreProcessorStore _tokenExchangeHandlerPreProcessorStore;
-        
-
 
         public ExternalExchangeTokenExchangeHandler(
             IOptionsSnapshot<TokenClientOptions> optionsSnapshot,
             ITokenMintingService tokenMintingService,
             IMemoryCache memoryCache,
             IHttpContextAccessor httpContextAssessor,
-            ITokenExchangeHandlerPreProcessorStore tokenExchangeHandlerPreProcessorStore,
-            ISummaryLogger summaryLogger
+            ISummaryLogger summaryLogger,
+            ILogger<ExternalExchangeTokenExchangeHandler> logger
             )
         {
             _cacheKey = "a9c4c7b7-dbb1-4d24-a78d-b8f89cc9ca83";
@@ -47,8 +47,8 @@ namespace TokenExchange.Contracts.Services
             _memoryCache = memoryCache;
             _httpContextAssessor = httpContextAssessor;
             _tokenMintingService = tokenMintingService;
-            _tokenExchangeHandlerPreProcessorStore = tokenExchangeHandlerPreProcessorStore;
             _summaryLogger = summaryLogger;
+            _logger = logger;
         }
         async Task<string> GetTokenAsync()
         {
@@ -108,7 +108,7 @@ namespace TokenExchange.Contracts.Services
 
 
         }
-        public string Name => _externalExchangeRecord.ExchangeName;
+
 
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
@@ -174,7 +174,9 @@ namespace TokenExchange.Contracts.Services
             return null;
         }
 
-        public static void RegisterServices(Microsoft.Extensions.DependencyInjection.IServiceCollection services, IExternalExchangeStore tempExternalExchangeStore)
+        public static void RegisterServices(
+            IServiceCollection services,
+            IExternalExchangeStore tempExternalExchangeStore)
         {
             foreach (var exchange in tempExternalExchangeStore.GetExternalExchangeRecordAsync().GetAwaiter().GetResult())
             {
@@ -186,9 +188,9 @@ namespace TokenExchange.Contracts.Services
                  });
                 services.AddTransient<ITokenExchangeHandler>(x =>
                 {
-                    var externalExchangePrincipalEvaluator = x.GetRequiredService<ExternalExchangeTokenExchangeHandler>();
-                    externalExchangePrincipalEvaluator.Configure(exchange);
-                    return externalExchangePrincipalEvaluator;
+                    var tokenExchangeHandler = x.GetRequiredService<ExternalExchangeTokenExchangeHandler>();
+                    tokenExchangeHandler.Configure(exchange);
+                    return tokenExchangeHandler;
                 });
             }
         }

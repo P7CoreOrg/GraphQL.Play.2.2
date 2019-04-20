@@ -19,7 +19,7 @@ namespace TokenExchange.Contracts.Stores
         public InMemoryExternalExchangeStore(IConfiguration configuration)
         {
             _configuration = configuration;
-            IConfigurationSection section = configuration.GetSection("tokenExchange:extExchanges");
+            IConfigurationSection section = configuration.GetSection("tokenExchange:externalExchanges");
             _externalExchangeRecords = new List<ExternalExchangeRecord>();
             section.Bind(_externalExchangeRecords);
         }

@@ -6,7 +6,7 @@ namespace TokenExchange.Contracts
 {
     public interface ITokenExchangeHandlerPreProcessor
     {
-        string Name { get;  }
-        Task Process(ref TokenExchangeRequest tokenExchangeRequest);
+        string Name { get; }
+        Task ProcessAsync(ref TokenExchangeRequest tokenExchangeRequest);
     }
 }

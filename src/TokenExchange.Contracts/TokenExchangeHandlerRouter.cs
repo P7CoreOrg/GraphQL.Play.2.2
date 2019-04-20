@@ -23,8 +23,8 @@ namespace TokenExchange.Contracts
         string GetSubjectFromPincipal(ClaimsPrincipal principal)
         {
             var query = from item in principal.Claims
-                where item.Type == ClaimTypes.NameIdentifier || item.Type == "sub"
-                select item.Value;
+                        where item.Type == ClaimTypes.NameIdentifier || item.Type == "sub"
+                        select item.Value;
             var subject = query.FirstOrDefault();
             return subject;
 
@@ -41,6 +41,11 @@ namespace TokenExchange.Contracts
                 return response;
             }
             throw new Exception($"{tokenScheme} is not mapped to an ITokenExchangeHandler");
+        }
+
+        public Task<bool> ExistsAsync(string tokenScheme)
+        {
+            return Task.FromResult(_mapPrincipalEvaluators.ContainsKey(tokenScheme));
         }
     }
 }
