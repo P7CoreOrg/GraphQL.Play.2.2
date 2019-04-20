@@ -7,17 +7,17 @@ using Utils.Models;
 namespace TokenExchange.Contracts.Models
 {
 
-    public partial class SelfMint
+    public partial class ExternalExchangeHandler
     {
-        [JsonProperty("exchangeUrl")]
-        public string ExchangeUrl { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
         [JsonProperty("clientId")]
         public string ClientId { get; set; }
     }
-    public partial class PassThroughMint
+    public partial class PassThroughHandler
     {
-        [JsonProperty("exchangeUrl")]
-        public string ExchangeUrl { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
     public partial class ExternalExchangeRecord
     {
@@ -27,11 +27,11 @@ namespace TokenExchange.Contracts.Models
         [JsonProperty("mintType")]
         public string MintType { get; set; }
 
-        [JsonProperty("selfMint")]
-        public SelfMint SelfMint { get; set; }
+        [JsonProperty("externalExchangeHandler")]
+        public ExternalExchangeHandler ExternalExchangeHandler { get; set; }
 
-        [JsonProperty("passThroughMint")]
-        public PassThroughMint PassThroughMint { get; set; }
+        [JsonProperty("passThroughHandler")]
+        public PassThroughHandler PassThroughHandler { get; set; }
 
         [JsonProperty("oAuth2_client_credentials")]
         public OAuth2ClientCredentials oAuth2_client_credentials { get; set; }

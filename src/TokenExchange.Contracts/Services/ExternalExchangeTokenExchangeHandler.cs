@@ -124,8 +124,8 @@ namespace TokenExchange.Contracts.Services
                 new HttpHeader() {Name = "Accept", Value = $"application/json"}
 
             };
-            var passThrough = _externalExchangeRecord.MintType == "passThroughMint";
-            var externalUrl = passThrough ? _externalExchangeRecord.PassThroughMint.ExchangeUrl : _externalExchangeRecord.SelfMint.ExchangeUrl;
+            var passThrough = _externalExchangeRecord.MintType == "passThroughHandler";
+            var externalUrl = passThrough ? _externalExchangeRecord.PassThroughHandler.Url : _externalExchangeRecord.ExternalExchangeHandler.Url;
 
 
 
@@ -146,7 +146,7 @@ namespace TokenExchange.Contracts.Services
 
                     foreach (var resourceOwnerTokenRequest in resourceOwnerTokenRequests)
                     {
-                        resourceOwnerTokenRequest.ClientId = _externalExchangeRecord.SelfMint.ClientId;
+                        resourceOwnerTokenRequest.ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId;
                         var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
                         if (response.IsError)
                         {

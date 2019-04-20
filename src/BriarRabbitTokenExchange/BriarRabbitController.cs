@@ -25,8 +25,8 @@ namespace BriarRabbitTokenExchange
 
         [HttpPost]
         [Authorize]
-        [Route("briar_rabbit/full_ownership")]
-        public async Task<List<TokenExchangeResponse>> PostProcessFullOwnesrshipTokenExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
+        [Route("briar_rabbit/pass-through-handler")]
+        public async Task<List<TokenExchangeResponse>> PostPassThroughHandlerExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
             return new List<TokenExchangeResponse>(){
                 new TokenExchangeResponse()
@@ -46,8 +46,8 @@ namespace BriarRabbitTokenExchange
         }
         [HttpPost]
         [Authorize]
-        [Route("briar_rabbit/half_ownership")]
-        public async Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostProcessHalfOwnesrshipTokenExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
+        [Route("briar_rabbit/token-exchange-validator")]
+        public async Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostTokenExchangeValidatorAsync(TokenExchangeRequest tokenExchangeRequest)
         {
             return new List<ExternalExchangeResourceOwnerTokenRequest>()
             {
