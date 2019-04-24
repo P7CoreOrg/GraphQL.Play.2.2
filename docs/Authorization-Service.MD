@@ -10,3 +10,4 @@ The Entry condition to the exchange would be the following;
 
 So I am user Daffy-Duck and I want access to the AnalyticsServce which I have paid for!
 
+![PlantUML model](http://www.plantuml.com/plantuml/png/5SnB2i90303GlQVG0pI1RWItBjm8rYF4JDefpcV89CZSNleEy2vxuUH1NDCvchL-GrJwmRPRz8ztKQx5f1XmpRXSxrNbfHi-b5fyFs59D6266JDr4yLGkMEWTHrJSFvEnm3DSphz0G00)  
