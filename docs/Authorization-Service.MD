@@ -92,7 +92,7 @@ and a final echange
 ```
  "finalExchange": "briar_rabbit"
 ```
-where the final exchange is an external backchannel callout that responds back with token minting instructions.  The pipeline here wants the host to perform the **custodial duties** of minting an OAuth2 token.  
+where the final exchange is an [external backchannel callout](../src/BriarRabbitTokenExchange) that responds back with token minting instructions.  The pipeline here wants the host to perform the **custodial duties** of minting an OAuth2 token.  
 
 
 ```
