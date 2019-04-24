@@ -8,7 +8,7 @@ The Entry condition to the exchange would be the following;
 1. The users id_token
 2. A hint as to what exchange we want the token sent through.  This could also be interpreted as what API group, or what service that downstream tokens are being requested for.
 
-So I am user Daffy-Duck and I want access to the AnalyticsServce which I have paid for!
+So I am user **Daffy-Duck** and I want access to the **analytics-service** which I have paid for!
 
 ![PlantUML model](http://www.plantuml.com/plantuml/png/5SnB2i90303GlQVG0pI1RWItBjm8rYF4JDefpcV89CZSNleEy2vxuUH1NDCvchL-GrJwmRPRz8ztKQx5f1XmpRXSxrNbfHi-b5fyFs59D6266JDr4yLGkMEWTHrJSFvEnm3DSphz0G00)  
 
@@ -34,7 +34,7 @@ query q($input: tokenExchange!) {
 {
   "input": {
     "exchange": "pipeline_briar_rabbit",
-    "extras": ["a", "b", "c"],
+    "extras": ["analytics-service", "backup-service", "superadmin-so-I-can-hack-you-service"],
     "tokens": [{
       "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHBzOi8vcDdrZXl2YWx1dC52YXVsdC5henVyZS5uZXQva2V5cy9QN0lkZW50aXR5U2VydmVyNFNlbGZTaWduZWQvZjdkODdhNDY3MDhjNGYzZDhkZmU2MTFlOTczNzQ1YzMiLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE1NTU3ODAzNDksImV4cCI6MTg3NTc4MDM0OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6ImFwcC1pZGVudGl0eS1jbGllbnQiLCJpYXQiOjE1NTU3ODAzNDksImF0X2hhc2giOiJBQlFqRHBXV2J5cFFVSHhwNUg4Ukt3Iiwic3ViIjoiYmNkZTM4OGYtOGUxMC00MzY0LWFjZWEtMWJjYmE1Y2I1ZGFiIiwiYXV0aF90aW1lIjoxNTU1NzgwMzQ4LCJpZHAiOiJsb2NhbCIsImNsaWVudF9uYW1lc3BhY2UiOiJhcHAtaWRlbnRpdHktb3JnIiwiYXBwSWQiOiJOSVMiLCJtYWNoaW5lSWQiOiJzb21lIGd1aWQiLCJhbXIiOlsiYXJiaXRyYXJ5X2lkZW50aXR5Il19.a180J543Vky8xdHne7VeU27UEtalePzQ4W3k4fkn0i1NchVoWOW_rqT-oW-25Mh_wlNeIAlc4kWGtfvYCs0TgERwig8_Mk3Q5Ay16vBgx_T8iLl4oGk8G11FtyCn8pdDDuVPsPggeiRKCbb-7p593WGsjDiFUwJO0bYOOtCPGcIsswZPzMZsKWpqzvSM6ibFlYmkMFdWf1dw7hSkPAs4_dbEg8Ab2PjR4pV6yRsHbTihII9edB4-dWqNIZBsYskjZRxIzifEdkuh-ms3IcXelM_4BEls9GlJPzAQRTQc465siffHYNbZRoR_3dIZPVZqn7P5yv5IX5I2wNnDzVIAuA",
       "tokenScheme": "self"
@@ -78,6 +78,9 @@ What makes this an **Authorization Exchange** is what happens in the pre-process
 1. Validate the tokens.  i.e. if these are OIDC tokens, than validate the signature and expiration, etc.  
 2. Validate that the **subject** in the token exists in our user database.  
 3. Validate that the user has paid for the services being requested.  
+  ```
+   "extras": ["analytics-service", "backup-service", "superadmin-so-I-can-hack-you-service"],
+  ```
 4. The final exchange determines what downstream tokens are to be issued.  i.e. access_token(s) with specific claims, etc.  
 
 Here is a contrived example of a pre-processor that validates the OIDC token and stips off the signature to make it smaller when we want to send it out via a backchannel request.  [ValidateAndStripSignatureTokenExchangeHandlerPreProcessor](../src/TokenExchange.Contracts/Services/ValidateAndStripSignatureTokenExchangeHandlerPreProcessor.cs)  and it [DI Registration](../src/TokenExchange.Contracts/Extensions/AspNetCoreServiceCollectionExtensions.cs)  
