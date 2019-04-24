@@ -1,0 +1,30 @@
+@startuml
+
+title TokenExchange Pipeline \n
+
+start
+
+:Evaluate Request;
+
+note left
+    Query...
+    * id_token(s) + metaData
+    * Exchange Name aka Resource Requested
+    * Additional Hints
+end note
+
+:Load Exchange;
+note left
+    Loads...
+    * PreProcessor(s)
+    * Final Exchange Handler
+end note
+
+:Pre-Processor 1;
+:Pre-Processor 2;
+:Pre-Processor ...;
+:Final-Exchange ...;
+:Response;
+stop
+
+@enduml
