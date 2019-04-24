@@ -19,8 +19,13 @@ The kit includes a stock Token Exchange api, which follows the same plugin model
 ## OAuth2
 [IdentityServer4](https://github.com/IdentityServer/IdentityServer4) is used as the OAuth2 engine.  So out of the box you get stuff like **client_credentials** flows.  I use the **client_credentials** flow when I want to allow B2B access to apis.  Being also a compliant OAuth2 service, thanks to **IdentityServer4**, you get all the discovery and token endpoints you would expect. 
 
-There are also extension grants available that are basically al-acarte apis to the OAuth2 token endpoint to mint arbitrary tokens. 
-[app-identity-bind.md](./app-identity-bind.md)
+There are also extension grants available that are basically al-acarte apis to the OAuth2 token endpoint to mint arbitrary tokens.   
+### Extension Grants  
+[arbitrary_no_subject](./docs/arbitrary_no_subject.md)  
+[arbitrary_identity](./docs/arbitrary_identity.md)  
+[arbitrary_resource_owner](./docs/arbitrary_resource_owner.md)  
+
+
 
 
 ## Authorization  
