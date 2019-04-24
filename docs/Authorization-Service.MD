@@ -82,4 +82,54 @@ What makes this an **Authorization Exchange** is what happens in the pre-process
 
 Here is a contrived example of a pre-processor that validates the OIDC token and stips off the signature to make it smaller when we want to send it out via a backchannel request.  [ValidateAndStripSignatureTokenExchangeHandlerPreProcessor](../src/TokenExchange.Contracts/Services/ValidateAndStripSignatureTokenExchangeHandlerPreProcessor.cs)  and it [DI Registration](../src/TokenExchange.Contracts/Extensions/AspNetCoreServiceCollectionExtensions.cs)  
 
+An example configuration of a pipeline can be seen [here](../src/GraphQLPlayTokenExchangeOnlyApp/appsettings.Development.TokenExchange.json)  
+
+The pipeline **pipeline_briar_rabbit** has some pre-processor(s)..
+```
+ "preprocessors": [ "validate-strip-signature" ],
+``` 
+and a final echange  
+```
+ "finalExchange": "briar_rabbit"
+```
+where the final exchange is an external backchannel callout that responds back with token minting instructions.  The pipeline here wants the host to perform the **custodial duties** of minting an OAuth2 token.  
+
+
+```
+{
+  "tokenExchange": {
+    "externalExchanges": [
+      {
+        "exchangeName": "briar_rabbit",
+        "mintType": "externalExchangeHandler",
+        "externalExchangeHandler": {
+          "url": "https://localhost:5001/api/token_exchange/briar_rabbit/token-exchange-validator",
+          "clientId": "arbitrary-resource-owner-client"
+        },
+        "passThroughHandler": {
+          "exchangeUrl": "https://localhost:5001/api/token_exchange/briar_rabbit/pass-through-handler"
+        },
+        "oAuth2_client_credentials": {
+          "clientId": "b2b-client",
+          "clientSecret": "secret",
+          "authority": "https://localhost:5001/",
+          "additionalHeaders": [
+            {
+              "name": "x-authScheme",
+              "value": "self"
+            }
+          ]
+        }
+      }
+    ],
+    "pipelineExchanges": [
+      {
+        "exchangeName": "pipeline_briar_rabbit",
+        "preprocessors": [ "validate-strip-signature" ],
+        "finalExchange": "briar_rabbit"
+      }
+    ]
+  }
+}
+```
 
