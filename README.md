@@ -17,7 +17,11 @@ If you want to learn how to write GraphQL apis, then go to [GraphQL.Net Project]
 The kit includes a stock Token Exchange api, which follows the same plugin model that all subsequent apis will follow.  The Token Exchange is a must have api if any serious thought is given to sercuring your services.
 
 ## OAuth2
-[IdentityServer4](https://github.com/IdentityServer/IdentityServer4) is used as the OAuth2 engine.  So out of the box you get stuff like **client_credentials** flows.  I use the **client_credentials** flow when I want to allow B2B access to apis.  Being also a compliant OAuth2 service, thanks to **IdentityServer4**, you get all the discovery and token endpoints you would expect.  
+[IdentityServer4](https://github.com/IdentityServer/IdentityServer4) is used as the OAuth2 engine.  So out of the box you get stuff like **client_credentials** flows.  I use the **client_credentials** flow when I want to allow B2B access to apis.  Being also a compliant OAuth2 service, thanks to **IdentityServer4**, you get all the discovery and token endpoints you would expect. 
+
+There are also extension grants available that are basically al-acarte apis to the OAuth2 token endpoint to mint arbitrary tokens. 
+[app-identity-bind.md](./app-identity-bind.md)
+
 
 ## Authorization  
 The project adopted the OAuth2 bearer token model for authorization.  The access_tokens that are needed are minted by the application using  [IdentityServer4](https://github.com/IdentityServer/IdentityServer4) as the minter.  For our purposes **IdentityServer4** is a way better JWT library than the one that Microsoft supplies.  The **IdentityServer4** one accounts for an operational store that you need if you want to mint refresh_tokens and reference access_tokens, and stores that house your clients configurations.  Redis and CosmosDB are options, as is using KeyVault to manage certificates.  
