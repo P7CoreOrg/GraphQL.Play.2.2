@@ -74,4 +74,10 @@ The backend exchange handler will make the determination if you actually are get
 Based on the exchange configuration on the backend the token(s) are sent through a pipeline, which can reject the request at any stage.  
 ![PlantUML model](http://www.plantuml.com/plantuml/png/5Sqn3i8m30NGdLF00MfBNP2OAZ6m856EODAl9Y9r8iSHS7jWUkERcejvt_Bka3Jalg1RtaVtsaxC9YzQayV-w0qMYZhKAPIDv-Ev66wsyiManlkLvYmV6cdaJPh3U2cXiPSdTC0xHD4LGqqLEIce_iS9klpy0W00)  
 
+What makes this an **Authorization Exchange** is what happens in the pre-processors and final exchange.  The role of the pre-processers are as follows;  
+1. Validate the tokens.  i.e. if these are OIDC tokens, than validate the signature and expiration, etc.  
+2. Validate that the **subject** in the token exists in our user database.  
+3. Validate that the user has paid for the services being requested.  
+4. The final exchange determines what downstream tokens are to be issued.  i.e. access_token(s) with specific claims, etc.  
+
 
