@@ -80,4 +80,6 @@ What makes this an **Authorization Exchange** is what happens in the pre-process
 3. Validate that the user has paid for the services being requested.  
 4. The final exchange determines what downstream tokens are to be issued.  i.e. access_token(s) with specific claims, etc.  
 
+Here is a contrived example of a pre-processor that validates the OIDC token and stips off the signature to make it smaller when we want to send it out via a backchannel request.  [ValidateAndStripSignatureTokenExchangeHandlerPreProcessor](../src/TokenExchange.Contracts/Services/ValidateAndStripSignatureTokenExchangeHandlerPreProcessor.cs)  and it [DI Registration](../src/TokenExchange.Contracts/Extensions/AspNetCoreServiceCollectionExtensions.cs)  
+
 
