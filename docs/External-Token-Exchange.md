@@ -7,7 +7,7 @@ A simple [implementation](../src/BriarRabbitTokenExchange) that supports the 2 r
 ## Half Ownership
 ```
 POST
-https://graphqlplay22.azurewebsites.net/api/token_exchange/briar_rabbit/half_ownership
+https://localhost:5001/api/token_exchange/briar_rabbit/token-exchange-validator
 ```
 ## Headers
 ```
