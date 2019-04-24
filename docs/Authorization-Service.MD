@@ -71,3 +71,7 @@ What we want returned is access_token(s) to the requested services.
 
 The backend exchange handler will make the determination if you actually are getting any of the requested data.  Even if you pass all validation, you may not ever get the **refresh_token**, etc.  
 
+Based on the exchange configuration on the backend the token(s) are sent through a pipeline, which can reject the request at any stage.  
+![PlantUML model](http://www.plantuml.com/plantuml/png/5Sqn3i8m30NGdLF00MfBNP2OAZ6m856EODAl9Y9r8iSHS7jWUkERcejvt_Bka3Jalg1RtaVtsaxC9YzQayV-w0qMYZhKAPIDv-Ev66wsyiManlkLvYmV6cdaJPh3U2cXiPSdTC0xHD4LGqqLEIce_iS9klpy0W00)  
+
+
