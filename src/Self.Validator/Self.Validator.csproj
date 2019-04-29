@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="P7Corp.IdentityServer4ExtensionGrants.RollupShadow" Version="1.0.0-beta-3" />
+    <PackageReference Include="P7Corp.IdentityServer4ExtensionGrants.RollupShadow" Version="1.0.0-beta-4" />
   </ItemGroup>
 
   <ItemGroup>
