@@ -23,10 +23,10 @@ namespace CustomerLoyalyStore.GraphQL.Query
     public class CustomerLoyaltyQuery : IQueryFieldRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
-        private LazyService<IPrizeStore> _lazyPrizeStore;
+        private Lazier<IPrizeStore> _lazyPrizeStore;
 
         public CustomerLoyaltyQuery(ICustomerLoyaltyStore customerLoyaltyStore,
-            LazyService<IPrizeStore> lazyPrizeStore)
+            Lazier<IPrizeStore> lazyPrizeStore)
         {
             _customerLoyaltyStore = customerLoyaltyStore;
             _lazyPrizeStore = lazyPrizeStore;

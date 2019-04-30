@@ -11,7 +11,7 @@ namespace Utils.Extensions
     {
         public static IServiceCollection AddLazier(this IServiceCollection services)
         {
-            services.AddTransient(typeof(LazyService<>));
+            services.AddTransient(typeof(Lazier<>));
             return services;
         }
         public static IApplicationBuilder UseLowercaseRewriter(this IApplicationBuilder app )

@@ -13,10 +13,25 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using TokenExchange.Contracts.Models;
+using Utils;
 using Utils.Models;
 
 namespace TokenExchange.Contracts.Services
 {
+    public static class ExternalExchangeTokenExchangeHandlerServiceCollectionExtensions
+    {
+        public static IServiceCollection AddPipelineTokenExchangeHandler(this IServiceCollection services, Func<IPipelineTokenExchangeHandler> valueFactory)
+        {
+           
+            services.AddTransient((serviceProvider) =>
+            {
+                return new Lazy<IPipelineTokenExchangeHandler>(valueFactory);
+            });
+
+            return services;
+        }
+    }
+
     public class ExternalExchangeTokenExchangeHandler : IPipelineTokenExchangeHandler
     {
         public string Name => _externalExchangeRecord.ExchangeName;
@@ -187,7 +202,7 @@ namespace TokenExchange.Contracts.Services
 
             return null;
         }
-
+      
         public static void RegisterServices(
             IServiceCollection services,
             IExternalExchangeStore tempExternalExchangeStore)
@@ -200,12 +215,16 @@ namespace TokenExchange.Contracts.Services
                      options.ClientId = exchange.oAuth2_client_credentials.ClientId;
                      options.ClientSecret = exchange.oAuth2_client_credentials.ClientSecret;
                  });
-                services.AddTransient<IPipelineTokenExchangeHandler>(x =>
+                services.AddTransient<Lazy<IPipelineTokenExchangeHandler>>(serviceProvider =>
                 {
-                    var tokenExchangeHandler = x.GetRequiredService<ExternalExchangeTokenExchangeHandler>();
-                    tokenExchangeHandler.Configure(exchange);
-                    return tokenExchangeHandler;
+                    return new Lazy<IPipelineTokenExchangeHandler>(() =>
+                    {
+                        var tokenExchangeHandler = serviceProvider.GetRequiredService<ExternalExchangeTokenExchangeHandler>();
+                        tokenExchangeHandler.Configure(exchange);
+                        return tokenExchangeHandler;
+                    });
                 });
+              
             }
         }
     }

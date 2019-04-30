@@ -8,42 +8,79 @@ namespace TokenExchange.Contracts
 {
     public class TokenExchangeHandlerRouter : IPipelineTokenExchangeHandlerRouter, ITokenExchangeHandlerRouter
     {
-        private IEnumerable<ITokenExchangeHandler> _tokenExchangeHandlers;
-        private IEnumerable<IPipelineTokenExchangeHandler> _pipelineTokenExchangeHandlers;
-        readonly Dictionary<string, ITokenExchangeHandler> _mapTokenExchangeHandlers;
-        readonly Dictionary<string, IPipelineTokenExchangeHandler> _mapPipelineTokenExchangeHandlers;
+        private IEnumerable<Lazy<ITokenExchangeHandler>> _tokenExchangeHandlers;
+        Dictionary<string, ITokenExchangeHandler> _mapTokenExchangeHandlers;
+
+        private Dictionary<string, ITokenExchangeHandler> MapTokenExchangeHandlers
+        {
+            get
+            {
+                if (_mapTokenExchangeHandlers == null)
+                {
+                    _mapTokenExchangeHandlers = new Dictionary<string, ITokenExchangeHandler>();
+                    foreach (var tokenExchangeHandler in _tokenExchangeHandlers)
+                    {
+                        _mapTokenExchangeHandlers.Add(tokenExchangeHandler.Value.Name, tokenExchangeHandler.Value);
+                    }
+                }
+
+                return _mapTokenExchangeHandlers;
+            }
+        }
+
+        private IEnumerable<Lazy<IPipelineTokenExchangeHandler>> _pipelineTokenExchangeHandlers;
+        Dictionary<string, IPipelineTokenExchangeHandler> _mapPipelineTokenExchangeHandlers;
+
+        private Dictionary<string, IPipelineTokenExchangeHandler> MapPipelineTokenExchangeHandlers
+        {
+            get
+            {
+                if (_mapPipelineTokenExchangeHandlers == null)
+                {
+                    _mapPipelineTokenExchangeHandlers = new Dictionary<string, IPipelineTokenExchangeHandler>();
+                    foreach (var pipelineTokenExchangeHandler in _pipelineTokenExchangeHandlers)
+                    {
+                        _mapPipelineTokenExchangeHandlers.Add(pipelineTokenExchangeHandler.Value.Name,
+                            pipelineTokenExchangeHandler.Value);
+                    }
+                }
+
+                return _mapPipelineTokenExchangeHandlers;
+            }
+        }
 
         public TokenExchangeHandlerRouter(
-            IEnumerable<ITokenExchangeHandler> tokenExchangeHandlers,
-            IEnumerable<IPipelineTokenExchangeHandler> pipelineTokenExchangeHandlers
-            )
+            IEnumerable<Lazy<ITokenExchangeHandler>> tokenExchangeHandlers,
+            IEnumerable<Lazy<IPipelineTokenExchangeHandler>> pipelineTokenExchangeHandlers
+        )
         {
-            _mapTokenExchangeHandlers = new Dictionary<string, ITokenExchangeHandler>();
-            _mapPipelineTokenExchangeHandlers = new Dictionary<string, IPipelineTokenExchangeHandler>();
             _tokenExchangeHandlers = tokenExchangeHandlers;
             _pipelineTokenExchangeHandlers = pipelineTokenExchangeHandlers;
-            foreach (var tokenExchangeHandler in _tokenExchangeHandlers)
-            {
-                _mapTokenExchangeHandlers.Add(tokenExchangeHandler.Name, tokenExchangeHandler);
-            }
-            foreach (var pipelineTokenExchangeHandler in _pipelineTokenExchangeHandlers)
-            {
-                _mapPipelineTokenExchangeHandlers.Add(pipelineTokenExchangeHandler.Name, pipelineTokenExchangeHandler);
-            }
+        }
+
+        public Task<bool> TokenExchangeHandlerExistsAsync(string tokenScheme)
+        {
+            return Task.FromResult(MapTokenExchangeHandlers.ContainsKey(tokenScheme));
         }
 
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(
             string tokenScheme,
             TokenExchangeRequest tokenExchangeRequest)
         {
-            if (_mapTokenExchangeHandlers.ContainsKey(tokenScheme))
+            if (MapTokenExchangeHandlers.ContainsKey(tokenScheme))
             {
                 var response =
-                    await _mapTokenExchangeHandlers[tokenScheme]
+                    await MapTokenExchangeHandlers[tokenScheme]
                         .ProcessExchangeAsync(tokenExchangeRequest);
                 return response;
             }
+
             throw new Exception($"{tokenScheme} is not mapped to an ITokenExchangeHandler");
+        }
+
+        public Task<bool> PipelineTokenExchangeHandlerExistsAsync(string tokenScheme)
+        {
+            return Task.FromResult(MapPipelineTokenExchangeHandlers.ContainsKey(tokenScheme));
         }
 
         public async Task<List<TokenExchangeResponse>> ProcessFinalPipelineExchangeAsync(
@@ -51,24 +88,15 @@ namespace TokenExchange.Contracts
             TokenExchangeRequest tokenExchangeRequest,
             Dictionary<string, List<KeyValuePair<string, string>>> mapOpaqueKeyValuePairs)
         {
-            if (_mapPipelineTokenExchangeHandlers.ContainsKey(tokenScheme))
+            if (MapPipelineTokenExchangeHandlers.ContainsKey(tokenScheme))
             {
                 var response =
-                    await _mapPipelineTokenExchangeHandlers[tokenScheme]
+                    await MapPipelineTokenExchangeHandlers[tokenScheme]
                         .ProcessExchangeAsync(tokenExchangeRequest, mapOpaqueKeyValuePairs);
                 return response;
             }
+
             throw new Exception($"{tokenScheme} is not mapped to an IPipelineTokenExchangeHandler");
-        }
-
-        public Task<bool> PipelineTokenExchangeHandlerExistsAsync(string tokenScheme)
-        {
-            return Task.FromResult(_mapPipelineTokenExchangeHandlers.ContainsKey(tokenScheme));
-        }
-
-        public Task<bool> TokenExchangeHandleExistsAsync(string tokenScheme)
-        {
-            return Task.FromResult(_mapTokenExchangeHandlers.ContainsKey(tokenScheme));
         }
     }
 }

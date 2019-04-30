@@ -102,12 +102,15 @@ namespace TokenExchange.Contracts.Services
                 {
                     options.PreProcessors = exchange.Preprocessors;
                 });
-                services.AddTransient<ITokenExchangeHandler>(x =>
+                services.AddTransient<Lazy<ITokenExchangeHandler>>(serviceProvider =>
                 {
-                    var tokenExchangeHandler = x.GetRequiredService<PipelineTokenExchangeHandler>();
-                    tokenExchangeHandler.Configure(exchange);
-                    return tokenExchangeHandler;
-                });
+                    return new Lazy<ITokenExchangeHandler>(() =>
+                    {
+                        var tokenExchangeHandler = serviceProvider.GetRequiredService<PipelineTokenExchangeHandler>();
+                        tokenExchangeHandler.Configure(exchange);
+                        return tokenExchangeHandler;
+                    });
+                }); 
             }
         }
     }
