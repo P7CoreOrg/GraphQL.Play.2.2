@@ -65,7 +65,6 @@ namespace GraphQLPlayTokenExchangeOnlyApp
         {
 
             services.AddLogging();
-            services.AddLazier();
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddDistributedMemoryCache();

@@ -23,10 +23,10 @@ namespace CustomerLoyalyStore.GraphQL.Query
     public class CustomerLoyaltyQuery : IQueryFieldRegistration
     {
         private ICustomerLoyaltyStore _customerLoyaltyStore;
-        private Lazier<IPrizeStore> _lazyPrizeStore;
+        private IPrizeStore _lazyPrizeStore;
 
         public CustomerLoyaltyQuery(ICustomerLoyaltyStore customerLoyaltyStore,
-            Lazier<IPrizeStore> lazyPrizeStore)
+            IPrizeStore lazyPrizeStore)
         {
             _customerLoyaltyStore = customerLoyaltyStore;
             _lazyPrizeStore = lazyPrizeStore;
@@ -75,7 +75,7 @@ namespace CustomerLoyalyStore.GraphQL.Query
 
                             if (prizesField != null)
                             {
-                                var prizeStore = _lazyPrizeStore.Value;
+                                var prizeStore = _lazyPrizeStore;
                                 var prizes =
                                     await prizeStore.GetAvailablePrizesAsync(customer.LoyaltyPointBalance);
                                 customerResult.Prizes = prizes;

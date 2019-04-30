@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
+using Utils;
+using Utils.Extensions;
 
 namespace TokenExchange.Contracts.Extensions
 {
@@ -19,13 +22,13 @@ namespace TokenExchange.Contracts.Extensions
         }
         public static IServiceCollection AddDemoTokenExchangeHandlers(this IServiceCollection services)
         {
-            services.AddTransient<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
-            services.AddTransient<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
+            services.AddLazierService<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
+            services.AddLazierService<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
             return services;
         }
         public static IServiceCollection AddSelfTokenExchangeHandler(this IServiceCollection services)
         {
-            services.AddTransient<ITokenExchangeHandler, SelfIdentityTokenExchangeHandler>();
+            services.AddLazierService<ITokenExchangeHandler, SelfIdentityTokenExchangeHandler>();
             return services;
         }
         public static IServiceCollection AddInMemoryExternalExchangeStore(this IServiceCollection services)

@@ -9,15 +9,27 @@ namespace Utils.Extensions
 {
     public static class AspNetCoreServiceCollectionExtensions
     {
-        public static IServiceCollection AddLazier(this IServiceCollection services)
-        {
-            services.AddTransient(typeof(Lazier<>));
-            return services;
-        }
         public static IApplicationBuilder UseLowercaseRewriter(this IApplicationBuilder app )
         {
             app.UseRewriter(new RewriteOptions().Add(new RewriteLowerCaseRule()));
             return app;
         }
+        public static IServiceCollection AddLazierService<TService, TImplementation>(this IServiceCollection services)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            services.AddTransient<TImplementation>();
+            services.AddTransient<Lazy<TService>>(serviceProvider =>
+            {
+
+                return new Lazy<TService>(() =>
+                {
+                    var impl = serviceProvider.GetRequiredService<TImplementation>();
+                    return impl;
+                });
+            });
+            return services;
+        }
+       
     }
 }

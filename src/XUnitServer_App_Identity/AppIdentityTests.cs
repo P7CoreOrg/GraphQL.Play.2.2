@@ -208,6 +208,7 @@ namespace XUnitServer_App_Identity
                                                             tokenExchange(input: $input){
                                                                 authority
                                                                 access_token
+                                                                token_type
                                                                 httpHeaders{
                                                                     name
                                                                     value
