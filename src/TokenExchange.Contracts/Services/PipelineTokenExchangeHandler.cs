@@ -15,10 +15,10 @@ namespace TokenExchange.Contracts.Services
         private PipelineExchangeRecord _pipelineExchangeRecord;
         private PipelineExchangeOptions _settings;
         private IOptionsSnapshot<PipelineExchangeOptions> _optionsSnapshot;
-        private IServiceProvider _serviceProvider;
         private ITokenExchangeHandlerPreProcessorStore _tokenExchangeHandlerPreProcessorStore;
         private ISummaryLogger _summaryLogger;
         private ILogger<ExternalExchangeTokenExchangeHandler> _logger;
+        private IPipelineTokenExchangeHandlerRouter _pipelineTokenExchangeHandlerRouter;
 
 
         public string Name => _pipelineExchangeRecord.ExchangeName;
@@ -28,14 +28,14 @@ namespace TokenExchange.Contracts.Services
             _settings = _optionsSnapshot.Get(_pipelineExchangeRecord.ExchangeName);
         }
         public PipelineTokenExchangeHandler(
+            IPipelineTokenExchangeHandlerRouter pipelineTokenExchangeHandlerRouter,
             IOptionsSnapshot<PipelineExchangeOptions> optionsSnapshot,
             ITokenExchangeHandlerPreProcessorStore tokenExchangeHandlerPreProcessorStore,
-            IServiceProvider serviceProvider,
             ISummaryLogger summaryLogger,
             ILogger<ExternalExchangeTokenExchangeHandler> logger)
         {
+            _pipelineTokenExchangeHandlerRouter = pipelineTokenExchangeHandlerRouter;
             _optionsSnapshot = optionsSnapshot;
-            _serviceProvider = serviceProvider;
             _tokenExchangeHandlerPreProcessorStore = tokenExchangeHandlerPreProcessorStore;
             _summaryLogger = summaryLogger;
             _logger = logger;
@@ -43,15 +43,7 @@ namespace TokenExchange.Contracts.Services
 
         public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
-            // NOTE: _serviceProvider is needed here because we can't inject in the required ITokenExchangeHandlerRouter because this 
-            // Handler is in the list, so it causes a circular stack exception.
-
-            ITokenExchangeHandlerRouter tokenExchangeHandlerRouter =
-                _serviceProvider.GetRequiredService<ITokenExchangeHandlerRouter>();
-            IPipelineTokenExchangeHandlerRouter pipelineTokenExchangeHandlerRouter =
-                _serviceProvider.GetRequiredService<IPipelineTokenExchangeHandlerRouter>();
-
-            if (await pipelineTokenExchangeHandlerRouter.PipelineTokenExchangeHandlerExistsAsync(_pipelineExchangeRecord
+            if (await _pipelineTokenExchangeHandlerRouter.PipelineTokenExchangeHandlerExistsAsync(_pipelineExchangeRecord
                 .FinalExchange))
             {
                 Dictionary<string, List<KeyValuePair<string, string>>> mapOpaqueKeyValuePairs =
@@ -78,7 +70,7 @@ namespace TokenExchange.Contracts.Services
                 }
 
                 _logger.LogInformation($"Forwarding request to finalExchange:{_pipelineExchangeRecord.FinalExchange}!");
-                var result = await pipelineTokenExchangeHandlerRouter.ProcessFinalPipelineExchangeAsync(
+                var result = await _pipelineTokenExchangeHandlerRouter.ProcessFinalPipelineExchangeAsync(
                     _pipelineExchangeRecord.FinalExchange,
                     tokenExchangeRequest,
                     mapOpaqueKeyValuePairs);
