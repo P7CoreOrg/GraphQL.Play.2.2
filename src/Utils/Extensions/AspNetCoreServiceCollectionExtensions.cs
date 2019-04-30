@@ -14,7 +14,7 @@ namespace Utils.Extensions
             app.UseRewriter(new RewriteOptions().Add(new RewriteLowerCaseRule()));
             return app;
         }
-        public static IServiceCollection AddLazierService<TService, TImplementation>(this IServiceCollection services)
+        public static IServiceCollection AddLazyService<TService, TImplementation>(this IServiceCollection services)
             where TService : class
             where TImplementation : class, TService
         {
