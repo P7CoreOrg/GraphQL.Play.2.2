@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TokenExchange.Contracts;
 using TokenExchange.Contracts.Models;
+using TokenExchange.Contracts.Services;
 using Utils.Models;
 
 namespace BriarRabbitTokenExchange
@@ -47,7 +48,7 @@ namespace BriarRabbitTokenExchange
         [HttpPost]
         [Authorize]
         [Route("briar_rabbit/token-exchange-validator")]
-        public async Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostTokenExchangeValidatorAsync(TokenExchangeRequest tokenExchangeRequest)
+        public async Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
         {
             return new List<ExternalExchangeResourceOwnerTokenRequest>()
             {

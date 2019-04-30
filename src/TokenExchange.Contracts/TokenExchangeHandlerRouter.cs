@@ -6,46 +6,69 @@ using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts
 {
-    public class TokenExchangeHandlerRouter : ITokenExchangeHandlerRouter
+    public class TokenExchangeHandlerRouter : IPipelineTokenExchangeHandlerRouter, ITokenExchangeHandlerRouter
     {
-        private IEnumerable<ITokenExchangeHandler> _principalEvaluators;
+        private IEnumerable<ITokenExchangeHandler> _tokenExchangeHandlers;
+        private IEnumerable<IPipelineTokenExchangeHandler> _pipelineTokenExchangeHandlers;
+        readonly Dictionary<string, ITokenExchangeHandler> _mapTokenExchangeHandlers;
+        readonly Dictionary<string, IPipelineTokenExchangeHandler> _mapPipelineTokenExchangeHandlers;
 
-        readonly Dictionary<string, ITokenExchangeHandler> _mapPrincipalEvaluators;
-        public TokenExchangeHandlerRouter(IEnumerable<ITokenExchangeHandler> principalEvaluators)
+        public TokenExchangeHandlerRouter(
+            IEnumerable<ITokenExchangeHandler> tokenExchangeHandlers,
+            IEnumerable<IPipelineTokenExchangeHandler> pipelineTokenExchangeHandlers
+            )
         {
-            _mapPrincipalEvaluators = new Dictionary<string, ITokenExchangeHandler>();
-            _principalEvaluators = principalEvaluators;
-            foreach (var principalEvaluator in _principalEvaluators)
+            _mapTokenExchangeHandlers = new Dictionary<string, ITokenExchangeHandler>();
+            _mapPipelineTokenExchangeHandlers = new Dictionary<string, IPipelineTokenExchangeHandler>();
+            _tokenExchangeHandlers = tokenExchangeHandlers;
+            _pipelineTokenExchangeHandlers = pipelineTokenExchangeHandlers;
+            foreach (var tokenExchangeHandler in _tokenExchangeHandlers)
             {
-                _mapPrincipalEvaluators.Add(principalEvaluator.Name, principalEvaluator);
+                _mapTokenExchangeHandlers.Add(tokenExchangeHandler.Name, tokenExchangeHandler);
+            }
+            foreach (var pipelineTokenExchangeHandler in _pipelineTokenExchangeHandlers)
+            {
+                _mapPipelineTokenExchangeHandlers.Add(pipelineTokenExchangeHandler.Name, pipelineTokenExchangeHandler);
             }
         }
-        string GetSubjectFromPincipal(ClaimsPrincipal principal)
+
+        public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(
+            string tokenScheme,
+            TokenExchangeRequest tokenExchangeRequest)
         {
-            var query = from item in principal.Claims
-                        where item.Type == ClaimTypes.NameIdentifier || item.Type == "sub"
-                        select item.Value;
-            var subject = query.FirstOrDefault();
-            return subject;
-
-        }
-
-
-        public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(string tokenScheme, TokenExchangeRequest tokenExchangeRequest)
-        {
-            if (_mapPrincipalEvaluators.ContainsKey(tokenScheme))
+            if (_mapTokenExchangeHandlers.ContainsKey(tokenScheme))
             {
                 var response =
-                    await _mapPrincipalEvaluators[tokenScheme]
+                    await _mapTokenExchangeHandlers[tokenScheme]
                         .ProcessExchangeAsync(tokenExchangeRequest);
                 return response;
             }
             throw new Exception($"{tokenScheme} is not mapped to an ITokenExchangeHandler");
         }
 
-        public Task<bool> ExistsAsync(string tokenScheme)
+        public async Task<List<TokenExchangeResponse>> ProcessFinalPipelineExchangeAsync(
+            string tokenScheme,
+            TokenExchangeRequest tokenExchangeRequest,
+            Dictionary<string, List<KeyValuePair<string, string>>> mapOpaqueKeyValuePairs)
         {
-            return Task.FromResult(_mapPrincipalEvaluators.ContainsKey(tokenScheme));
+            if (_mapPipelineTokenExchangeHandlers.ContainsKey(tokenScheme))
+            {
+                var response =
+                    await _mapPipelineTokenExchangeHandlers[tokenScheme]
+                        .ProcessExchangeAsync(tokenExchangeRequest, mapOpaqueKeyValuePairs);
+                return response;
+            }
+            throw new Exception($"{tokenScheme} is not mapped to an IPipelineTokenExchangeHandler");
+        }
+
+        public Task<bool> PipelineTokenExchangeHandlerExistsAsync(string tokenScheme)
+        {
+            return Task.FromResult(_mapPipelineTokenExchangeHandlers.ContainsKey(tokenScheme));
+        }
+
+        public Task<bool> TokenExchangeHandleExistsAsync(string tokenScheme)
+        {
+            return Task.FromResult(_mapTokenExchangeHandlers.ContainsKey(tokenScheme));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 namespace TokenExchange.Contracts.Services
@@ -7,7 +8,7 @@ namespace TokenExchange.Contracts.Services
     {
         public string Name => "strip-signature";
 
-        public Task ProcessAsync(ref TokenExchangeRequest tokenExchangeRequest)
+        public Task<List<KeyValuePair<string, string>>> ProcessAsync(ref TokenExchangeRequest tokenExchangeRequest)
         {
             var header = new JwtHeader();
             var handler = new JwtSecurityTokenHandler();
@@ -18,8 +19,9 @@ namespace TokenExchange.Contracts.Services
                 tokenWithScheme.Token = handler.WriteToken(unsignedSecurityToken);
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(new List<KeyValuePair<string, string>>());
         }
+
     }
 }
 
