@@ -14,6 +14,7 @@ namespace TokenExchange.Contracts.Extensions
             services.AddTransient<ITokenExchangeHandlerPreProcessorStore, TokenExchangeHandlerPreProcessorStore>();
             services.AddTransient<OIDCTokenValidator>();
             services.AddTransient<ITokenExchangeHandlerRouter, TokenExchangeHandlerRouter>();
+            services.AddTransient<IPipelineTokenExchangeHandlerRouter, TokenExchangeHandlerRouter>();
             return services;
         }
         public static IServiceCollection AddDemoTokenExchangeHandlers(this IServiceCollection services)

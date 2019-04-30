@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GraphQLPlay.Contracts;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ namespace TokenExchange.Contracts.Services
         private ITokenExchangeHandlerPreProcessorStore _tokenExchangeHandlerPreProcessorStore;
         private ISummaryLogger _summaryLogger;
         private ILogger<ExternalExchangeTokenExchangeHandler> _logger;
+
 
         public string Name => _pipelineExchangeRecord.ExchangeName;
         public void Configure(PipelineExchangeRecord pipelineExchangeRecord)
@@ -44,10 +46,16 @@ namespace TokenExchange.Contracts.Services
             // NOTE: _serviceProvider is needed here because we can't inject in the required ITokenExchangeHandlerRouter because this 
             // Handler is in the list, so it causes a circular stack exception.
 
-            ITokenExchangeHandlerRouter tokenExchangeHandlerRouter = _serviceProvider.GetRequiredService<ITokenExchangeHandlerRouter>();
+            ITokenExchangeHandlerRouter tokenExchangeHandlerRouter =
+                _serviceProvider.GetRequiredService<ITokenExchangeHandlerRouter>();
+            IPipelineTokenExchangeHandlerRouter pipelineTokenExchangeHandlerRouter =
+                _serviceProvider.GetRequiredService<IPipelineTokenExchangeHandlerRouter>();
 
-            if (await tokenExchangeHandlerRouter.ExistsAsync(_pipelineExchangeRecord.FinalExchange))
+            if (await pipelineTokenExchangeHandlerRouter.PipelineTokenExchangeHandlerExistsAsync(_pipelineExchangeRecord
+                .FinalExchange))
             {
+                Dictionary<string, List<KeyValuePair<string, string>>> mapOpaqueKeyValuePairs =
+                    new Dictionary<string, List<KeyValuePair<string, string>>>();
                 if (_pipelineExchangeRecord.Preprocessors != null)
                 {
                     foreach (var preProcessor in _pipelineExchangeRecord.Preprocessors)
@@ -59,12 +67,21 @@ namespace TokenExchange.Contracts.Services
                             _logger.LogCritical(message);
                             throw new Exception(message);
                         }
+
                         _logger.LogInformation($"The preprocessor:{preProcessor} was found!");
-                        await preProcessorHandler.ProcessAsync(ref tokenExchangeRequest);
+                        var opaqueKeyValuePairs = await preProcessorHandler.ProcessAsync(ref tokenExchangeRequest);
+                        if (opaqueKeyValuePairs.Any())
+                        {
+                            mapOpaqueKeyValuePairs.Add(preProcessor, opaqueKeyValuePairs);
+                        }
                     }
                 }
+
                 _logger.LogInformation($"Forwarding request to finalExchange:{_pipelineExchangeRecord.FinalExchange}!");
-                var result = await tokenExchangeHandlerRouter.ProcessExchangeAsync(_pipelineExchangeRecord.FinalExchange, tokenExchangeRequest);
+                var result = await pipelineTokenExchangeHandlerRouter.ProcessFinalPipelineExchangeAsync(
+                    _pipelineExchangeRecord.FinalExchange,
+                    tokenExchangeRequest,
+                    mapOpaqueKeyValuePairs);
                 _summaryLogger.Add($"pipelineExchange_{_pipelineExchangeRecord.ExchangeName}", "OK");
                 return result;
             }

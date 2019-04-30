@@ -17,7 +17,7 @@ using Utils.Models;
 
 namespace TokenExchange.Contracts.Services
 {
-    public class ExternalExchangeTokenExchangeHandler : ITokenExchangeHandler
+    public class ExternalExchangeTokenExchangeHandler : IPipelineTokenExchangeHandler
     {
         public string Name => _externalExchangeRecord.ExchangeName;
 
@@ -109,8 +109,19 @@ namespace TokenExchange.Contracts.Services
 
         }
 
-
-        public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
+        public class TokenExchangeRequestPackage : TokenExchangeRequest
+        {
+            public TokenExchangeRequestPackage() { }
+            public TokenExchangeRequestPackage(TokenExchangeRequest ter)
+            {
+                Tokens = ter.Tokens;
+                Extras = ter.Extras;
+            }
+            public Dictionary<string, List<KeyValuePair<string, string>>> MapOpaqueKeyValuePairs { get; set; }
+        }
+        public async Task<List<TokenExchangeResponse>> ProcessExchangeAsync(
+            TokenExchangeRequest tokenExchangeRequest,
+            Dictionary<string, List<KeyValuePair<string, string>>> mapOpaqueKeyValuePairs)
         {
             var access_token = await GetTokenAsync();
             if (string.IsNullOrEmpty(access_token))
@@ -127,11 +138,14 @@ namespace TokenExchange.Contracts.Services
             var passThrough = _externalExchangeRecord.MintType == "passThroughHandler";
             var externalUrl = passThrough ? _externalExchangeRecord.PassThroughHandler.Url : _externalExchangeRecord.ExternalExchangeHandler.Url;
 
-
-
             var externalResponse = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
                 externalUrl,
-                headers, tokenExchangeRequest, CancellationToken.None);
+                headers,
+                new TokenExchangeRequestPackage(tokenExchangeRequest)
+                {
+                    MapOpaqueKeyValuePairs = mapOpaqueKeyValuePairs
+                },
+                CancellationToken.None);
             if (externalResponse.statusCode == HttpStatusCode.OK)
             {
                 if (passThrough)
@@ -186,7 +200,7 @@ namespace TokenExchange.Contracts.Services
                      options.ClientId = exchange.oAuth2_client_credentials.ClientId;
                      options.ClientSecret = exchange.oAuth2_client_credentials.ClientSecret;
                  });
-                services.AddTransient<ITokenExchangeHandler>(x =>
+                services.AddTransient<IPipelineTokenExchangeHandler>(x =>
                 {
                     var tokenExchangeHandler = x.GetRequiredService<ExternalExchangeTokenExchangeHandler>();
                     tokenExchangeHandler.Configure(exchange);
