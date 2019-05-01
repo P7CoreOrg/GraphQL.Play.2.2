@@ -17,6 +17,58 @@ Accept:application/json
 Content-Type:application/json
 
 ```
+## Post Body
+```
+{
+  "mapOpaqueKeyValuePairs": {
+    "additionalProp1": [
+      {}
+    ],
+    "additionalProp2": [
+      {}
+    ],
+    "additionalProp3": [
+      {}
+    ]
+  },
+  "tokens": [
+    {
+      "token": "string",
+      "tokenScheme": "string"
+    }
+  ],
+  "extras": [
+    "string"
+  ]
+}
+```  
+where **mapOpaqueKeyValuePairs** is a dictionary of key value pairs.  This set of data is an accumulation of all the pre-processers that fired prior to this final exchange being called.  You may not get anything but the option of a pre-processor to contribute something that gets passed downstresm is there.  
+example;
+```
+"mapOpaqueKeyValuePairs": {
+    "additionalProp1": [
+      {"a","b"},
+      {"c","d"}
+    ]
+ }
+```  
+where **tokens** is an array of tokens that have a metadata hint, "tokenScheme".
+example;  
+```
+"extras": [
+    "string"
+  ]
+```  
+where **extras** is an open ended array of strings that are hints to the incoming exchange.  It is opaquely passed along.
+example;  
+```
+"tokens": [
+    {
+      "token": "string",
+      "tokenScheme": "string"
+    }
+  ]
+``` 
 ## Resonse
 ```
 [
