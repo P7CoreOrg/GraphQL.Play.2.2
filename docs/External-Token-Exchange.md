@@ -20,6 +20,80 @@ Content-Type:application/json
 ## Resonse
 ```
 [
+  {
+    "scope": "string",
+    "arbitraryClaims": {
+      "additionalProp1": [
+        "string"
+      ],
+      "additionalProp2": [
+        "string"
+      ],
+      "additionalProp3": [
+        "string"
+      ]
+    },
+    "subject": "string",
+    "accessTokenLifetime": 0,
+    "httpHeaders": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ]
+  }
+]
+```
+where **scope** is a space separated string.  
+
+
+| scope  | description |
+| ------------- | ------------- |
+| offline_access  | Use if you want refresh_token(s)  |
+| any_thing  | This is open ended  |  
+
+example;
+```
+"scope": "offline_access my_custom_scope my_second_custom_scope"
+```
+where **arbitraryClaims** is a dictionary of arrays.  
+This can be anything.  
+
+example;
+```
+"arbitraryClaims": {
+            "role": [
+                "bigFluffy",
+                "fluffyAdmin"
+            ]
+        }
+```
+where **subject** is a string.  
+This can be anything.  
+example;
+```
+ "subject": "MrRabbit"
+```
+where **accessTokenLifetime** is a int.  
+This value is configured as a high end value, and here you get to pull it back.  You can't make it bigger than what is configured on the back end.  
+example;
+```
+"accessTokenLifetime": 3600
+```
+where **httpHeaders** is an open ended name value pair that you can tell clients what they need to put as headers when they make authorized calls using the access_tokens.
+This can be anything.  
+
+example;
+```
+ "httpHeaders": [
+          {
+            "name": "x-bunnyAuthScheme",
+            "value": "BunnyAuthority"
+          }
+        ]
+```
+```
+[
     {
         "scope": "offline_access graphQLPlay",
         "arbitraryClaims": {
@@ -30,7 +104,12 @@ Content-Type:application/json
         },
         "subject": "MrRabbit",
         "accessTokenLifetime": 3600,
-        "clientId": null
+        "httpHeaders": [
+          {
+            "name": "x-bunnyAuthScheme",
+            "value": "BunnyAuthority"
+          }
+        ]
     }
 ]
 ```
