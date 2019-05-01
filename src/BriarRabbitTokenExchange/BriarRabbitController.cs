@@ -39,9 +39,12 @@ namespace BriarRabbitTokenExchange
                     authority =$"https://briar.rabbit.com/authority",
                     HttpHeaders = new List<HttpHeader>
                     {
-                        new HttpHeader() {Name = "x-authScheme", Value = "rabbit"}
+                        new HttpHeader()
+                        {
+                            Name = "x-bunnyAuthScheme",
+                            Value = "BunnyAuthority"
+                        }
                     }
-
                 }
             };
         }
@@ -60,7 +63,15 @@ namespace BriarRabbitTokenExchange
                         { "role", new List<string>{ "bigFluffy","fluffyAdmin"} }
                     },
                     Scope = "offline_access graphQLPlay",
-                    Subject = "MrRabbit"
+                    Subject = "MrRabbit",
+                    HttpHeaders = new List<HttpHeader>()
+                    {
+                        new HttpHeader()
+                        {
+                            Name = "x-bunnyAuthScheme",
+                            Value = "BunnyAuthority"
+                        }
+                    }
                 }
             };
         }

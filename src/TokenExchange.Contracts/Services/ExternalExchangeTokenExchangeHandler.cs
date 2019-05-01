@@ -171,11 +171,19 @@ namespace TokenExchange.Contracts.Services
                 else
                 {
                     var tokenExchangeResponses = new List<TokenExchangeResponse>();
-                    var resourceOwnerTokenRequests = JsonConvert.DeserializeObject<List<ResourceOwnerTokenRequest>>(externalResponse.content);
+                    var externalExchangeResourceOwnerTokenRequests = JsonConvert.DeserializeObject<List<ExternalExchangeResourceOwnerTokenRequest>>(externalResponse.content);
 
-                    foreach (var resourceOwnerTokenRequest in resourceOwnerTokenRequests)
+                    foreach (var externalExchangeResourceOwnerTokenRequest in externalExchangeResourceOwnerTokenRequests)
                     {
-                        resourceOwnerTokenRequest.ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId;
+                        ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
+                        {
+                            AccessTokenLifetime = externalExchangeResourceOwnerTokenRequest.AccessTokenLifetime,
+                            ArbitraryClaims = externalExchangeResourceOwnerTokenRequest.ArbitraryClaims,
+                            Scope = externalExchangeResourceOwnerTokenRequest.Scope,
+                            Subject = externalExchangeResourceOwnerTokenRequest.Subject,
+                            ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId // configured value
+                        };
+                       
                         var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
                         if (response.IsError)
                         {
@@ -189,10 +197,7 @@ namespace TokenExchange.Contracts.Services
                             expires_in = response.ExpiresIn,
                             token_type = response.TokenType,
                             authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
-                            HttpHeaders = new List<HttpHeader>
-                            {
-                                new HttpHeader() {Name = "x-authScheme", Value = response.Scheme}
-                            }
+                            HttpHeaders = externalExchangeResourceOwnerTokenRequest.HttpHeaders
                         };
                         tokenExchangeResponses.Add(tokenExchangeResponse);
                     }
