@@ -25,11 +25,11 @@ using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
+using P7Core.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
-using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 
 namespace GraphQLPlayApiOnlyApp

@@ -4,7 +4,6 @@ using P7Core.Extensions;
 using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
 using Utils;
-using Utils.Extensions;
 
 namespace TokenExchange.Contracts.Extensions
 {
