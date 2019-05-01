@@ -135,6 +135,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BriarRabbit", "BriarRabbit"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BriarRabbitTokenExchange", "BriarRabbitTokenExchange\BriarRabbitTokenExchange.csproj", "{E4919F02-A488-4169-92BA-C4246C32A349}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestWebApp", "UnitTestWebApp\UnitTestWebApp.csproj", "{45466BD1-78BF-4256-AAC4-30F440B538A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -293,6 +295,10 @@ Global
 		{E4919F02-A488-4169-92BA-C4246C32A349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4919F02-A488-4169-92BA-C4246C32A349}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4919F02-A488-4169-92BA-C4246C32A349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45466BD1-78BF-4256-AAC4-30F440B538A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45466BD1-78BF-4256-AAC4-30F440B538A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45466BD1-78BF-4256-AAC4-30F440B538A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45466BD1-78BF-4256-AAC4-30F440B538A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -342,6 +348,7 @@ Global
 		{2462DE42-34C5-466A-A9CF-0DFC22559A5A} = {19418411-5334-4122-87E5-F80D747114AA}
 		{ADC5B3CC-8F13-44AF-B37D-D33CDA62FA4C} = {4CEE4042-2D8A-4594-9CCF-79B539115F22}
 		{E4919F02-A488-4169-92BA-C4246C32A349} = {ADC5B3CC-8F13-44AF-B37D-D33CDA62FA4C}
+		{45466BD1-78BF-4256-AAC4-30F440B538A6} = {19418411-5334-4122-87E5-F80D747114AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A39A0B-9480-430E-80B1-F04DA5AA52E4}

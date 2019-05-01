@@ -22,13 +22,13 @@ namespace TokenExchange.Contracts.Extensions
         }
         public static IServiceCollection AddDemoTokenExchangeHandlers(this IServiceCollection services)
         {
-            services.AddLazyService<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
-            services.AddLazyService<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
+            services.AddLazyTransient<ITokenExchangeHandler, GoogleMyCustomIdentityTokenExchangeHandler>();
+            services.AddLazyTransient<ITokenExchangeHandler, AlienCustomIdentityTokenExchangeHandler>();
             return services;
         }
         public static IServiceCollection AddSelfTokenExchangeHandler(this IServiceCollection services)
         {
-            services.AddLazyService<ITokenExchangeHandler, SelfIdentityTokenExchangeHandler>();
+            services.AddLazyTransient<ITokenExchangeHandler, SelfIdentityTokenExchangeHandler>();
             return services;
         }
         public static IServiceCollection AddInMemoryExternalExchangeStore(this IServiceCollection services)
