@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using P7Core.Extensions;
 using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
 using Utils;
