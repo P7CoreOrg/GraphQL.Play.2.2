@@ -1,4 +1,4 @@
-#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +8,17 @@ namespace GraphQL.Common.Response {
 	/// <summary>
 	/// Represents the error of a <see cref="GraphQLResponse"/>
 	/// </summary>
-	public class GraphQLError : IEquatable<GraphQLError?> {
+	public class GraphQLError : IEquatable<GraphQLError> {
 
 		/// <summary>
 		/// Additional error entries
 		/// </summary>
-		public IDictionary<string, dynamic>? Extensions { get; set; }
+		public IDictionary<string, dynamic> Extensions { get; set; }
 
 		/// <summary>
 		/// The Location of an error
 		/// </summary>
-		public GraphQLLocation[]? Locations { get; set; }
+		public GraphQLLocation[] Locations { get; set; }
 
 		/// <summary>
 		/// The error message
@@ -28,7 +28,7 @@ namespace GraphQL.Common.Response {
 		/// <summary>
 		/// The Path of an error
 		/// </summary>
-		public dynamic[]? Path { get; set; }
+		public dynamic[] Path { get; set; }
 
 		/// <summary>
 		/// Initialize a new GraphQLError
@@ -39,13 +39,13 @@ namespace GraphQL.Common.Response {
 		}
 
 		/// <inheritdoc />
-		public override bool Equals(object? obj) => this.Equals(obj as GraphQLError);
+		public override bool Equals(object obj) => this.Equals(obj as GraphQLError);
 
 		/// <inheritdoc />
-		public bool Equals(GraphQLError? other) {
+		public bool Equals(GraphQLError other) {
 			if (other == null) { return false; }
 			if (ReferenceEquals(this, other)) { return true; }
-			if (!EqualityComparer<IDictionary<string, dynamic>?>.Default.Equals(this.Extensions, other.Extensions)) { return false; }
+			if (!EqualityComparer<IDictionary<string, dynamic>>.Default.Equals(this.Extensions, other.Extensions)) { return false; }
 			{
 				if(this.Locations!=null && other.Locations != null) {
 					if (!Enumerable.SequenceEqual(this.Locations, other.Locations)) { return false; }
@@ -67,11 +67,11 @@ namespace GraphQL.Common.Response {
 		/// <inheritdoc />
 		public override int GetHashCode() {
 			unchecked {
-				var hashCode = EqualityComparer<IDictionary<string, dynamic>?>.Default.GetHashCode(this.Extensions);
+				var hashCode = EqualityComparer<IDictionary<string, dynamic>>.Default.GetHashCode(this.Extensions);
 				{
 					if (this.Locations != null) {
 						foreach(var element in this.Locations) {
-							hashCode = (hashCode * 397) ^ EqualityComparer<GraphQLLocation?>.Default.GetHashCode(element);
+							hashCode = (hashCode * 397) ^ EqualityComparer<GraphQLLocation>.Default.GetHashCode(element);
 						}
 					}
 					else {
@@ -82,7 +82,7 @@ namespace GraphQL.Common.Response {
 				{
 					if (this.Path != null) {
 						foreach (var element in this.Path) {
-							hashCode = (hashCode * 397) ^ EqualityComparer<dynamic?>.Default.GetHashCode(element);
+							hashCode = (hashCode * 397) ^ EqualityComparer<dynamic>.Default.GetHashCode(element);
 						}
 					}
 					else {
@@ -94,10 +94,10 @@ namespace GraphQL.Common.Response {
 		}
 
 		/// <inheritdoc />
-		public static bool operator ==(GraphQLError? error1, GraphQLError? error2) => EqualityComparer<GraphQLError?>.Default.Equals(error1, error2);
+		public static bool operator ==(GraphQLError error1, GraphQLError error2) => EqualityComparer<GraphQLError>.Default.Equals(error1, error2);
 
 		/// <inheritdoc />
-		public static bool operator !=(GraphQLError? error1, GraphQLError? error2) => !(error1 == error2);
+		public static bool operator !=(GraphQLError error1, GraphQLError error2) => !(error1 == error2);
 
 	}
 
