@@ -1,4 +1,5 @@
-﻿using IdentityServer4_Extension_Grants_App;
+﻿
+using GraphQLPlayTokenExchangeOnlyApp;
 using Microsoft.Extensions.Configuration;
 using XUnitHelpers;
 
@@ -7,7 +8,7 @@ namespace XUnitTestServerBase
 
     public class MyTestServerFixture : TestServerFixture<Startup>
     {
-        protected override string RelativePathToHostProject => @"..\..\..\..\IdentityServer4-Extension-Grants-App";
+        protected override string RelativePathToHostProject => @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
 
         protected override void LoadConfigurations(IConfigurationBuilder config, string environmentName)
         {
