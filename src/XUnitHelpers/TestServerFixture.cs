@@ -16,7 +16,7 @@ namespace XUnitHelpers
         public HttpClient Client { get; }
         public HttpMessageHandler MessageHandler { get; }
 
-        // RelativePathToHostProject = @"..\..\..\..\IdentityServer4-Extension-Grants-App";
+        // RelativePathToHostProject = @"..\..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
         protected abstract string RelativePathToHostProject { get; }
         public TestServerFixture()
         {

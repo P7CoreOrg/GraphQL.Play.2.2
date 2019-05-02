@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>XUnitServer_OAuth2</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -17,10 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GraphQL.Client\GraphQL.Client.csproj" />
-    <ProjectReference Include="..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
-    <ProjectReference Include="..\XUnitHelpers\XUnitHelpers.csproj" />
-    <ProjectReference Include="..\XUnitTestServerBase\XUnitTestServerBase.csproj" />
+    <ProjectReference Include="..\..\GraphQL.Client\GraphQL.Client.csproj" />
+    <ProjectReference Include="..\..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
+    <ProjectReference Include="..\..\XUnitHelpers\XUnitHelpers.csproj" />
+    <ProjectReference Include="..\..\XUnitTestServerBase\XUnitTestServerBase.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ namespace XUnitTestServerBase
 
     public class MyTestServerFixture : TestServerFixture<Startup>
     {
-        protected override string RelativePathToHostProject => @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
+        protected override string RelativePathToHostProject => @"..\..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
 
         protected override void LoadConfigurations(IConfigurationBuilder config, string environmentName)
         {
