@@ -26,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
+using P7Core.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
@@ -36,7 +37,6 @@ using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
 using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
-using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
 

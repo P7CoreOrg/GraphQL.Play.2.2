@@ -17,7 +17,133 @@ Accept:application/json
 Content-Type:application/json
 
 ```
+## Post Body
+```
+{
+  "mapOpaqueKeyValuePairs": {
+    "additionalProp1": [
+      {}
+    ],
+    "additionalProp2": [
+      {}
+    ],
+    "additionalProp3": [
+      {}
+    ]
+  },
+  "tokens": [
+    {
+      "token": "string",
+      "tokenScheme": "string"
+    }
+  ],
+  "extras": [
+    "string"
+  ]
+}
+```  
+where **mapOpaqueKeyValuePairs** is a dictionary of key value pairs.  This set of data is an accumulation of all the pre-processers that fired prior to this final exchange being called.  You may not get anything but the option of a pre-processor to contribute something that gets passed downstresm is there.  
+example;
+```
+"mapOpaqueKeyValuePairs": {
+    "additionalProp1": [
+      {"a","b"},
+      {"c","d"}
+    ]
+ }
+```  
+where **tokens** is an array of tokens that have a metadata hint, "tokenScheme".
+example;  
+```
+"extras": [
+    "string"
+  ]
+```  
+where **extras** is an open ended array of strings that are hints to the incoming exchange.  It is opaquely passed along.
+example;  
+```
+"tokens": [
+    {
+      "token": "string",
+      "tokenScheme": "string"
+    }
+  ]
+``` 
 ## Resonse
+```
+[
+  {
+    "scope": "string",
+    "arbitraryClaims": {
+      "additionalProp1": [
+        "string"
+      ],
+      "additionalProp2": [
+        "string"
+      ],
+      "additionalProp3": [
+        "string"
+      ]
+    },
+    "subject": "string",
+    "accessTokenLifetime": 0,
+    "httpHeaders": [
+      {
+        "name": "string",
+        "value": "string"
+      }
+    ]
+  }
+]
+```
+where **scope** is a space separated string.  
+
+
+| scope  | description |
+| ------------- | ------------- |
+| offline_access  | Use if you want refresh_token(s)  |
+| any_thing  | This is open ended  |  
+
+example;
+```
+"scope": "offline_access my_custom_scope my_second_custom_scope"
+```
+where **arbitraryClaims** is a dictionary of arrays.  
+This can be anything.  
+
+example;
+```
+"arbitraryClaims": {
+            "role": [
+                "bigFluffy",
+                "fluffyAdmin"
+            ]
+        }
+```
+where **subject** is a string.  
+This can be anything.  
+example;
+```
+ "subject": "MrRabbit"
+```
+where **accessTokenLifetime** is a int.  
+This value is configured as a high end value, and here you get to pull it back.  You can't make it bigger than what is configured on the back end.  
+example;
+```
+"accessTokenLifetime": 3600
+```
+where **httpHeaders** is an open ended name value pair that you can tell clients what they need to put as headers when they make authorized calls using the access_tokens.
+This can be anything.  
+
+example;
+```
+ "httpHeaders": [
+          {
+            "name": "x-bunnyAuthScheme",
+            "value": "BunnyAuthority"
+          }
+        ]
+```
 ```
 [
     {
@@ -30,7 +156,12 @@ Content-Type:application/json
         },
         "subject": "MrRabbit",
         "accessTokenLifetime": 3600,
-        "clientId": null
+        "httpHeaders": [
+          {
+            "name": "x-bunnyAuthScheme",
+            "value": "BunnyAuthority"
+          }
+        ]
     }
 ]
 ```

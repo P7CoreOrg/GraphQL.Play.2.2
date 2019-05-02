@@ -39,6 +39,7 @@ using MultiAuthority.AccessTokenValidation;
 using Orders.Extensions;
 using P7Core.BurnerGraphQL.Extensions;
 using P7Core.BurnerGraphQL2.Extensions;
+using P7Core.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
 using P7Core.ObjectContainers.Extensions;
@@ -47,7 +48,6 @@ using Self.Validator.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
-using Utils.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
 

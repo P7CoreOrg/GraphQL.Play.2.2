@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Utils.Models;
 
 namespace TokenExchange.Contracts
 {
@@ -16,5 +17,6 @@ namespace TokenExchange.Contracts
         public Dictionary<string, List<string>> ArbitraryClaims { get; set; }
         public string Subject { get; set; }
         public int AccessTokenLifetime { get; set; }
+        public List<HttpHeader> HttpHeaders { get; set; }
     }
 }
