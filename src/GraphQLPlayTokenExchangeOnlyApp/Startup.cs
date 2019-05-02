@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AppIdentity.Extensions;
+using ArbitraryIdentityExtensionGrant;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlayTokenExchangeOnlyApp.Filter;
@@ -67,6 +68,8 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddLogging();
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
+            services.Configure<ArbitraryIdentityExtensionGrantOptions>(options => { options.IdentityProvider = "Demo"; });
+
             services.AddDistributedMemoryCache();
             services.AddGraphQLPlayIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
