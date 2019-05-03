@@ -33,6 +33,11 @@ steps:
   
   # do this after your tests have run
   - script: dotnet test ./src/XUnitServer_App_Identity/XUnitServer_App_Identity.csproj --logger trx --collect "Code coverage"
+    displayName: dotnet test XUnitServer_App_Identity
+   
+  - script: dotnet test ./src/XUnitServer_OAuth2/XUnitServer_OAuth2.csproj --logger trx --collect "Code coverage"
+    displayName: dotnet test XUnitServer_OAuth2
+    
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
