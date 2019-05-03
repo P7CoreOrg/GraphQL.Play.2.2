@@ -28,6 +28,7 @@ variables:
   # creates a counter called versioncounter and seeds it at 100 and then assigns the value to a variable named buildNo.
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
+  PreReleaseVersion:'1.0.0-beta-1'
   
  
 steps:
@@ -66,6 +67,14 @@ steps:
       versioningScheme: byPrereleaseNumber
       condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
 
+  - task: DotNetCoreCLI@2
+    displayName: 'Pack Manual'
+    inputs:
+      command: pack
+      packagesToPack: '**/*.sln'
+      versioningScheme: byEnvVar
+      versionEnvVar: PreReleaseVersion
+      condition: and(succeeded(), in(variables['Build.Reason'], 'Manual'))
   
   - task: DotNetCoreCLI@2
     displayName: Push
@@ -73,8 +82,7 @@ steps:
       command: push
       publishVstsFeed: '71e2807a-04c6-4cfa-80f3-69644ad1d3e0'
 
-      #Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
-
+  #Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
   - task: DotNetCoreCLI@2
     displayName: Publish
     inputs:
