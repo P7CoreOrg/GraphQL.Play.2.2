@@ -32,7 +32,7 @@ variables:
   
  
 steps:
-  - script: echo Build.Reason:$(variables['Build.Reason']) version:$(version)
+  - script: echo Build.Reason:$(Build.Reason) version:$(version)
     displayName: 'BuildNumber'
   
   - task: DotNetCoreInstaller@0
