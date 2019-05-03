@@ -28,10 +28,10 @@ variables:
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
   PreReleaseVersion: '1.0.0-beta-2'
-  oPreRelease: false
+  DoPreRelease: false
 
 steps:
-  - script: echo Build.Reason:$(Build.Reason) version:$(version) doPreRelease:$(doPreRelease)
+  - script: echo Build.Reason:$(Build.Reason) version:$(version) DoPreRelease:$(DoPreRelease)
     displayName: 'BuildNumber'
   
   - task: DotNetCoreInstaller@0
