@@ -29,7 +29,7 @@ variables:
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(Build.BuildNumber)'
   
-name: $(BuildDefinitionName)_$(SourceBranchName)_$(major).$(minor).$(buildNo)
+name: GraphQLPlay_$(SourceBranchName)_$(major).$(minor).$(buildNo)
 
 steps:
 
