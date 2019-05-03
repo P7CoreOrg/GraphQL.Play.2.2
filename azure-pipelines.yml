@@ -4,7 +4,14 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+- '*'
+
+pr:
+- '*'
+
+variables:
+- name: DotNetCoreVersion
+  value: 2.2.102
 
 pool:
   vmImage: 'vs2017-win2016'
@@ -13,6 +20,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+  - task: DotNetCoreInstaller@0
+    displayName: Install .NET Core $(DotNetCoreVersion)
+    inputs:
+      version: $(DotNetCoreVersion)
+
 - script: dotnet restore ./src/GraphQL-AspNetCore-2.2.sln
 - script: dotnet build --configuration $(buildConfiguration) ./src/GraphQL-AspNetCore-2.2.sln
   displayName: 'dotnet build $(buildConfiguration)'
