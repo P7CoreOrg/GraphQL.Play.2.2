@@ -32,7 +32,7 @@ steps:
     displayName: 'dotnet build $(buildConfiguration)'
   
   # do this after your tests have run
-  - script: dotnet test XUnitServer_App_Identity --logger trx --collect "Code coverage"
+  - script: dotnet test ./src/XUnitServer_App_Identity/XUnitServer_App_Identity.csproj --logger trx --collect "Code coverage"
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
