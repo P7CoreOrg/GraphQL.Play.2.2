@@ -45,16 +45,45 @@ steps:
     displayName: 'dotnet build $(buildConfiguration)'
   
   # do this after your tests have run
+  
   - script: dotnet test ./src/XUnitServer_App_Identity/XUnitServer_App_Identity.csproj --logger trx --collect "Code coverage"
     displayName: dotnet test XUnitServer_App_Identity
-   
+  
   - script: dotnet test ./src/XUnitServer_OAuth2/XUnitServer_OAuth2.csproj --logger trx --collect "Code coverage"
     displayName: dotnet test XUnitServer_OAuth2
-    
+
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
+
+  - task: DotNetCoreCLI@2
+    displayName: Pack
+    inputs:
+      command: pack
+      packagesToPack: '**/*.sln'
+      versioningScheme: byPrereleaseNumber
+      condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+
+
+    steps:
+  - task: DotNetCoreCLI@2
+    displayName: Push
+    inputs:
+      command: push
+      publishVstsFeed: '71e2807a-04c6-4cfa-80f3-69644ad1d3e0'
+
+      #Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: True
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+      zipAfterPublish: True
+      workingDirectory: staging
+
     
  
