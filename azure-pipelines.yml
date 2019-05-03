@@ -14,7 +14,9 @@ trigger:
     - CHANGELOG.md
     - CONTRIBUTING.md
 
- 
+parameters:
+  DoPreRelease: false
+
 
 pool:
   vmImage: 'vs2017-win2016'
@@ -29,9 +31,7 @@ variables:
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
   PreReleaseVersion: '1.0.0-beta-2'
-  doPreRelease: False
-  
- 
+
 steps:
   - script: echo Build.Reason:$(Build.Reason) version:$(version) doPreRelease:$(doPreRelease)
     displayName: 'BuildNumber'
@@ -75,7 +75,7 @@ steps:
       packagesToPack: '**/*.sln'
       versioningScheme: byEnvVar
       versionEnvVar: PreReleaseVersion
-      condition: and(succeeded(), eq(variables['doPreRelease'], True))
+      condition: and(succeeded(), eq(variables['DoPreRelease'], 'true'))
   
   #- task: DotNetCoreCLI@2
   #  displayName: Push
