@@ -24,8 +24,10 @@ steps:
     displayName: Install .NET Core $(DotNetCoreVersion)
     inputs:
       version: $(DotNetCoreVersion)
-
 - script: dotnet restore ./src/GraphQL-AspNetCore-2.2.sln
+    displayName: dotnet restore
+    
+
 - script: dotnet build --configuration $(buildConfiguration) ./src/GraphQL-AspNetCore-2.2.sln
   displayName: 'dotnet build $(buildConfiguration)'
 
