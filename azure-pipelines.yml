@@ -14,9 +14,6 @@ trigger:
     - CHANGELOG.md
     - CONTRIBUTING.md
 
-parameters:
-  DoPreRelease: false
-
 
 pool:
   vmImage: 'vs2017-win2016'
@@ -31,6 +28,7 @@ variables:
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
   PreReleaseVersion: '1.0.0-beta-2'
+  oPreRelease: false
 
 steps:
   - script: echo Build.Reason:$(Build.Reason) version:$(version) doPreRelease:$(doPreRelease)
