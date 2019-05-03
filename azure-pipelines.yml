@@ -21,7 +21,7 @@ pool:
 
 variables:
   BuildConfiguration: 'Release'
-  DotNetCoreVersion: '2.2.203'
+  DotNetCoreVersion: '2.2.106'
   BuildPlatform: 'Any CPU'
   major: 1
   minor: 0
