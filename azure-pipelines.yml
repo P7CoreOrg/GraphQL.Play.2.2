@@ -76,11 +76,11 @@ steps:
       versionEnvVar: PreReleaseVersion
       condition: and(succeeded(), in(variables['Build.Reason'], 'Manual'))
   
-  - task: DotNetCoreCLI@2
-    displayName: Push
-    inputs:
-      command: push
-      publishVstsFeed: '71e2807a-04c6-4cfa-80f3-69644ad1d3e0'
+  #- task: DotNetCoreCLI@2
+  #  displayName: Push
+  #  inputs:
+  #    command: push
+  #    publishVstsFeed: '71e2807a-04c6-4cfa-80f3-69644ad1d3e0'
 
   #Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
   - task: DotNetCoreCLI@2
