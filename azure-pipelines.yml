@@ -31,16 +31,12 @@ steps:
   - script: dotnet build --configuration $(buildConfiguration) ./src/GraphQL-AspNetCore-2.2.sln
     displayName: 'dotnet build $(buildConfiguration)'
   
-  # do this after other tasks such as building
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: test
-      projects: '**/*Tests/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --logger trx --collect "Code coverage"'
-    
- 
-
+  # do this after your tests have run
+  - script: dotnet test XUnitServer_App_Identity --logger trx --collect "Code coverage"
   - task: PublishTestResults@2
+    condition: succeededOrFailed()
     inputs:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
+    
+ 
