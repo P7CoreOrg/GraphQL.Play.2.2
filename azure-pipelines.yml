@@ -31,7 +31,9 @@ variables:
   
  
 steps:
-
+  - script: echo hello BuildNumber $(Build.BuildNumber) $(version)
+    displayName: 'BuildNumber'
+  
   - task: DotNetCoreInstaller@0
     displayName: Install .NET Core $(DotNetCoreVersion)
     inputs:
