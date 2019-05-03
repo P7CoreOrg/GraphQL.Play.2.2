@@ -28,7 +28,7 @@ variables:
   # creates a counter called versioncounter and seeds it at 100 and then assigns the value to a variable named buildNo.
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
-  PreReleaseVersion:'1.0.0-beta-1'
+  PreReleaseVersion: '1.0.0-beta-1'
   
  
 steps:
