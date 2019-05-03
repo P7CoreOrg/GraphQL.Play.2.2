@@ -29,7 +29,7 @@ variables:
   buildNo: $[counter('geomversioncounter', 100)]
   version: '$(major).$(minor).$(buildNo)'
   PreReleaseVersion: '1.0.0-beta-2'
-  doPreRelease: 'true'
+  doPreRelease: 'false'
   
  
 steps:
