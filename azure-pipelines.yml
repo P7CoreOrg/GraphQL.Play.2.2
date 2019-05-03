@@ -27,7 +27,7 @@ variables:
   minor: 0
   # creates a counter called versioncounter and seeds it at 100 and then assigns the value to a variable named buildNo.
   buildNo: $[counter('geomversioncounter', 100)]
-  version: '$(major).$(minor).$(Build.BuildNumber)'
+  version: '$(Build.BuildNumber)'
   
 name: $(BuildDefinitionName)_$(SourceBranchName)_$(major).$(minor).$(buildNo)
 
