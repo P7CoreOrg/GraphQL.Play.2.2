@@ -16,7 +16,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  DotNetCoreVersion: '2.2.102'
+  DotNetCoreVersion: '2.2.203'
 
 
 steps:
