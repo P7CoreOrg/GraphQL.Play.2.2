@@ -29,7 +29,7 @@ steps:
     
 # Version .NET Core Assemblies
 # Description - Applies a version to a .NET Core assembly via the .csproj files based on the build number. Based on Microsoft sample from https://msdn.microsoft.com/Library/vs/alm/Build/overview
-  - task: VersionDotNetCoreAssemblies
+  - task: VersionDotNetCoreAssemblies@0
     inputs: 
       # Required arguments
        Path: $(Build.SourcesDirectory)
