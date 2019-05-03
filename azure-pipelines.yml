@@ -66,8 +66,7 @@ steps:
       versioningScheme: byPrereleaseNumber
       condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
 
-
-    steps:
+  
   - task: DotNetCoreCLI@2
     displayName: Push
     inputs:
