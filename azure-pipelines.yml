@@ -9,15 +9,16 @@ trigger:
 pr:
 - '*'
 
-variables:
-- name: DotNetCoreVersion
-  value: 2.2.102
+ 
 
 pool:
   vmImage: 'vs2017-win2016'
 
 variables:
   buildConfiguration: 'Release'
+- name: DotNetCoreVersion
+  value: 2.2.102
+
 
 steps:
   - task: DotNetCoreInstaller@0
