@@ -7,8 +7,8 @@ namespace Self.Validator.Extensions
     {
         public static void AddSelfOIDCTokenValidator(this IServiceCollection services)
         {
+            services.AddSingleton<ISelfValidator, SelfValidator>();
             services.AddSingleton<ISchemeTokenValidator, SelfOIDCTokenValidator>();
         }
-
     }
 }
