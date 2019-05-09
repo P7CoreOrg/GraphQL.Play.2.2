@@ -18,6 +18,7 @@ namespace TestServerFixture
     private readonly TestServer _testServer;
     public HttpClient Client { get; }
     public HttpMessageHandler MessageHandler { get; }
+    public TestServer TestServer => _testServer;
 
     // RelativePathToHostProject = @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
     protected abstract string RelativePathToHostProject { get; }

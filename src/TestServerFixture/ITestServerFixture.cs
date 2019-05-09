@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Microsoft.AspNetCore.TestHost;
 
 namespace TestServerFixture
 {
@@ -6,5 +7,6 @@ namespace TestServerFixture
     {
         HttpClient Client { get; }
         HttpMessageHandler MessageHandler { get; }
+        TestServer TestServer { get; }
     }
 }

@@ -12,6 +12,10 @@ using TokenExchange.Contracts;
 
 namespace AppIdentity.Query
 {
+    public class AppIdentityException : Exception
+    {
+
+    }
     public class AppIdentityQuery : IQueryFieldRegistration
     {
         private ITokenMintingService _tokenMintingService;
@@ -37,14 +41,20 @@ namespace AppIdentity.Query
                         where item.Type == "appId"
                         select item.Value;
             var appId = query.FirstOrDefault();
-            if (string.IsNullOrEmpty(appId)) throw new Exception($"Required claim: appId is not pressent");
+            if (string.IsNullOrEmpty(appId))
+            {
+                throw new ExecutionError($"Required claim: appId is not pressent");
+            }
 
 
             query = from item in principal.Claims
                         where item.Type == "machineId"
                         select item.Value;
             var machineId = query.FirstOrDefault();
-            if (string.IsNullOrEmpty(appId)) throw new Exception($"Required claim: machineId is not pressent");
+            if (string.IsNullOrEmpty(machineId))
+            {
+                throw new ExecutionError($"Required claim: machineId is not pressent");
+            }
 
 
             return (appId, machineId);
@@ -68,26 +78,26 @@ namespace AppIdentity.Query
                         var subject = GetSubjectFromPincipal(principal);
                         if (string.IsNullOrEmpty(subject))
                         {
-                            throw new Exception("A subject was not found in the ClaimsPrincipal object!");
+                            throw new ExecutionError("A subject was not found in the ClaimsPrincipal object!");
                         }
                         var requiredClaims = GetRequiredClaimsFromPincipal(principal);
 
                         var jwt = new JwtSecurityTokenHandler().ReadToken(input.id_token) as JwtSecurityToken;
 
-                        
+
                         var identityRequest = new IdentityTokenRequest()
                         {
                             Subject = jwt.Payload.Sub,
                             ArbitraryClaims = new Dictionary<string, List<string>>
                             {
-                                { "appId", new List<string> { requiredClaims.appId } },
-                                { "machineId", new List<string> { requiredClaims.machineId } }
+                                {"appId", new List<string> {requiredClaims.appId}},
+                                {"machineId", new List<string> {requiredClaims.machineId}}
                             },
                             Scope = "arbitrary_identity",
                             ClientId = "app-identity-client"
                         };
                         var identityResult = await _tokenMintingService.MintIdentityTokenAsync(identityRequest);
-                       
+
 
                         var bindResult = new AppIdentityResultModel
                         {
@@ -96,6 +106,10 @@ namespace AppIdentity.Query
                             id_token = identityResult.IdentityToken
                         };
                         return bindResult;
+                    }
+                    catch (ExecutionError executionError)
+                    {
+                        context.Errors.Add(executionError);
                     }
                     catch (Exception e)
                     {
@@ -136,9 +150,14 @@ namespace AppIdentity.Query
                        };
                        return bindResult;
                    }
+                   catch (ExecutionError executionError)
+                   {
+                       context.Errors.Add(executionError);
+                   }
                    catch (Exception e)
                    {
-                       context.Errors.Add(new ExecutionError("Unable to process request", e));
+                       
+                       context.Errors.Add(new ExecutionError(e.Message));
                    }
 
                    return null;

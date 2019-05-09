@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
@@ -5,6 +6,10 @@ using AppIdentity.Models;
 using GraphQL.Client;
 using GraphQL.Client.Http;
 using GraphQL.Common.Request;
+using IdentityModel;
+using IdentityModel.Client;
+using IdentityServer4;
+using IdentityServer4.Contrib.CosmosDB.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using TestServerFixture;
@@ -16,6 +21,9 @@ namespace UnitTestProject_App_Identity
     [TestClass]
     public class AppIdentityTests
     {
+        public string ClientId => "arbitrary-resource-owner-client";
+        public string ClientSecret => "secret";
+
         public static GraphQLClientOptions _graphQLClientOptions;
         public static ITestServerFixture _fixture;
       
@@ -25,7 +33,148 @@ namespace UnitTestProject_App_Identity
             _fixture = TestServerContainer.TestServerFixture;
             _graphQLClientOptions = TestServerContainer.GraphQLClientOptions;
         }
+        [TestMethod]
+        public async Task Mint_AppId_Refresh_missing_appId()
+        {
+            var client = new TokenClient(
+                _fixture.TestServer.BaseAddress + "connect/token",
+                ClientId,
+                _fixture.MessageHandler);
+
+            Dictionary<string, string> paramaters = new Dictionary<string, string>()
+            {
+                {OidcConstants.TokenRequest.ClientId, ClientId},
+                {OidcConstants.TokenRequest.ClientSecret, ClientSecret},
+                {OidcConstants.TokenRequest.GrantType, ArbitraryNoSubjectExtensionGrant.Constants.ArbitraryIdentity},
+                {
+                    OidcConstants.TokenRequest.Scope, $"metal"
+                },
+                {
+                    ArbitraryResourceOwnerExtensionGrant.Constants.Subject, "Ratt"
+                },
+                {
+                    ArbitraryNoSubjectExtensionGrant.Constants.ArbitraryClaims,
+                    $"{{'machineId': ['{Guid.NewGuid().ToString()}']}}"
+                },
+                {ArbitraryNoSubjectExtensionGrant.Constants.AccessTokenLifetime, "3600"},
+                {ArbitraryIdentityExtensionGrant.Constants.IdTokenLifetime, "320000"}
+
+            };
+            var result = await client.RequestAsync(paramaters);
+            result.ErrorDescription.ShouldBeNull();
+            result.Error.ShouldBeNull();
+
+            result.IdentityToken.ShouldNotBeNullOrEmpty();
+            result.AccessToken.ShouldNotBeNullOrEmpty();
+
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
+                                                                      appIdentityRefresh(input: $input){
+                                                                        authority
+                                                                        expires_in
+                                                                        id_token
+                                                                      }
+                                                                    }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            id_token = result.IdentityToken
+                        }
+                    }
+                };
+
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                graphQLResponse.ShouldNotBeNull();
+                var appIdentityResponse =
+                    graphQLResponse
+                        .GetDataFieldAs<AppIdentityResultModel>(
+                            "appIdentityRefresh"); //data->appIdentityCreate is casted as AppIdentityResultModel
+                appIdentityResponse.ShouldBeNull();
+                graphQLResponse.Errors.ShouldNotBeNull();
+
+
+
+
+            }
+        }
+        [TestMethod]
+        public async Task Mint_AppId_Refresh_missing_machineId()
+        {
+            var client = new TokenClient(
+                _fixture.TestServer.BaseAddress + "connect/token",
+                ClientId,
+                _fixture.MessageHandler);
+
+            Dictionary<string, string> paramaters = new Dictionary<string, string>()
+            {
+                {OidcConstants.TokenRequest.ClientId, ClientId},
+                {OidcConstants.TokenRequest.ClientSecret, ClientSecret},
+                {OidcConstants.TokenRequest.GrantType, ArbitraryNoSubjectExtensionGrant.Constants.ArbitraryIdentity},
+                {
+                    OidcConstants.TokenRequest.Scope, $"metal"
+                },
+                {
+                    ArbitraryResourceOwnerExtensionGrant.Constants.Subject, "Ratt"
+                },
+                {
+                    ArbitraryNoSubjectExtensionGrant.Constants.ArbitraryClaims,
+                    $"{{'appId': ['{Guid.NewGuid().ToString()}']}}"
+                },
+                {ArbitraryNoSubjectExtensionGrant.Constants.AccessTokenLifetime, "3600"},
+                {ArbitraryIdentityExtensionGrant.Constants.IdTokenLifetime, "320000"}
+
+            };
+            var result = await client.RequestAsync(paramaters);
+            result.ErrorDescription.ShouldBeNull();
+            result.Error.ShouldBeNull();
+
+            result.IdentityToken.ShouldNotBeNullOrEmpty();
+            result.AccessToken.ShouldNotBeNullOrEmpty();
         
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
+                                                                      appIdentityRefresh(input: $input){
+                                                                        authority
+                                                                        expires_in
+                                                                        id_token
+                                                                      }
+                                                                    }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            id_token = result.IdentityToken
+                        }
+                    }
+                };
+
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                graphQLResponse.ShouldNotBeNull();
+                var appIdentityResponse =
+                    graphQLResponse
+                        .GetDataFieldAs<AppIdentityResultModel>(
+                            "appIdentityRefresh"); //data->appIdentityCreate is casted as AppIdentityResultModel
+                appIdentityResponse.ShouldBeNull();
+                graphQLResponse.Errors.ShouldNotBeNull();
+
+
+
+
+            }
+        }
         [TestMethod]
         public async Task success_app_identity_bind()
         {
