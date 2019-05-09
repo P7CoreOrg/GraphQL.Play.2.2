@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AppIdentity.Models;
 using GraphQL.Client;
+using GraphQL.Client.Http;
 using IdentityTokenExchangeGraphQL.Models;
 using Xunit;
 using XUnitTestServerBase;
@@ -48,6 +49,74 @@ namespace XUnitServer_App_Identity
               _fixture.Client.BaseAddress.Authority);
             endpoint.Path = "/api/v1/GraphQL";
             return endpoint;
+        }
+        [Fact]
+        public async Task App_identity_bind_missing_argmuments_machineId()
+        {
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+
+                            appId = "myApp 001"
+                        }
+                    }
+                };
+
+                Should.Throw<GraphQLHttpException>(() =>
+                {
+                    graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
+                });
+
+            }
+        }
+        [Fact]
+        public async Task App_identity_bind_missing_argmuments_appid()
+        {
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+
+                            machineId = "machineId 001"
+                        }
+                    }
+                };
+
+                Should.Throw<GraphQLHttpException>(() =>
+                    {
+                        graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
+                    });
+
+            }
         }
         [Fact]
         public async Task success_app_identity_bind()
@@ -228,7 +297,7 @@ namespace XUnitServer_App_Identity
                                     tokenScheme = "self"
                                     }
                             },
-                           
+
                             exchange = "google-my-custom",
                             extras = new[] { "a", "b", "c" }
                         }
