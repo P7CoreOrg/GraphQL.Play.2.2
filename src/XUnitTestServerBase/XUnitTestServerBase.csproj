@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
-    <ProjectReference Include="..\XUnitHelpers\XUnitHelpers.csproj" />
   </ItemGroup>
 
 </Project>

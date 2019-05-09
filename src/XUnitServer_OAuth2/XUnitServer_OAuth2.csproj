@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GraphQL.Client\GraphQL.Client.csproj" />
     <ProjectReference Include="..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
-    <ProjectReference Include="..\XUnitHelpers\XUnitHelpers.csproj" />
     <ProjectReference Include="..\XUnitTestServerBase\XUnitTestServerBase.csproj" />
   </ItemGroup>
 
