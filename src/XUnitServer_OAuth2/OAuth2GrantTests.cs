@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Self.Validator;
 using Xunit;
 using XUnitTestServerBase;
 
@@ -44,6 +45,12 @@ namespace XUnitServer_OAuth2
             client.ShouldNotBeNull();
         }
 
+        [Fact]
+        public async Task SelfValidator_ValidateTokenAsync_null()
+        {
+            var d = new SelfValidator(null, null);
+            (await d.ValidateTokenAsync("malformed")).ShouldBeNull();
+        }
         [Fact]
         public async Task fail_client_credentials()
         {
@@ -164,7 +171,7 @@ namespace XUnitServer_OAuth2
             // you can  either validate it or try to  read
             var token = handler.ReadJwtToken(tokenString);
 
-            var d =  new JwtSecurityToken(header, token.Payload);
+            var d = new JwtSecurityToken(header, token.Payload);
             tokenString = handler.WriteToken(secToken);
         }
     }
