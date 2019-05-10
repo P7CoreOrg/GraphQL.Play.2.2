@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using IdentityModel;
 using IdentityModel.Client;
@@ -10,8 +11,9 @@ using IdentityServer4Extras.Endpoints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using P7Core.Utils;
 using TokenExchange.Contracts;
-
+[assembly: InternalsVisibleTo("UnitTestProject_TokenExchange")]
 namespace TokenMintingService
 {
     public class InProcTokenMintingService : ITokenMintingService
@@ -31,11 +33,11 @@ namespace TokenMintingService
             _logger = logger;
 
             _clientId = _configuration["inProcTokenMintingService:clientId"];
-          
+
         }
 
 
-        static TokenMintingResponse ToTokenMintingResponse(TokenRawResult tokenRawResult)
+        internal static TokenMintingResponse ToTokenMintingResponse(TokenRawResult tokenRawResult)
         {
             return new TokenMintingResponse()
             {
@@ -45,14 +47,19 @@ namespace TokenMintingService
                 ExpiresIn = tokenRawResult.TokenResult.Response.AccessTokenLifetime,
                 TokenType = "Bearer",
                 IsError = tokenRawResult.TokenErrorResult != null,
-                ErrorDescription = (tokenRawResult.TokenErrorResult == null)?"": tokenRawResult.TokenErrorResult.Response.ErrorDescription,
+                ErrorDescription = (tokenRawResult.TokenErrorResult == null) ? "" : tokenRawResult.TokenErrorResult.Response.ErrorDescription,
                 Error = (tokenRawResult.TokenErrorResult == null) ? "" : tokenRawResult.TokenErrorResult.Response.Error,
                 Scheme = "self"
             };
         }
 
-        ArbitraryResourceOwnerRequest ToArbitraryResourceOwnerRequest(ResourceOwnerTokenRequest resourceOwnerTokenRequest)
+        internal ArbitraryResourceOwnerRequest ToArbitraryResourceOwnerRequest(ResourceOwnerTokenRequest resourceOwnerTokenRequest)
         {
+            Guard.ArgumentNotNull(nameof(resourceOwnerTokenRequest), resourceOwnerTokenRequest);
+            var valid = !string.IsNullOrWhiteSpace(_clientId) ||
+                        !string.IsNullOrWhiteSpace(resourceOwnerTokenRequest.ClientId);
+            Guard.OperationValid(valid, "all clientId(s) are null!");
+
             var scopesList = resourceOwnerTokenRequest.Scope.Split(' ').ToList();
             var extensionGrantRequest = new ArbitraryResourceOwnerRequest()
             {
@@ -65,12 +72,16 @@ namespace TokenMintingService
             return extensionGrantRequest;
         }
 
-        ArbitraryIdentityRequest ToArbitraryIdentityRequest(IdentityTokenRequest identityTokenRequest)
+        internal ArbitraryIdentityRequest ToArbitraryIdentityRequest(IdentityTokenRequest identityTokenRequest)
         {
+            Guard.ArgumentNotNull(nameof(identityTokenRequest), identityTokenRequest);
+            var valid = !string.IsNullOrWhiteSpace(_clientId) ||
+                        !string.IsNullOrWhiteSpace(identityTokenRequest.ClientId);
+            Guard.OperationValid(valid, "all clientId(s) are null!");
             var scopesList = identityTokenRequest.Scope.Split(' ').ToList();
             var extensionGrantRequest = new ArbitraryIdentityRequest()
             {
-                ClientId = string.IsNullOrEmpty(identityTokenRequest.ClientId)?_clientId: identityTokenRequest.ClientId,
+                ClientId = string.IsNullOrEmpty(identityTokenRequest.ClientId) ? _clientId : identityTokenRequest.ClientId,
                 Scopes = scopesList,
                 Subject = identityTokenRequest.Subject,
                 ArbitraryClaims = identityTokenRequest.ArbitraryClaims,

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using AppIdentity.Models;
@@ -115,6 +117,152 @@ namespace UnitTestProject_TokenExchange
             var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
             graphQLResponse.ShouldNotBeNull();
             graphQLResponse.Errors.ShouldBeNull();
+
+
+        }
+        [TestMethod]
+        public async Task fail_Bad_token_exchange()
+        {
+            string id_token = Guid.NewGuid().ToString();
+
+
+
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            var graphQlRequest = new GraphQLRequest(
+                @"query q($input: tokenExchange!) {
+                            tokenExchange(input: $input){
+			                    authority
+                                access_token
+                                token_type
+                                httpHeaders
+                                {
+                                    name
+                                    value
+                                }
+                            }
+                        }")
+            {
+
+                OperationName = null,
+                Variables = new
+                {
+                    input = new
+                    {
+                        exchange = "google-my-custom",
+                        extras = new string[]
+                        {
+                            "a", "b", "c"
+                        },
+                        tokens = new[]
+                        {
+                            new
+                            {
+                                token = id_token,
+                                tokenScheme = "self-testserver"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
+
+            graphQLResponse.Errors.ShouldNotBeNull();
+
+
+        }
+        class TokenScheme
+        {
+            public string token { get; set; }
+            public string tokenScheme { get; set; }
+        }
+        [TestMethod]
+        public async Task fail_missing_token_exchange()
+        {
+            string id_token = Guid.NewGuid().ToString();
+
+            var tokens = new List<TokenScheme>();
+
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            var graphQlRequest = new GraphQLRequest(
+                @"query q($input: tokenExchange!) {
+                            tokenExchange(input: $input){
+			                    authority
+                                access_token
+                                token_type
+                                httpHeaders
+                                {
+                                    name
+                                    value
+                                }
+                            }
+                        }")
+            {
+
+                OperationName = null,
+                Variables = new
+                {
+                    input = new
+                    {
+                        exchange = "google-my-custom",
+                        extras = new string[]
+                        {
+                            "a", "b", "c"
+                        },
+                        tokens = tokens
+                    }
+                }
+            };
+
+            var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
+
+            graphQLResponse.Errors.ShouldNotBeNull();
+
+
+        }
+        [TestMethod]
+        public async Task fail_null_token_exchange()
+        {
+            string id_token = Guid.NewGuid().ToString();
+
+            var tokens = new List<TokenScheme>();
+
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            var graphQlRequest = new GraphQLRequest(
+                @"query q($input: tokenExchange!) {
+                            tokenExchange(input: $input){
+			                    authority
+                                access_token
+                                token_type
+                                httpHeaders
+                                {
+                                    name
+                                    value
+                                }
+                            }
+                        }")
+            {
+
+                OperationName = null,
+                Variables = new
+                {
+                    input = new
+                    {
+                        exchange = "google-my-custom",
+                        extras = new string[]
+                        {
+                            "a", "b", "c"
+                        }
+                    }
+                }
+            };
+
+            var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
+
+            graphQLResponse.Errors.ShouldNotBeNull();
 
 
         }
