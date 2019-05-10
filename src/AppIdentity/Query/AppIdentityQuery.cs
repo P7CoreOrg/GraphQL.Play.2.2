@@ -98,11 +98,16 @@ namespace AppIdentity.Query
                         };
                         var identityResult = await _tokenMintingService.MintIdentityTokenAsync(identityRequest);
 
+                        var expiresIn = 0;
+                        if (jwt.Payload.Exp != null)
+                        {
+                            expiresIn = (int) jwt.Payload.Exp;
+                        }
 
                         var bindResult = new AppIdentityResultModel
                         {
                             authority = jwt.Issuer,
-                            expires_in = jwt.Payload.Exp == null ? 0 : (int)jwt.Payload.Exp,
+                            expires_in = expiresIn,
                             id_token = identityResult.IdentityToken
                         };
                         return bindResult;
@@ -142,18 +147,20 @@ namespace AppIdentity.Query
                        var identityResult = await _tokenMintingService.MintIdentityTokenAsync(identityRequest);
                        var jwt = new JwtSecurityTokenHandler().ReadToken(identityResult.IdentityToken) as JwtSecurityToken;
 
+                       var expiresIn = 0;
+                       if (jwt.Payload.Exp != null)
+                       {
+                           expiresIn = (int)jwt.Payload.Exp;
+                       }
                        var bindResult = new AppIdentityResultModel
                        {
                            authority = jwt.Issuer,
-                           expires_in = jwt.Payload.Exp == null ? 0 : (int)jwt.Payload.Exp,
+                           expires_in = expiresIn,
                            id_token = identityResult.IdentityToken
                        };
                        return bindResult;
                    }
-                   catch (ExecutionError executionError)
-                   {
-                       context.Errors.Add(executionError);
-                   }
+                   
                    catch (Exception e)
                    {
                        

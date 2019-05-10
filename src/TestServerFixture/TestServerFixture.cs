@@ -40,6 +40,7 @@ namespace TestServerFixture
         _testServer = new TestServer(builder);
         Client = _testServer.CreateClient();
         MessageHandler = _testServer.CreateHandler();
+        TestDefaultHttpClientFactory.TestServer = _testServer;
 
     }
 
