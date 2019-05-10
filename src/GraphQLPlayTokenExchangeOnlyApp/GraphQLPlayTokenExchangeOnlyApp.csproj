@@ -26,6 +26,7 @@
     <ProjectReference Include="..\AppIdentity\AppIdentity.csproj" />
     <ProjectReference Include="..\AuthRequiredDemo.GraphQL\AuthRequiredDemo.GraphQL.csproj" />
     <ProjectReference Include="..\BriarRabbitTokenExchange\BriarRabbitTokenExchange.csproj" />
+    <ProjectReference Include="..\DiscoveryHub\DiscoveryHub.csproj" />
     <ProjectReference Include="..\GraphQLPlay.IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj" />
     <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />

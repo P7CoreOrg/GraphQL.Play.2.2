@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AppIdentity.Extensions;
 using ArbitraryIdentityExtensionGrant;
+using DiscoveryHub.Extensions;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlayTokenExchangeOnlyApp.Filter;
@@ -74,7 +75,8 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddGraphQLPlayIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
             services.AddExtensionGrantsRollup(this);
-
+            services.AddGraphQLDiscoveryTypes();
+            services.AddInMemoryDiscoveryHubStore();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",

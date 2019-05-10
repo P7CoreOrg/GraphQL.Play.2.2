@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Threading.Tasks;
 using AppIdentity.Models;
 using GraphQL.Client;
 using GraphQL.Common.Request;
+using GraphQLPlay.IdentityModelExtras;
+using GraphQLPlayTokenExchangeOnlyApp.Controllers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using TestServerFixture;
@@ -26,7 +30,25 @@ namespace UnitTestProject_TokenExchange
             _fixture = TestServerContainer.TestServerFixture;
             _graphQLClientOptions = TestServerContainer.GraphQLClientOptions;
         }
-
+       
+       [TestMethod]
+        public async Task GraphQLController_MakeObjectResult()
+        {
+            var objResult = GraphQLController.MakeObjectResult("Hello", HttpStatusCode.BadRequest);
+            objResult.ShouldNotBeNull();
+        
+        }
+        [TestMethod]
+        public async Task ServiceProvider_test()
+        {
+            var services = _fixture.TestServer.Host.Services;
+            var discoverCacheContainerFactory = services.GetRequiredService<DiscoverCacheContainerFactory>();
+            discoverCacheContainerFactory.ShouldNotBeNull();
+            var all = discoverCacheContainerFactory.GetAll();
+            all.ShouldNotBeNull();
+            var noMas = discoverCacheContainerFactory.Get(SimpleObjectCoverage.GuidString);
+            noMas.ShouldBeNull();
+        }
         async Task<AppIdentityResultModel> FetchAppIdentityAsync()
         {
             string id_token = "";

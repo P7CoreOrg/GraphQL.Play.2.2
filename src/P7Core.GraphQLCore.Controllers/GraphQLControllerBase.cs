@@ -24,7 +24,6 @@ namespace P7Core.GraphQLCore.Controllers
     public class GraphQLControllerBase<T> : Controller where T : class
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private ISession Session => _httpContextAccessor.HttpContext.Session;
         private ILogger Logger { get; set; }
         private IDocumentExecuter _executer { get; set; }
         private IDocumentWriter _writer { get; set; }
@@ -119,25 +118,7 @@ namespace P7Core.GraphQLCore.Controllers
             errorResult.Errors.Add(new ExecutionError(msg));
             return new ObjectResult(errorResult) { StatusCode = (int)httpStatusCode };
         }
-        HttpStatusCode HttpStatusCodeFromResult(ExecutionResult result)
-        {
-            var httpStatusCode = HttpStatusCode.OK;
-            if ((result?.Errors?.Count ?? 0) == 0)
-            {
-                return httpStatusCode;
-            }
-
-            httpStatusCode = HttpStatusCode.BadRequest;
-            foreach (var error in result.Errors)
-            {
-                var exception = error.InnerException;
-                while (exception != null)
-                {
-                    exception = exception.InnerException;
-                }
-            }
-            return httpStatusCode;
-        }
+       
         [HttpPost]
         public async Task<IActionResult> PostAsync()
         {

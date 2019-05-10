@@ -15,7 +15,7 @@ namespace UnitTestProject_TokenExchange
     [TestClass]
     public class SimpleObjectCoverage
     {
-        private string GuidString => Guid.NewGuid().ToString();
+        public static string GuidString => Guid.NewGuid().ToString();
         [TestMethod]
         public void TokenMintingService_ToTokenMintingResponse()
         {
