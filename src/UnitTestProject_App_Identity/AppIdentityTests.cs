@@ -26,7 +26,7 @@ namespace UnitTestProject_App_Identity
 
         public static GraphQLClientOptions _graphQLClientOptions;
         public static ITestServerFixture _fixture;
-      
+
         [ClassInitialize]
         public static void IntializeClass(TestContext testContext)
         {
@@ -62,8 +62,8 @@ namespace UnitTestProject_App_Identity
             result.AccessToken.ShouldNotBeNullOrEmpty();
 
 
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
                                                                       appIdentityRefresh(input: $input){
@@ -133,8 +133,8 @@ namespace UnitTestProject_App_Identity
             result.AccessToken.ShouldNotBeNullOrEmpty();
 
 
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
                                                                       appIdentityRefresh(input: $input){
@@ -202,10 +202,10 @@ namespace UnitTestProject_App_Identity
 
             result.IdentityToken.ShouldNotBeNullOrEmpty();
             result.AccessToken.ShouldNotBeNullOrEmpty();
-        
 
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
                                                                       appIdentityRefresh(input: $input){
@@ -244,8 +244,8 @@ namespace UnitTestProject_App_Identity
         public async Task success_app_identity_bind()
         {
 
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
@@ -282,8 +282,8 @@ namespace UnitTestProject_App_Identity
         public async Task success_app_identity_bind_and_refresh()
         {
             AppIdentityResultModel appIdentityResponse = null;
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
@@ -319,8 +319,8 @@ namespace UnitTestProject_App_Identity
              * The authority in the self case is under this TestServer and for some reason the discovery cache
              * cant reach this pretend http://localhost
              */
-            using (var graphQLHttpClient =
-               new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityRefresh!) {
                                                                       appIdentityRefresh(input: $input){
@@ -356,8 +356,8 @@ namespace UnitTestProject_App_Identity
         public async Task success_app_identity_bind_and_token_exchange()
         {
             AppIdentityResultModel appIdentityResponse = null;
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
@@ -393,8 +393,8 @@ namespace UnitTestProject_App_Identity
              * The authority in the self case is under this TestServer and for some reason the discovery cache
              * cant reach this pretend http://localhost
              */
-            using (var graphQLHttpClient =
-               new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: tokenExchange!) {
                                                             tokenExchange(input: $input){
@@ -443,8 +443,8 @@ namespace UnitTestProject_App_Identity
         public async Task App_identity_bind_missing_argmuments_machineId()
         {
 
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
@@ -477,8 +477,8 @@ namespace UnitTestProject_App_Identity
         public async Task App_identity_bind_missing_argmuments_appid()
         {
 
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
             {
                 var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
