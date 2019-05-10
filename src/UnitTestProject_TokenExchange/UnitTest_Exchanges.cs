@@ -24,87 +24,99 @@ namespace UnitTestProject_TokenExchange
             _fixture = TestServerContainer.TestServerFixture;
             _graphQLClientOptions = TestServerContainer.GraphQLClientOptions;
         }
-        [TestMethod]
-        public async Task success_app_identity_bind_and_exchange()
+
+        async Task<AppIdentityResultModel> FetchAppIdentityAsync()
         {
             string id_token = "";
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
-            {
-                var graphQlRequest = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            var graphQlRequest = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
                             authority
                               expires_in
                               id_token
                             }
                         }")
-                {
-
-                    OperationName = null,
-                    Variables = new
-                    {
-                        input = new
-                        {
-                            appId = "myApp 001",
-                            machineId = "machineId 001"
-                        }
-                    }
-                };
-
-                var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
-                graphQLResponse.ShouldNotBeNull();
-                var appIdentityResponse = graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
-                appIdentityResponse.ShouldNotBeNull();
-                var handler = new JwtSecurityTokenHandler();
-                var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
-
-                tokenS.ShouldNotBeNull();
-                id_token = appIdentityResponse.id_token;
-
-            }
-
-
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var graphQlRequest = new GraphQLRequest(@"query q($input: tokenExchange!) {
-	                                                                    tokenExchange(input: $input){
-			                                                                    authority
-                                                                          access_token
-                                                                          token_type
-                                                                          httpHeaders
-                                                                          {
-				                                                                    name
-                                                                            value
- 			                                                                    }
-                                                                        }
-                                                                    }")
-                {
 
-                    OperationName = null,
-                    Variables = new
+                OperationName = null,
+                Variables = new
+                {
+                    input = new
                     {
-                        input = new
+                        appId = "myApp 001",
+                        machineId = "machineId 001"
+                    }
+                }
+            };
+
+            var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
+            graphQLResponse.ShouldNotBeNull();
+            var appIdentityResponse =
+                graphQLResponse
+                    .GetDataFieldAs<AppIdentityResultModel>(
+                        "appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
+            appIdentityResponse.ShouldNotBeNull();
+            return appIdentityResponse;
+        }
+
+        [TestMethod]
+        public async Task success_app_identity_bind_and_exchange()
+        {
+            string id_token = "";
+            var appIdentityResponse = await FetchAppIdentityAsync();
+            appIdentityResponse.ShouldNotBeNull();
+            var handler = new JwtSecurityTokenHandler();
+            var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
+
+            tokenS.ShouldNotBeNull();
+            id_token = appIdentityResponse.id_token;
+
+
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            var graphQlRequest = new GraphQLRequest(
+                @"query q($input: tokenExchange!) {
+                            tokenExchange(input: $input){
+			                    authority
+                                access_token
+                                token_type
+                                httpHeaders
+                                {
+                                    name
+                                    value
+                                }
+                            }
+                        }")
+            {
+
+                OperationName = null,
+                Variables = new
+                {
+                    input = new
+                    {
+                        exchange = "google-my-custom",
+                        extras = new string[]
                         {
-                            exchange = "google-my-custom",
-                            extras = new string[]
+                            "a", "b", "c"
+                        },
+                        tokens = new[]
+                        {
+                            new
                             {
-                                "a", "b", "c"
-                            },
-                            tokens = new[]
-                            {
-                                new {token= id_token,tokenScheme="self"}
+                                token = id_token,
+                                tokenScheme = "self-testserver"
                             }
                         }
                     }
-                };
+                }
+            };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
-                graphQLResponse.ShouldNotBeNull();
-                graphQLResponse.Errors.ShouldBeNull();
+            var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
+            graphQLResponse.ShouldNotBeNull();
+            graphQLResponse.Errors.ShouldBeNull();
 
 
-            }
         }
     }
 }

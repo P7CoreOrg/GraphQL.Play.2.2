@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using GraphQLPlay.IdentityModelExtras;
 using Microsoft.AspNetCore.Hosting;
@@ -7,55 +8,93 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.PlatformAbstractions;
+using TestServerFixture;
 
 namespace TestServerFixture
 {
-    public abstract class TestServerFixture<TStartup> : 
+    public abstract class TestServerFixture<TStartup> :
         ITestServerFixture,
-        IDisposable 
-        where TStartup : class 
+        IDisposable
+        where TStartup : class
     {
-    private readonly TestServer _testServer;
-    public HttpClient Client { get; }
-    public HttpMessageHandler MessageHandler { get; }
-    public TestServer TestServer => _testServer;
+        private readonly TestServer _testServer;
+        private string _environmentUrl;
+        public HttpMessageHandler MessageHandler { get; }
+        public TestServer TestServer => _testServer;
 
-    // RelativePathToHostProject = @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
-    protected abstract string RelativePathToHostProject { get; }
-    public TestServerFixture()
-    {
-        var contentRootPath = GetContentRootPath();
-        var builder = new WebHostBuilder()
-            .UseContentRoot(contentRootPath)
-            .UseEnvironment("Development")
-            .ConfigureServices(services => { services.TryAddTransient<IDefaultHttpClientFactory, TestDefaultHttpClientFactory>(); })
-            .ConfigureAppConfiguration((hostingContext, config) =>
+        // RelativePathToHostProject = @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
+        protected abstract string RelativePathToHostProject { get; }
+
+        public TestServerFixture()
+        {
+            var contentRootPath = GetContentRootPath();
+            var builder = new WebHostBuilder()
+                .UseContentRoot(contentRootPath)
+                .UseEnvironment("Development")
+                .ConfigureServices(services =>
+                {
+                    services.TryAddTransient<IDefaultHttpClientFactory>(serviceProvider =>
+                    {
+                        return new TestDefaultHttpClientFactory()
+                        {
+                            HttpClient = Client,
+                            HttpMessageHandler = MessageHandler
+                        };
+                    });
+                })
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
+                    LoadConfigurations(config, environmentName);
+
+                })
+                .UseStartup<TStartup>(); // Uses Start up class from your API Host project to configure the test server
+            string environmentUrl = Environment.GetEnvironmentVariable("TestEnvironmentUrl");
+            IsUsingInProcTestServer = false;
+            if (string.IsNullOrWhiteSpace(environmentUrl))
             {
-                var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
-                LoadConfigurations(config, environmentName);
+                environmentUrl = "http://localhost/";
 
-            })
-            .UseStartup<TStartup>(); // Uses Start up class from your API Host project to configure the test server
+                _testServer = new TestServer(builder);
 
-        _testServer = new TestServer(builder);
-        Client = _testServer.CreateClient();
-        MessageHandler = _testServer.CreateHandler();
-        TestDefaultHttpClientFactory.TestServer = _testServer;
+                MessageHandler = _testServer.CreateHandler();
+                IsUsingInProcTestServer = true;
 
-    }
+                // We need to suppress the execution context because there is no boundary between the client and server while using TestServer
+                MessageHandler = new SuppressExecutionContextHandler(MessageHandler);
+            }
 
-    protected abstract void LoadConfigurations(IConfigurationBuilder config, string environmentName);
+            else
+            {
+                if (environmentUrl.Last() != '/')
+                {
+                    environmentUrl = $"{environmentUrl}/";
+                }
 
-    private string GetContentRootPath()
-    {
-        var testProjectPath = PlatformServices.Default.Application.ApplicationBasePath;
-        return Path.Combine(testProjectPath, RelativePathToHostProject);
-    }
+                MessageHandler = new HttpClientHandler();
+            }
 
-    public void Dispose()
-    {
-        Client.Dispose();
-        _testServer.Dispose();
-    }
+
+            _environmentUrl = environmentUrl;
+
+        }
+
+        public bool IsUsingInProcTestServer { get; set; }
+        public HttpClient CreateHttpClient()
+            => new HttpClient(new SessionMessageHandler(MessageHandler)) { BaseAddress = new Uri(_environmentUrl) };
+        public HttpClient Client => CreateHttpClient();
+        protected abstract void LoadConfigurations(IConfigurationBuilder config, string environmentName);
+
+        private string GetContentRootPath()
+        {
+            var testProjectPath = PlatformServices.Default.Application.ApplicationBasePath;
+            return Path.Combine(testProjectPath, RelativePathToHostProject);
+        }
+
+        public void Dispose()
+        {
+            Client.Dispose();
+            _testServer.Dispose();
+        }
     }
 }
