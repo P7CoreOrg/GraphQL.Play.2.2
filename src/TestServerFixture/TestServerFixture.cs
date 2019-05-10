@@ -13,8 +13,7 @@ using TestServerFixture;
 namespace TestServerFixture
 {
     public abstract class TestServerFixture<TStartup> :
-        ITestServerFixture,
-        IDisposable
+        ITestServerFixture
         where TStartup : class
     {
         private readonly TestServer _testServer;
@@ -91,10 +90,5 @@ namespace TestServerFixture
             return Path.Combine(testProjectPath, RelativePathToHostProject);
         }
 
-        public void Dispose()
-        {
-            Client.Dispose();
-            _testServer.Dispose();
-        }
     }
 }
