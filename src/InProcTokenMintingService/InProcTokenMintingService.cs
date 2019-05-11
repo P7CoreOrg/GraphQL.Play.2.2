@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using P7Core.Utils;
 using TokenExchange.Contracts;
 [assembly: InternalsVisibleTo("UnitTestProject_TokenExchange")]
+[assembly: InternalsVisibleTo("XUnitServer_TokenExchange")]
+
 namespace TokenMintingService
 {
     public class InProcTokenMintingService : ITokenMintingService

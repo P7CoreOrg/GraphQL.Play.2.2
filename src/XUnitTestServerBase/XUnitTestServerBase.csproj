@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
+    <ProjectReference Include="..\TestServerFixture\TestServerFixture.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,36 +9,50 @@ using GraphQL.Common.Request;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlayTokenExchangeOnlyApp.Controllers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
-using TestServerFixture;
+using Xunit;
 
-namespace UnitTestProject_TokenExchange
+namespace XUnitServer_TokenExchange
 {
-    [TestClass]
-    public class UnitTest_Exchanges
+    public class TokenExchangeTests : IClassFixture<MyTestServerFixture>
     {
         public string ClientId => "arbitrary-resource-owner-client";
         public string ClientSecret => "secret";
-
-        public static GraphQLClientOptions _graphQLClientOptions;
-        public static ITestServerFixture _fixture;
-
-        [ClassInitialize]
-        public static void IntializeClass(TestContext testContext)
+        private readonly MyTestServerFixture _fixture;
+        private GraphQLClientOptions _graphQLClientOptions;
+        UriBuilder BuildGraphQLEndpoint()
         {
-            _fixture = TestServerContainer.TestServerFixture;
-            _graphQLClientOptions = TestServerContainer.GraphQLClientOptions;
+            var endpoint = new UriBuilder(_fixture.Client.BaseAddress.Scheme,
+                _fixture.Client.BaseAddress.Authority);
+            endpoint.Path = "/api/v1/GraphQL";
+            return endpoint;
         }
+        public TokenExchangeTests(MyTestServerFixture fixture)
+        {
+            _fixture = fixture;
+            var endpoint = BuildGraphQLEndpoint();
 
-        [TestMethod]
+            _graphQLClientOptions = new GraphQL.Client.GraphQLClientOptions()
+            {
+                HttpMessageHandler = _fixture.MessageHandler,
+                EndPoint = endpoint.Uri
+            };
+        }
+        [Fact]
+        public void AssureFixture()
+        {
+            _fixture.ShouldNotBeNull();
+            var client = _fixture.Client;
+            client.ShouldNotBeNull();
+        }
+        [Fact]
         public async Task GraphQLController_MakeObjectResult()
         {
             var objResult = GraphQLController.MakeObjectResult("Hello", HttpStatusCode.BadRequest);
             objResult.ShouldNotBeNull();
 
         }
-        [TestMethod]
+        [Fact]
         public async Task ServiceProvider_test()
         {
             var services = _fixture.TestServer.Host.Services;
@@ -87,9 +101,7 @@ namespace UnitTestProject_TokenExchange
                 return appIdentityResponse;
             }
         }
-
-
-        [TestMethod]
+        [Fact]
         public async Task success_app_identity_bind_and_exchange_selfvalidator()
         {
             string id_token = "";
@@ -148,7 +160,7 @@ namespace UnitTestProject_TokenExchange
             }
 
         }
-        [TestMethod]
+        [Fact]
         public async Task success_app_identity_bind_and_exchange()
         {
             string id_token = "";
@@ -207,7 +219,7 @@ namespace UnitTestProject_TokenExchange
             }
 
         }
-        [TestMethod]
+        [Fact]
         public async Task fail_Bad_token_exchange()
         {
             string id_token = Guid.NewGuid().ToString();
@@ -265,7 +277,7 @@ namespace UnitTestProject_TokenExchange
             public string token { get; set; }
             public string tokenScheme { get; set; }
         }
-        [TestMethod]
+        [Fact]
         public async Task fail_missing_token_exchange()
         {
             string id_token = Guid.NewGuid().ToString();
@@ -311,7 +323,7 @@ namespace UnitTestProject_TokenExchange
 
             }
         }
-        [TestMethod]
+        [Fact]
         public async Task fail_null_token_exchange()
         {
             string id_token = Guid.NewGuid().ToString();

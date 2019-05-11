@@ -28,5 +28,10 @@ namespace TestServerFixture
 
             return t;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+
+        }
     }
 }

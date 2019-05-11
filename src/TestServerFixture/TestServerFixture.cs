@@ -17,30 +17,32 @@ using TestServerFixture;
 namespace TestServerFixture
 {
     public abstract class TestServerFixture<TStartup> :
-        ITestServerFixture
-        where TStartup : class
+       ITestServerFixture
+       where TStartup : class
     {
-        private readonly TestServer _testServer;
         private string _environmentUrl;
-        public HttpMessageHandler MessageHandler { get; }
-        public TestServer TestServer => _testServer;
+        public bool IsUsingInProcTestServer { get; set; }
 
-        // RelativePathToHostProject = @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
+        public HttpMessageHandler MessageHandler { get; }
+        public TestServer TestServer { get; }
+
+        // RelativePathToHostProject = @"..\..\..\..\TheWebApp";
         protected abstract string RelativePathToHostProject { get; }
 
         public TestServerFixture()
         {
             var contentRootPath = GetContentRootPath();
-            var builder = new WebHostBuilder()
-                .UseContentRoot(contentRootPath)
+            var builder = new WebHostBuilder();
+
+            builder.UseContentRoot(contentRootPath)
                 .UseEnvironment("Development")
+                .ConfigureAppConfiguration(configureDelegate =>
+                {
+                })
                 .ConfigureServices(services =>
                 {
-                    services.PostConfigure<JwtBearerOptions>("Bearer-self-testserver", options =>
-                    {
-                        options.BackchannelHttpHandler = MessageHandler;
-                    });
-
+                    ConfigureServices(services); // to be overriden
+                    services.RemoveAll<IDefaultHttpClientFactory>();
                     services.TryAddTransient<IDefaultHttpClientFactory>(serviceProvider =>
                     {
                         return new TestDefaultHttpClientFactory()
@@ -50,48 +52,59 @@ namespace TestServerFixture
                         };
                     });
                 })
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
-                    LoadConfigurations(config, environmentName);
+                .ConfigureAppConfiguration(ConfigureAppConfiguration);
+            UseSettings(builder);
 
-                })
-                .UseStartup<TStartup>(); // Uses Start up class from your API Host project to configure the test server
+            builder.UseStartup<TStartup>(); // Uses Start up class from your API Host project to configure the test server
             string environmentUrl = Environment.GetEnvironmentVariable("TestEnvironmentUrl");
             IsUsingInProcTestServer = false;
             if (string.IsNullOrWhiteSpace(environmentUrl))
             {
                 environmentUrl = "http://localhost/";
 
-                _testServer = new TestServer(builder);
+                TestServer = new TestServer(builder);
 
-                MessageHandler = _testServer.CreateHandler();
+                MessageHandler = TestServer.CreateHandler();
                 IsUsingInProcTestServer = true;
 
                 // We need to suppress the execution context because there is no boundary between the client and server while using TestServer
                 MessageHandler = new SuppressExecutionContextHandler(MessageHandler);
             }
-
             else
             {
                 if (environmentUrl.Last() != '/')
                 {
                     environmentUrl = $"{environmentUrl}/";
                 }
-
                 MessageHandler = new HttpClientHandler();
             }
-
 
             _environmentUrl = environmentUrl;
 
         }
 
-        public bool IsUsingInProcTestServer { get; set; }
-        public HttpClient CreateHttpClient()
-            => new HttpClient(new SessionMessageHandler(MessageHandler)) { BaseAddress = new Uri(_environmentUrl) };
-        public HttpClient Client => CreateHttpClient();
-        protected abstract void LoadConfigurations(IConfigurationBuilder config, string environmentName);
+        protected abstract void ConfigureAppConfiguration(
+            WebHostBuilderContext hostingContext,
+            IConfigurationBuilder config);
+
+        protected virtual void ConfigureServices(IServiceCollection services)
+        {
+        }
+
+        protected virtual void UseSettings(WebHostBuilder builder)
+        {
+        }
+
+        protected virtual void ConfigureAppConfiguration(IConfigurationBuilder configureDelegate)
+        {
+        }
+
+
+        public HttpClient Client =>
+            new HttpClient(new SessionMessageHandler(MessageHandler))
+            {
+                BaseAddress = new Uri(_environmentUrl)
+            };
 
         private string GetContentRootPath()
         {
