@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AppIdentity.Extensions;
 using ArbitraryIdentityExtensionGrant;
+using AuthRequiredDemoGraphQL.Extensions;
 using DiscoveryHub.Extensions;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlay.IdentityModelExtras.Extensions;
@@ -77,6 +78,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddExtensionGrantsRollup(this);
             services.AddGraphQLDiscoveryTypes();
             services.AddInMemoryDiscoveryHubStore();
+            services.AddGraphQLAuthRequiredQuery();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -102,26 +104,26 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                     policy => { policy.RequireClaim("client_namespace", "Daffy Duck"); });
             });
 
-            var scheme = Configuration["authValidation:scheme"];
+            //  var scheme = Configuration["authValidation:scheme"];
+            var schemes = Configuration
+                .GetSection("authValidation:schemes")
+                .Get<List<string>>();
 
             var section = Configuration.GetSection("InMemoryOAuth2ConfigurationStore:oauth2");
             var oauth2Section = new Oauth2Section();
             section.Bind(oauth2Section);
 
+            var authSchemes = oauth2Section.Authorities.Where(c => schemes.Any(c2 => c2 == c.Scheme));
 
-            var query = from item in oauth2Section.Authorities
-                        where item.Scheme == scheme
-                        select item;
-            var wellknownAuthority = query.FirstOrDefault();
-
-            var authority = wellknownAuthority.Authority;
-            List<SchemeRecord> schemeRecords = new List<SchemeRecord>()
-            {  new SchemeRecord()
+            List<SchemeRecord> schemeRecords = new List<SchemeRecord>();
+            foreach (var authScheme in authSchemes)
+            {
+                var schemeRecord = new SchemeRecord()
                 {
-                    Name = scheme,
+                    Name = authScheme.Scheme,
                     JwtBearerOptions = options =>
                     {
-                        options.Authority = authority;
+                        options.Authority = authScheme.Authority;
                         options.RequireHttpsMetadata = false;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
@@ -157,9 +159,9 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                             }
                         };
                     }
-
-                },
-            };
+                };
+                schemeRecords.Add(schemeRecord);
+            }
 
             services.AddAuthentication("Bearer")
                 .AddMultiAuthorityAuthentication(schemeRecords);

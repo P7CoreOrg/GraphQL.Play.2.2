@@ -53,9 +53,9 @@ namespace MultiAuthority.AccessTokenValidation
                 return AuthenticateResult.NoResult();
             }
 
-            var jwtScheme = Scheme.Name + authScheme;
+            var jwtScheme = $"{Scheme.Name}-{authScheme}";
 
-       
+
             var token = Options.TokenRetriever(Context.Request);
             bool removeToken = false;
 
@@ -73,11 +73,11 @@ namespace MultiAuthority.AccessTokenValidation
                     {
                         _logger.LogTrace("Token is a JWT and is supported.");
 
-                        
+
                         Context.Items.Add(MultiAuthorityAuthenticationDefaults.EffectiveSchemeKey + Scheme.Name, jwtScheme);
                         return await Context.AuthenticateAsync(jwtScheme);
                     }
-                    
+
                     else
                     {
                         _logger.LogTrace("JWT token seem not to be correctly configured for incoming token.");

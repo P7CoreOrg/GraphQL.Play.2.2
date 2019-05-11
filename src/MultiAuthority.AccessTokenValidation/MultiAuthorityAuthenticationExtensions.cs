@@ -23,7 +23,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="configureOptions">The configure options.</param>
         /// <returns></returns>
         public static AuthenticationBuilder AddMultiAuthorityAuthentication(this AuthenticationBuilder builder,
-            IEnumerable<SchemeRecord> schemeRecords, Action<MultiAuthorityAuthenticationOptions> configureOptions=null) =>
+            IEnumerable<SchemeRecord> schemeRecords, Action<MultiAuthorityAuthenticationOptions> configureOptions = null) =>
             builder.AddMultiAuthorityAuthentication(MultiAuthorityAuthenticationDefaults.AuthenticationScheme, schemeRecords, configureOptions);
 
         /// <summary>
@@ -33,18 +33,18 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="authenticationScheme">The authentication scheme.</param>
         /// <param name="configureOptions">The configure options.</param>
         /// <returns></returns>
-        public static AuthenticationBuilder AddMultiAuthorityAuthentication(this AuthenticationBuilder builder, 
-            string authenticationScheme, 
+        public static AuthenticationBuilder AddMultiAuthorityAuthentication(this AuthenticationBuilder builder,
+            string authenticationScheme,
             IEnumerable<SchemeRecord> schemeRecords, Action<MultiAuthorityAuthenticationOptions> configureOptions)
         {
             foreach (var schemeRecord in schemeRecords)
             {
                 Global.SchemeRecords[schemeRecord.Name] = schemeRecord;
-                builder.AddJwtBearer(authenticationScheme + schemeRecord.Name, configureOptions: schemeRecord.JwtBearerOptions);
+                builder.AddJwtBearer($"{authenticationScheme}-{schemeRecord.Name}", configureOptions: schemeRecord.JwtBearerOptions);
             }
 
             configureOptions = configureOptions ?? ((o) => { });
-           
+
             return builder.AddScheme<MultiAuthorityAuthenticationOptions, MultiAuthorityAuthenticationHandler>(authenticationScheme,
                 configureOptions);
         }

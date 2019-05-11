@@ -1,13 +1,17 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using GraphQLPlay.IdentityModelExtras;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Tokens;
 using TestServerFixture;
 
 namespace TestServerFixture
@@ -32,6 +36,11 @@ namespace TestServerFixture
                 .UseEnvironment("Development")
                 .ConfigureServices(services =>
                 {
+                    services.PostConfigure<JwtBearerOptions>("Bearer-self-testserver", options =>
+                    {
+                        options.BackchannelHttpHandler = MessageHandler;
+                    });
+
                     services.TryAddTransient<IDefaultHttpClientFactory>(serviceProvider =>
                     {
                         return new TestDefaultHttpClientFactory()

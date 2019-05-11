@@ -258,7 +258,7 @@ namespace UnitTestProject_App_Identity
 
                 var graphQLResponse = await graphQLHttpClient.GetAsync(graphQlRequest);
                 graphQLResponse.ShouldNotBeNull();
-               
+
             }
         }
         /*
@@ -573,6 +573,128 @@ namespace UnitTestProject_App_Identity
             }
 
         }
+
+        [TestMethod]
+        public async Task success_app_identity_bind_and_token_exchange_and_make_auth_call()
+        {
+            AppIdentityResultModel appIdentityResponse = null;
+            var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            appId = "myApp 001",
+                            machineId = "machineId 001"
+                        }
+                    }
+                };
+
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                appIdentityResponse =
+                    (AppIdentityResultModel)graphQLResponse
+                        .GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
+                appIdentityResponse.ShouldNotBeNull();
+                var handler = new JwtSecurityTokenHandler();
+                var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
+
+                tokenS.ShouldNotBeNull();
+            }
+
+            /*
+             * This next part fails because the validator calls out to authorities to get the public keys
+             * The authority in the self case is under this TestServer and for some reason the discovery cache
+             * cant reach this pretend http://localhost
+             */
+            string access_token = "";
+            graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: tokenExchange!) {
+                                                            tokenExchange(input: $input){
+                                                                authority
+                                                                access_token
+                                                                token_type
+                                                                httpHeaders{
+                                                                    name
+                                                                    value
+                                                                }
+                                                            }
+                                                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            tokens = new[]
+                            {
+                                new
+                                {
+                                    token = appIdentityResponse.id_token,
+                                    tokenScheme = "self"
+                                }
+                            },
+
+                            exchange = "google-my-custom",
+                            extras = new[] { "a", "b", "c" }
+                        }
+                    }
+                };
+
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                graphQLResponse.ShouldNotBeNull();
+                var bindResponse =
+                    (List<TokenExchangeResponse>)graphQLResponse
+                        .GetDataFieldAs<List<TokenExchangeResponse>>("tokenExchange"); //data->appIdentityCreate is casted as AppIdentityResponse
+                bindResponse.ShouldNotBeNull();
+                bindResponse.Count.ShouldBeGreaterThan(0);
+                var handler = new JwtSecurityTokenHandler();
+                var tokenS = handler.ReadToken(bindResponse[0].access_token) as JwtSecurityToken;
+
+                tokenS.ShouldNotBeNull();
+                access_token = bindResponse[0].access_token;
+
+
+            }
+
+            graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions);
+            {
+                var graphQlRequest = new GraphQLRequest(@"query{
+                                                              authRequired{
+                                                                claims{
+                                                                  name
+                                                                  value
+                                                                }
+                                                              }
+                                                            }")
+                {
+                };
+                graphQLHttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {access_token}");
+                graphQLHttpClient.DefaultRequestHeaders.Add("x-authScheme", $"self-testserver");
+                var graphQLResponse = await graphQLHttpClient.GetAsync(graphQlRequest);
+                graphQLResponse.ShouldNotBeNull();
+
+
+
+
+
+            }
+        }
+
         [TestMethod]
         public async Task App_identity_bind_missing_argmuments_machineId()
         {
