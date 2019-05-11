@@ -66,7 +66,7 @@ namespace P7Core.GraphQLCore.Controllers
                 Variables = variables == null ? new JObject() : JsonConvert.DeserializeObject<JObject>(variables)
             });
         }
-        private async Task<IActionResult> ProcessQueryAsync(GraphQLQuery query)
+        internal async Task<IActionResult> ProcessQueryAsync(GraphQLQuery query)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace P7Core.GraphQLCore.Controllers
                     ? HttpStatusCode.BadRequest
                     : HttpStatusCode.OK;
                 MemoryStream stream = new MemoryStream();
-                await _writer.WriteAsync(stream,result);
+                await _writer.WriteAsync(stream, result);
                 StreamReader reader = new StreamReader(stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 string json = reader.ReadToEnd();
@@ -118,7 +118,7 @@ namespace P7Core.GraphQLCore.Controllers
             errorResult.Errors.Add(new ExecutionError(msg));
             return new ObjectResult(errorResult) { StatusCode = (int)httpStatusCode };
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> PostAsync()
         {

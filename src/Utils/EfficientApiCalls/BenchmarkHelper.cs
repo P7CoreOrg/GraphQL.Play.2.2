@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Utils.EfficientApiCalls
 {
+    [ExcludeFromCodeCoverage]
+
     public static class BenchmarkHelper
     {
         public static async Task BenchAsync(Func<object, CancellationToken, Task> operation, int numberOfExecutions, string tag, object content, CancellationToken cancellationToken)

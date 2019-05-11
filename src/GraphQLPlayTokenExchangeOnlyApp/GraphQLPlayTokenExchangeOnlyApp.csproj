@@ -32,6 +32,7 @@
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
     <ProjectReference Include="..\Self.Validator\Self.Validator.csproj" />
     <ProjectReference Include="..\TokenExchange.Rollup.Shadow\TokenExchange.Rollup.Shadow.csproj" />
+    <ProjectReference Include="..\UnitTestApiCollection\UnitTestApiCollection.csproj" />
   </ItemGroup>
 
   <ItemGroup>

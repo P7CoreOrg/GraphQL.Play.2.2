@@ -100,30 +100,5 @@ namespace MultiAuthority.AccessTokenValidation
                 }
             }
         }
-
-        /// <summary>
-        /// Override this method to deal with 401 challenge concerns, if an authentication scheme in question
-        /// deals an authentication interaction as part of it's request flow. (like adding a response header, or
-        /// changing the 401 result to 302 of a login page or external sign-in location.)
-        /// </summary>
-        /// <param name="properties"></param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
-        {
-            if (Context.Items.TryGetValue(MultiAuthorityAuthenticationDefaults.EffectiveSchemeKey + Scheme.Name, out object value))
-            {
-                if (value is string scheme)
-                {
-                    _logger.LogTrace("Forwarding challenge to scheme: {scheme}", scheme);
-                    await Context.ChallengeAsync(scheme);
-                }
-            }
-            else
-            {
-                await base.HandleChallengeAsync(properties);
-            }
-        }
     }
 }

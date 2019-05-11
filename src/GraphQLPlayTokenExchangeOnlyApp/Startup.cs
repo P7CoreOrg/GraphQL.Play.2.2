@@ -40,6 +40,7 @@ using TokenExchange.Contracts;
 using TokenExchange.Contracts.Extensions;
 using TokenExchange.Contracts.Services;
 using TokenExchange.Contracts.Stores;
+using UnitTestApiCollection.Extensions;
 using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
 

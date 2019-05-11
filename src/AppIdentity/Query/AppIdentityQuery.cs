@@ -48,8 +48,8 @@ namespace AppIdentity.Query
 
 
             query = from item in principal.Claims
-                        where item.Type == "machineId"
-                        select item.Value;
+                    where item.Type == "machineId"
+                    select item.Value;
             var machineId = query.FirstOrDefault();
             if (string.IsNullOrEmpty(machineId))
             {
@@ -101,7 +101,7 @@ namespace AppIdentity.Query
                         var expiresIn = 0;
                         if (jwt.Payload.Exp != null)
                         {
-                            expiresIn = (int) jwt.Payload.Exp;
+                            expiresIn = (int)jwt.Payload.Exp;
                         }
 
                         var bindResult = new AppIdentityResultModel
@@ -115,10 +115,6 @@ namespace AppIdentity.Query
                     catch (ExecutionError executionError)
                     {
                         context.Errors.Add(executionError);
-                    }
-                    catch (Exception e)
-                    {
-                        context.Errors.Add(new ExecutionError("Unable to process request", e));
                     }
 
                     return null;
@@ -160,13 +156,10 @@ namespace AppIdentity.Query
                        };
                        return bindResult;
                    }
-                   
-                   catch (Exception e)
+                   catch (ExecutionError executionError)
                    {
-                       
-                       context.Errors.Add(new ExecutionError(e.Message));
+                       context.Errors.Add(executionError);
                    }
-
                    return null;
                },
                deprecationReason: null);

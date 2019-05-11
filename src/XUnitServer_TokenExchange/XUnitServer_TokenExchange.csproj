@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+    <DebugType>None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,5 +21,6 @@
     <ProjectReference Include="..\GraphQL.Client\GraphQL.Client.csproj" />
     <ProjectReference Include="..\GraphQLPlayTokenExchangeOnlyApp\GraphQLPlayTokenExchangeOnlyApp.csproj" />
     <ProjectReference Include="..\TestServerFixture\TestServerFixture.csproj" />
+    <ProjectReference Include="..\UnitTestApiCollection\UnitTestApiCollection.csproj" />
   </ItemGroup>
 </Project>

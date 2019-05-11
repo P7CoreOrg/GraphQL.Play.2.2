@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -12,11 +13,12 @@ using Utils.Models;
 
 namespace Utils.EfficientApiCalls
 {
+    [ExcludeFromCodeCoverage]
     public class HttpClientHelpers
     {
         public static async Task<(string content, HttpStatusCode statusCode)> PostBasicAsync<T>(
-            string url, 
-            List<HttpHeader> additionalHeaders, 
+            string url,
+            List<HttpHeader> additionalHeaders,
             T content,
             CancellationToken cancellationToken)
         {

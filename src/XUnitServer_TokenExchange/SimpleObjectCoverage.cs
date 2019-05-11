@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using FakeItEasy;
+using GraphQLPlay.IdentityModelExtras;
 using IdentityServer4.ResponseHandling;
 using IdentityServer4Extras.Endpoints;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Shouldly;
 using TokenExchange.Contracts;
 using TokenMintingService;
+using Utils.Models;
 using Xunit;
 
 namespace XUnitServer_TokenExchange
@@ -14,6 +17,36 @@ namespace XUnitServer_TokenExchange
     public class SimpleObjectCoverage
     {
         public static string GuidString => Guid.NewGuid().ToString();
+
+
+        [Fact]
+        public void Utils_WellknownAuthority()
+        {
+            var dd = new WellknownAuthority()
+            {
+                Scheme = SimpleObjectCoverage.GuidString,
+                Authority = SimpleObjectCoverage.GuidString,
+                AdditionalEndpointBaseAddresses = new List<string>()
+                {
+                    SimpleObjectCoverage.GuidString
+                }
+            };
+            dd.Scheme.ShouldNotBeNullOrWhiteSpace();
+            dd.Authority.ShouldNotBeNullOrWhiteSpace();
+            dd.AdditionalEndpointBaseAddresses.ShouldNotBeNull();
+            dd.AdditionalEndpointBaseAddresses.Any().ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Utils_Header()
+        {
+            var dd = new HttpHeader()
+            {
+                Name = SimpleObjectCoverage.GuidString,
+                Value = SimpleObjectCoverage.GuidString
+            };
+            dd.ToString().ShouldNotBeNullOrWhiteSpace();
+        }
 
         [Fact]
         public void TokenMintingService_ToTokenMintingResponse()

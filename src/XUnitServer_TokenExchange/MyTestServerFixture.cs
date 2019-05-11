@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TestServerFixture;
+using UnitTestApiCollection.Extensions;
 
 namespace XUnitServer_TokenExchange
 {
@@ -21,6 +22,7 @@ namespace XUnitServer_TokenExchange
             {
                 options.BackchannelHttpHandler = MessageHandler;
             });
+            services.AddUnitTestApiCollection();
         }
     }
 }

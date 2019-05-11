@@ -10,9 +10,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AppIdentity.Models;
+using DiscoveryHub.Contracts;
 using DiscoveryHub.Contracts.Models;
+using DiscoveryHub.Query;
+using FakeItEasy;
+using FakeItEasyCaptures.Helpers;
+using GraphQL;
 using GraphQL.Client;
 using GraphQL.Client.Http;
+using GraphQL.Types;
 using IdentityModel;
 using IdentityModel.Client;
 using IdentityServer4.Contrib.CosmosDB.Entities;
@@ -292,6 +298,7 @@ namespace XUnitServer_App_Identity
 
             }
         }
+
         /*
          * api/v1/GraphQL?query=query%20q(%24input%3A%20appIdentityBind!)%20%7BappIdentityBind(input%3A%20%24input)%7Bauthority%20expires_in%20id_token%7D%7D&variables=%7B%22input%22%3A%7B%22appId%22%3A%22NPM_IOS%22%2C%22machineId%22%3A%221234%22%7D%7D
          */

@@ -5,6 +5,7 @@
     <RootNamespace>XUnitServer_OAuth2</RootNamespace>
 
     <IsPackable>false</IsPackable>
+    <DebugType>None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

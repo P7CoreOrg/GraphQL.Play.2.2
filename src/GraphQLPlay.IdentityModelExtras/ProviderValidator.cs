@@ -20,8 +20,8 @@ namespace GraphQLPlay.IdentityModelExtras
         public DiscoveryResponse _discoveryResponse;
         private IMemoryCache _cache;
         public ProviderValidator(
-            IDiscoveryCacheContainer discoverCacheContainer, 
-            IMemoryCache cache,string audience = null)
+            IDiscoveryCacheContainer discoverCacheContainer,
+            IMemoryCache cache, string audience = null)
         {
             _discoverCacheContainer = discoverCacheContainer;
             _audience = audience;
@@ -54,7 +54,7 @@ namespace GraphQLPlay.IdentityModelExtras
                     var e = Base64Url.Decode(webKey.E);
                     var n = Base64Url.Decode(webKey.N);
 
-                    var key = new RsaSecurityKey(new RSAParameters {Exponent = e, Modulus = n})
+                    var key = new RsaSecurityKey(new RSAParameters { Exponent = e, Modulus = n })
                     {
                         KeyId = webKey.Kid
                     };
@@ -76,7 +76,7 @@ namespace GraphQLPlay.IdentityModelExtras
             var doc = await GetDiscoveryResponseAsync();
             var certificates = await this.FetchCertificates();
             tvp.IssuerSigningKeys = certificates;
-            tvp.ValidIssuers = new List<string> {doc.Issuer};
+            tvp.ValidIssuers = new List<string> { doc.Issuer };
             if (!string.IsNullOrEmpty(_audience))
             {
                 tvp.ValidateAudience = true;
@@ -90,24 +90,6 @@ namespace GraphQLPlay.IdentityModelExtras
             return cp;
         }
 
-        public async Task<ClaimsPrincipal> ValidateToken(string idToken)
-        {
-            TokenValidationParameters tvp = new TokenValidationParameters()
-            {
-                ValidateActor = false, // check the profile ID
 
-                ValidateAudience = false, // check the client ID
-                ValidAudience = null,
-
-                ValidateIssuer = true, // check token came from ?
-                ValidateIssuerSigningKey = true,
-                RequireSignedTokens = true,
-
-                ValidateLifetime = true,
-                RequireExpirationTime = true,
-                ClockSkew = TimeSpan.FromHours(13)
-            };
-            return await ValidateToken(idToken, tvp);
-        }
     }
 }

@@ -8,7 +8,6 @@ namespace GraphQLPlay.IdentityModelExtras.Extensions
     {
         public static void AddGraphQLPlayIdentityModelExtrasTypes(this IServiceCollection services)
         {
-            services.TryAddTransient<IDefaultHttpClientFactory, NullDefaultHttpClientFactory>();
         }
         public static IServiceCollection AddInMemoryOAuth2ConfigurationStore(this IServiceCollection services)
         {
