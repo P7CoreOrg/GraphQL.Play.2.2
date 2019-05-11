@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AppIdentity.Models;
+using DiscoveryHub.Contracts.Models;
 using GraphQL.Client;
 using GraphQL.Client.Http;
 using IdentityModel;
@@ -21,6 +22,10 @@ using TokenExchange.Contracts;
 
 namespace XUnitServer_App_Identity
 {
+    class GraphQLDiscoveryModel
+    {
+        public List<GraphQLEndpoint> graphQLEndpoints { get; set; }
+    }
     public class AppIdentityTests : IClassFixture<MyTestServerFixture>
     {
         public string ClientId => "arbitrary-resource-owner-client";
@@ -279,6 +284,11 @@ namespace XUnitServer_App_Identity
 
                 var graphQLResponse = await graphQLHttpClient.GetAsync(graphQlRequest);
                 graphQLResponse.ShouldNotBeNull();
+
+                var graphQLDiscoveryModel = (GraphQLDiscoveryModel)graphQLResponse.GetDataFieldAs<GraphQLDiscoveryModel>("graphQLDiscovery"); //data->graphQLDiscovery is casted as GraphQLDiscoveryModel
+                graphQLDiscoveryModel.ShouldNotBeNull();
+                graphQLDiscoveryModel.graphQLEndpoints.ShouldNotBeNull();
+                graphQLDiscoveryModel.graphQLEndpoints.Count.ShouldBeGreaterThan(0);
 
             }
         }
