@@ -52,6 +52,9 @@ steps:
   - script: dotnet test ./src/XUnitServer_OAuth2/XUnitServer_OAuth2.csproj --logger trx --collect "Code coverage"
     displayName: dotnet test XUnitServer_OAuth2
 
+  - script: dotnet test ./src/XUnitServer_TokenExchange/XUnitServer_TokenExchange.csproj --logger trx --collect "Code coverage"
+    displayName: dotnet test XUnitServer_TokenExchange
+
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
