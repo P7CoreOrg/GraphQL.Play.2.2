@@ -13,12 +13,10 @@ namespace GraphQLPlay.IdentityModelExtras
 {
     public class ProviderValidator
     {
-        private MemoryCache _certCache;
-        private List<RsaSecurityKey> _cachedCerts;
-        private IDiscoveryCacheContainer _discoverCacheContainer;
-        private string _audience;
-        public DiscoveryResponse _discoveryResponse;
-        private IMemoryCache _cache;
+        private readonly IDiscoveryCacheContainer _discoverCacheContainer;
+        private readonly string _audience;
+        private DiscoveryResponse _discoveryResponse;
+        private readonly IMemoryCache _cache;
         public ProviderValidator(
             IDiscoveryCacheContainer discoverCacheContainer,
             IMemoryCache cache, string audience = null)
@@ -45,7 +43,6 @@ namespace GraphQLPlay.IdentityModelExtras
             {
                 // Key not in cache, so get data.
                 var doc = await GetDiscoveryResponseAsync();
-                var tokenEndpoint = doc.TokenEndpoint;
                 var keys = doc.KeySet.Keys;
 
                 cacheEntry = new List<RsaSecurityKey>();

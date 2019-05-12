@@ -12,14 +12,10 @@ using TokenExchange.Contracts;
 
 namespace AppIdentity.Query
 {
-    public class AppIdentityException : Exception
-    {
-
-    }
     public class AppIdentityQuery : IQueryFieldRegistration
     {
-        private ITokenMintingService _tokenMintingService;
-        private ITokenValidator _tokenValidator;
+        private readonly ITokenMintingService _tokenMintingService;
+        private readonly ITokenValidator _tokenValidator;
 
         public AppIdentityQuery(ITokenMintingService tokenMintingService, ITokenValidator tokenValidator)
         {

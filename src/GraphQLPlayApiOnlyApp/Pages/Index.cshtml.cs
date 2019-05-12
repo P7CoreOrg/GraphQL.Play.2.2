@@ -11,7 +11,7 @@ namespace GraphQLPlayApiOnlyApp.Pages
     {
         public void OnGet()
         {
-
+            // nothing yet to process
         }
     }
 }

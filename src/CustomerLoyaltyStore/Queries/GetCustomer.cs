@@ -12,8 +12,8 @@ namespace CustomerLoyaltyStore.Queries
         {
             _id = id;
         }
-        public override Customer[] Execute(LoyaltyDB db) => db.Customers
-            .Where(c=>c.Value.ID == _id)
+        public override Customer[] Execute(LoyaltyDB model) => model.Customers
+            .Where(c => c.Value.ID == _id)
             .Take(1).Select(c => c.Value).ToArray();
     }
 }

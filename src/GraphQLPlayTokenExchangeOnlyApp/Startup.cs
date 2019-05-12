@@ -74,7 +74,6 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.Configure<ArbitraryIdentityExtensionGrantOptions>(options => { options.IdentityProvider = "Demo"; });
 
             services.AddDistributedMemoryCache();
-            services.AddGraphQLPlayIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
             services.AddExtensionGrantsRollup(this);
             services.AddGraphQLDiscoveryTypes();
@@ -170,6 +169,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
+            services.TryAddTransient<IDefaultHttpClientFactory, DefaultHttpClientFactory>();
 
             // Build the intermediate service provider then return it
             services.AddSwaggerGen(config =>

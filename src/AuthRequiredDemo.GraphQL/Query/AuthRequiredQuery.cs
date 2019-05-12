@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AuthRequiredDemoGraphQL.Models;
 using GraphQL;
+using GraphQL.Types;
 using P7Core.GraphQLCore;
 
 namespace AuthRequiredDemoGraphQL.Query
@@ -14,34 +16,26 @@ namespace AuthRequiredDemoGraphQL.Query
 
         public void AddGraphTypeFields(QueryCore queryCore)
         {
-            queryCore.FieldAsync<IdentityModelType>(name: "authRequired",
+            queryCore.Field<IdentityModelType>(name: "authRequired",
                 description: null,
-                resolve: async context =>
-                {
-                    try
-                    {
-                        var userContext = context.UserContext.As<GraphQLUserContext>();
-                        var result = new Models.IdentityModel { Claims = new List<ClaimModel>() };
-                        foreach (var claim in userContext.HttpContextAccessor.HttpContext.User.Claims)
-                        {
-                            result.Claims.Add(new ClaimModel()
-                            {
-                                Name = claim.Type,
-                                Value = claim.Value
-                            });
-                        }
-
-                        return result;
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-
-                    return null;
-                    //                    return await Task.Run(() => { return ""; });
-                },
+                resolve: Resolver,
                 deprecationReason: null);
+        }
+
+        private object Resolver(ResolveFieldContext<object> context)
+        {
+            var userContext = context.UserContext.As<GraphQLUserContext>();
+            var result = new Models.IdentityModel { Claims = new List<ClaimModel>() };
+            foreach (var claim in userContext.HttpContextAccessor.HttpContext.User.Claims)
+            {
+                result.Claims.Add(new ClaimModel()
+                {
+                    Name = claim.Type,
+                    Value = claim.Value
+                });
+            }
+
+            return result;
         }
     }
 }

@@ -23,8 +23,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
-using P7Core.BurnerGraphQL.Extensions;
-using P7Core.BurnerGraphQL2.Extensions;
 using P7Core.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
@@ -34,7 +32,7 @@ using static GraphQLPlay.Rollup.Extensions.AspNetCoreExtensions;
 
 namespace GraphQLPlayApiOnlyApp
 {
-    public class Startup: IGraphQLRollupRegistrations
+    public class Startup : IGraphQLRollupRegistrations
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         public IConfiguration Configuration { get; }
@@ -55,7 +53,6 @@ namespace GraphQLPlayApiOnlyApp
             services.AddObjectContainer();  // use this vs a static to cache class data.
             services.AddOptions();
             services.AddDistributedMemoryCache();
-            services.AddGraphQLPlayIdentityModelExtrasTypes();
             services.AddGraphQLPlayRollup(this);
 
             services.AddCors(options =>
@@ -147,6 +144,7 @@ namespace GraphQLPlayApiOnlyApp
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
+            services.TryAddTransient<IDefaultHttpClientFactory, DefaultHttpClientFactory>();
 
             // Build the intermediate service provider then return it
             services.AddSwaggerGen(c =>
@@ -202,8 +200,8 @@ namespace GraphQLPlayApiOnlyApp
 
         public void AddGraphQLApis(IServiceCollection services)
         {
-            services.AddBurnerGraphQL();
-            services.AddBurnerGraphQL2();
+            //  services.AddBurnerGraphQL();
+            //   services.AddBurnerGraphQL2();
             services.AddGraphQLAuthRequiredQuery();
         }
     }

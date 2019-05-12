@@ -5,7 +5,10 @@
     <LangVersion>7.3</LangVersion>
     <DebugType>None</DebugType>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>

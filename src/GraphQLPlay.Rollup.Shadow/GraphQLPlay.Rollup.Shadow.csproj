@@ -5,7 +5,10 @@
     <RootNamespace>GraphQLPlay.Rollup</RootNamespace>
     <DebugType>None</DebugType>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphQLPlay.Contracts\GraphQLPlay.Contracts.csproj" />
     <ProjectReference Include="..\P7Core.GraphQLCore.Controllers\P7Core.GraphQLCore.Controllers.csproj" />

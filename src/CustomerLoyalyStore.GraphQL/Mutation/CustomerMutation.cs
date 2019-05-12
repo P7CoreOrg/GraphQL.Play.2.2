@@ -9,12 +9,13 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
 {
     public class CustomerMutation : IMutationFieldRegistration
     {
-        private ICustomerLoyaltyStore _customerLoyaltyStore;
+        private readonly ICustomerLoyaltyStore _customerLoyaltyStore;
 
         public CustomerMutation(ICustomerLoyaltyStore customerLoyaltyStore)
         {
             _customerLoyaltyStore = customerLoyaltyStore;
         }
+
         public void AddGraphTypeFields(MutationCore mutationCore)
         {
             mutationCore.FieldAsync<CustomerResultType>(name: "customer",
@@ -22,32 +23,15 @@ namespace CustomerLoyalyStore.GraphQL.Mutation
                 arguments: new QueryArguments(new QueryArgument<CustomerMutationInput> { Name = "input" }),
                 resolve: async context =>
                 {
-                    try
+                    var customer = context.GetArgument<Customer>("input");
+                    var userContext = context.UserContext.As<GraphQLUserContext>();
+                    customer = await _customerLoyaltyStore.DepositEarnedLoyaltyPointsAsync(customer.ID,
+                        customer.LoyaltyPointBalance);
+                    return new CustomerResult()
                     {
-                        var customer = context.GetArgument<Customer>("input");
-                        var userContext = context.UserContext.As<GraphQLUserContext>();
-                        customer = await _customerLoyaltyStore.DepositEarnedLoyaltyPointsAsync(customer.ID,
-                            customer.LoyaltyPointBalance);
-                        /*
-                        var blog = context.GetArgument<SimpleDocument<Blog>>("input");
-
-                        blog.TenantId = await _blogStore.GetTenantIdAsync();
-                        await _blogStore.InsertAsync(blog);
-                        */
-                        return new CustomerResult()
-                        {
-                            ID = customer.ID,
-                            LoyaltyPointBalance = customer.LoyaltyPointBalance
-                        };
-                       
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                    return false;
-                    //                    return await Task.Run(() => { return ""; });
-
+                        ID = customer.ID,
+                        LoyaltyPointBalance = customer.LoyaltyPointBalance
+                    };
                 },
                 deprecationReason: null
             );

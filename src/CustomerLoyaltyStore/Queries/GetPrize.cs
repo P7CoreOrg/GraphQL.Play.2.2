@@ -13,7 +13,7 @@ namespace CustomerLoyaltyStore.Queries
             _id = id;
         }
 
-        public override Prize[] Execute(LoyaltyDB db) => db.Prizes
+        public override Prize[] Execute(LoyaltyDB model) => model.Prizes
             .Where(c => c.Value.ID == _id)
             .Take(1).Select(c => c.Value).ToArray();
     }

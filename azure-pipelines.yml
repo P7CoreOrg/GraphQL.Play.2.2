@@ -33,11 +33,15 @@ variables:
 steps:
   - script: echo Build.Reason:$(Build.Reason) version:$(version) DoPreRelease:$(DoPreRelease)
     displayName: 'BuildNumber'
-  
+
   - task: DotNetCoreInstaller@0
     displayName: Install .NET Core $(DotNetCoreVersion)
     inputs:
       version: $(DotNetCoreVersion)
+
+  - script: dotnet tool install --global dotnet-sonarscanner
+    displayName: 'Install dotnet-sonarscanner'
+
   - script: dotnet restore ./src/GraphQL-AspNetCore-2.2.sln
     displayName: dotnet restore
     

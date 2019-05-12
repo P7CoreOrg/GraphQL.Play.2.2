@@ -15,7 +15,7 @@ namespace BriarRabbitTokenExchange
     [ApiController]
     public class BriarRabbitController : ControllerBase
     {
-        private ILogger<BriarRabbitController> _logger;
+        private readonly ILogger<BriarRabbitController> _logger;
 
 
         public BriarRabbitController(
@@ -27,9 +27,9 @@ namespace BriarRabbitTokenExchange
         [HttpPost]
         [Authorize]
         [Route("briar_rabbit/pass-through-handler")]
-        public async Task<List<TokenExchangeResponse>> PostPassThroughHandlerExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
+        public Task<List<TokenExchangeResponse>> PostPassThroughHandlerExchangeAsync(TokenExchangeRequest tokenExchangeRequest)
         {
-            return new List<TokenExchangeResponse>(){
+            var result = new List<TokenExchangeResponse>(){
                 new TokenExchangeResponse()
                 {
                     access_token = $"briar_rabbit_access_token_{Guid.NewGuid().ToString()}",
@@ -47,13 +47,14 @@ namespace BriarRabbitTokenExchange
                     }
                 }
             };
+            return Task.FromResult(result);
         }
         [HttpPost]
         [Authorize]
         [Route("briar_rabbit/token-exchange-validator")]
-        public async Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
+        public Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
         {
-            return new List<ExternalExchangeResourceOwnerTokenRequest>()
+            var result = new List<ExternalExchangeResourceOwnerTokenRequest>()
             {
                 new ExternalExchangeResourceOwnerTokenRequest()
                 {
@@ -74,6 +75,7 @@ namespace BriarRabbitTokenExchange
                     }
                 }
             };
+            return Task.FromResult(result);
         }
     }
 }

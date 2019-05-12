@@ -11,10 +11,11 @@ namespace B2BPublisher.Stores
     class InMemoryB2BPlublisherStore : IB2BPlublisherStore
     {
         Dictionary<(string clientId, string clientNamespace), PublishStateModel> _database;
-        Dictionary<(string clientId, string clientNamespace), PublishStateModel> Database {
+        Dictionary<(string clientId, string clientNamespace), PublishStateModel> Database
+        {
             get
             {
-                if(_database == null)
+                if (_database == null)
                 {
                     _database = new Dictionary<(string clientId, string clientNamespace), PublishStateModel>();
                 }
@@ -22,26 +23,32 @@ namespace B2BPublisher.Stores
             }
         }
 
-        public async Task<PublishStateModel> GetPublishStateAsync(AuthContext authContext, RequestedFields requestedFields)
+        public Task<PublishStateModel> GetPublishStateAsync(AuthContext authContext, RequestedFields requestedFields)
         {
-            if (Database.ContainsKey((authContext.ClientId, authContext.ClientNamespace))){
-                return Database[(authContext.ClientId, authContext.ClientNamespace)];
+            PublishStateModel result = null;
+            if (Database.ContainsKey((authContext.ClientId, authContext.ClientNamespace)))
+            {
+                result = Database[(authContext.ClientId, authContext.ClientNamespace)];
             }
-            return null;
-           
+            return Task.FromResult(result);
+
         }
 
-        public async Task<PublishStateResultModel> PublishStateAsync(AuthContext authContext, RequestedFields requestedFields, PublishStateModel payload)
+        public Task<PublishStateResultModel> PublishStateAsync(
+            AuthContext authContext,
+            RequestedFields requestedFields,
+            PublishStateModel state)
         {
             var clientIdRequested = requestedFields.Fields.Contains("client_id");
             var clientNamespaceRequested = requestedFields.Fields.Contains("client_namespace");
-            Database[(authContext.ClientId, authContext.ClientNamespace)] = payload;
-            return new PublishStateResultModel()
+            Database[(authContext.ClientId, authContext.ClientNamespace)] = state;
+            var result = new PublishStateResultModel()
             {
                 status = PublishStatus.Accepted,
                 client_id = clientIdRequested ? authContext.ClientId : null,
                 client_namespace = clientNamespaceRequested ? authContext.ClientNamespace : null
             };
+            return Task.FromResult(result);
         }
     }
 }

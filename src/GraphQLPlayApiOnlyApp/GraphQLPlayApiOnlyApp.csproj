@@ -31,8 +31,6 @@
     <ProjectReference Include="..\GraphQLPlay.IdentityModelExtras\GraphQLPlay.IdentityModelExtras.csproj" />
     <ProjectReference Include="..\GraphQLPlay.Rollup.Shadow\GraphQLPlay.Rollup.Shadow.csproj" />
     <ProjectReference Include="..\MultiAuthority.AccessTokenValidation\MultiAuthority.AccessTokenValidation.csproj" />
-    <ProjectReference Include="..\P7Core.BurnerGraphQL2\P7Core.BurnerGraphQL2.csproj" />
-    <ProjectReference Include="..\P7Core.BurnerGraphQL\P7Core.BurnerGraphQL.csproj" />
   </ItemGroup>
 
 

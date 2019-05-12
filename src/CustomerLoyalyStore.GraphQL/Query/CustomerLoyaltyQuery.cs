@@ -20,10 +20,11 @@ namespace CustomerLoyalyStore.GraphQL.Query
         public static bool EqualsNoCase(this string str1, string str2) =>
             string.Equals(str1, str2, StringComparison.InvariantCultureIgnoreCase);
     }
+
     public class CustomerLoyaltyQuery : IQueryFieldRegistration
     {
-        private ICustomerLoyaltyStore _customerLoyaltyStore;
-        private IPrizeStore _lazyPrizeStore;
+        private readonly ICustomerLoyaltyStore _customerLoyaltyStore;
+        private readonly IPrizeStore _lazyPrizeStore;
 
         public CustomerLoyaltyQuery(ICustomerLoyaltyStore customerLoyaltyStore,
             IPrizeStore lazyPrizeStore)
@@ -38,59 +39,51 @@ namespace CustomerLoyalyStore.GraphQL.Query
                 description: null,
                 resolve: async context =>
                 {
-                    try
+
+                    var startQuery = context?.Operation?
+                        .SelectionSet?
+                        .Selections
+                        .Select(x => x as Field)
+                        .FirstOrDefault();
+
+
+                    var fields = startQuery?.SelectionSet?
+                        .Selections
+                        .Select(x => x as Field)
+                        .ToList();
+                    var prizesField = fields?
+                        .Where(x => "prizes".EqualsNoCase(x.Name))
+                        .FirstOrDefault();
+
+
+                    var userContext = context.UserContext.As<GraphQLUserContext>();
+                    var user = userContext.HttpContextAccessor.HttpContext.User;
+                    var query = from item in user.Claims
+                                where item.Type == ClaimTypes.NameIdentifier
+                                select item;
+                    if (query.Any())
                     {
-                        var startQuery = context?.Operation?
-                            .SelectionSet?
-                            .Selections
-                            .Select(x => x as Field)
-                            .FirstOrDefault();
- 
-
-                        var fields = startQuery?.SelectionSet?
-                            .Selections
-                            .Select(x => x as Field)
-                            .ToList();
-                        var prizesField = fields?
-                            .Where(x => "prizes".EqualsNoCase(x.Name))
-                            .FirstOrDefault();
-
-
-                        var userContext = context.UserContext.As<GraphQLUserContext>();
-                        var user = userContext.HttpContextAccessor.HttpContext.User;
-                        var query = from item in user.Claims
-                            where item.Type == ClaimTypes.NameIdentifier
-                            select item;
-                        if (query.Any())
+                        var claim = query.First();
+                        var userId = claim.Value;
+                        var customer = await _customerLoyaltyStore.GetCustomerAsync(userId);
+                        var customerResult = new CustomerResult
                         {
-                            var claim = query.First();
-                            var userId = claim.Value;
-                            var customer = await _customerLoyaltyStore.GetCustomerAsync(userId);
-                            var customerResult = new CustomerResult
-                            {
-                                ID = customer.ID,
-                                LoyaltyPointBalance = customer.LoyaltyPointBalance
-                                
-                            };
+                            ID = customer.ID,
+                            LoyaltyPointBalance = customer.LoyaltyPointBalance
 
-                            if (prizesField != null)
-                            {
-                                var prizeStore = _lazyPrizeStore;
-                                var prizes =
-                                    await prizeStore.GetAvailablePrizesAsync(customer.LoyaltyPointBalance);
-                                customerResult.Prizes = prizes;
-                            }
-                            return customerResult;
+                        };
+
+                        if (prizesField != null)
+                        {
+                            var prizeStore = _lazyPrizeStore;
+                            var prizes =
+                                await prizeStore.GetAvailablePrizesAsync(customer.LoyaltyPointBalance);
+                            customerResult.Prizes = prizes;
                         }
 
+                        return customerResult;
                     }
-                    catch (Exception e)
-                    {
-
-                    }
-
                     return null;
-                    //                    return await Task.Run(() => { return ""; });
                 },
                 deprecationReason: null);
         }

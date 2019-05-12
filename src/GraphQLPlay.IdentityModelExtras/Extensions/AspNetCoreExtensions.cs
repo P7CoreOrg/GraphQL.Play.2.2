@@ -6,9 +6,6 @@ namespace GraphQLPlay.IdentityModelExtras.Extensions
 {
     public static class AspNetCoreExtensions
     {
-        public static void AddGraphQLPlayIdentityModelExtrasTypes(this IServiceCollection services)
-        {
-        }
         public static IServiceCollection AddInMemoryOAuth2ConfigurationStore(this IServiceCollection services)
         {
             services.AddSingleton<IOAuth2ConfigurationStore, InMemoryOAuth2ConfigurationStore>();
