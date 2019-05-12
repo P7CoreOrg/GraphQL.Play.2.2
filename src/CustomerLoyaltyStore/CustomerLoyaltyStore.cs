@@ -13,7 +13,7 @@ namespace CustomerLoyaltyStore
 {
     public class CustomerLoyaltyStore : ICustomerLoyaltyStore
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public CustomerLoyaltyStore(IConfiguration configuration)
         {
@@ -54,7 +54,7 @@ namespace CustomerLoyaltyStore
         {
             if (_customerLoyaltyDBEngine == null)
             {
-               
+
                 _customerLoyaltyDBEngine = await Engine.Start<LoyaltyDB>();
                 foreach (var customer in Customers)
                 {
@@ -92,7 +92,7 @@ namespace CustomerLoyaltyStore
         public async Task<TransferPointsResult> TransferLoyaltyPointsAsync(string senderId, string recieverId, int points)
         {
             var engine = await GetCustomerLoyaltyDBEngineAsync();
-            var result = await engine.Execute(new TransferPoints(senderId, recieverId,points));
+            var result = await engine.Execute(new TransferPoints(senderId, recieverId, points));
             return result;
         }
 

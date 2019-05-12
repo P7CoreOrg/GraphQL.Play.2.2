@@ -144,6 +144,21 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             List<SchemeRecord> schemeRecords = new List<SchemeRecord>();
             foreach (var authScheme in authSchemes)
             {
+                Func<TokenValidatedContext, Task> tokenValidationHandler = context =>
+                {
+                    ClaimsIdentity identity = context.Principal.Identity as ClaimsIdentity;
+                    if (identity != null)
+                    {
+                        // Add the access_token as a claim, as we may actually need it
+                        var accessToken = context.SecurityToken as JwtSecurityToken;
+                        if (accessToken != null)
+                        {
+                            identity.AddClaim(new Claim("access_token", accessToken.RawData));
+                        }
+                    }
+                    return Task.CompletedTask;
+                };
+
                 var schemeRecord = new SchemeRecord()
                 {
                     Name = authScheme.Scheme,
@@ -160,25 +175,8 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                         };
                         options.Events = new JwtBearerEvents
                         {
-                            OnMessageReceived = context => { return Task.CompletedTask; },
-                            OnTokenValidated = context =>
-                            {
-                                ClaimsIdentity identity = context.Principal.Identity as ClaimsIdentity;
-                                if (identity != null)
-                                {
-                                    // Add the access_token as a claim, as we may actually need it
-                                    var accessToken = context.SecurityToken as JwtSecurityToken;
-                                    if (accessToken != null)
-                                    {
-                                        if (identity != null)
-                                        {
-                                            identity.AddClaim(new Claim("access_token", accessToken.RawData));
-                                        }
-                                    }
-                                }
-
-                                return Task.CompletedTask;
-                            }
+                            OnMessageReceived = context => Task.CompletedTask,
+                            OnTokenValidated = tokenValidationHandler
                         };
                     }
                 };

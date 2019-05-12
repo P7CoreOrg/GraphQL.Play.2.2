@@ -6,7 +6,7 @@ namespace CustomerLoyaltyStore.Queries
 {
     public class GetCustomer : Query<LoyaltyDB, Customer[]>
     {
-        private string _id;
+        private readonly string _id;
 
         public GetCustomer(string id)
         {

@@ -113,17 +113,18 @@ namespace P7Core.GraphQLCore.Validators
                 {
                     if (!authenticated)
                     {
-                        var usages = context.GetRecursiveVariables(op).Select(usage => usage.Node.Name);
-                        var selectionSet = op.SelectionSet;
+                        //                        var usages = context.GetRecursiveVariables(op).Select(usage => usage.Node.Name);
+                        //                        var selectionSet = op.SelectionSet;
+                        if (op.OperationType == OperationType.Mutation)
+                        {
+                            context.ReportError(new ValidationError(
+                                context.OriginalQuery,
+                                "auth-required",
+                                $"Authorization is required to access {op.Name}.",
+                                op));
+                        }
                     }
-                    if (op.OperationType == OperationType.Mutation && !authenticated)
-                    {
-                        context.ReportError(new ValidationError(
-                            context.OriginalQuery,
-                            "auth-required",
-                            $"Authorization is required to access {op.Name}.",
-                            op));
-                    }
+
                 });
 
                 _.Match<Field>(fieldAst =>
@@ -135,7 +136,7 @@ namespace P7Core.GraphQLCore.Validators
                     var canAccess = true;
                     if (requiredClaims.StatusCode == GraphQLFieldAuthority_CODE.FOUND)
                     {
-                        if (!user.Identity.IsAuthenticated)
+                        if (!authenticated)
                         {
                             canAccess = false;
                         }

@@ -6,7 +6,7 @@ namespace CustomerLoyaltyStore
 {
     public class PrizeStore : IPrizeStore
     {
-        private ICustomerLoyaltyStore _customerLoyaltyStore;
+        private readonly ICustomerLoyaltyStore _customerLoyaltyStore;
 
         public PrizeStore(ICustomerLoyaltyStore customerLoyaltyStore)
         {

@@ -6,7 +6,7 @@ namespace CustomerLoyaltyStore.Queries
 {
     public class GetPrize : Query<LoyaltyDB, Prize[]>
     {
-        private string _id;
+        private readonly string _id;
 
         public GetPrize(string id)
         {

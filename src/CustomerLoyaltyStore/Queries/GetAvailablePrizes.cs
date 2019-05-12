@@ -6,7 +6,7 @@ namespace CustomerLoyaltyStore.Queries
 {
     public class GetAvailablePrizes : Query<LoyaltyDB, Prize[]>
     {
-        private int _loyaltyPointsCost;
+        private readonly int _loyaltyPointsCost;
 
         public GetAvailablePrizes(int loyaltyPointsCost)
         {
