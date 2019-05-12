@@ -113,6 +113,32 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             var oauth2Section = new Oauth2Section();
             section.Bind(oauth2Section);
 
+            var schemeRecords = SchemeRecords(oauth2Section, schemes);
+
+            services.AddAuthentication("Bearer")
+                .AddMultiAuthorityAuthentication(schemeRecords);
+
+            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.TryAddTransient<IDefaultHttpClientFactory, DefaultHttpClientFactory>();
+
+            // Build the intermediate service provider then return it
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new Info { Title = "GraphQLPlayTokenExchangeOnlyApp", Version = "v1" });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
+                config.OperationFilter<MultiAuthorityOperationFilter>();
+            });
+            return services.BuildServiceProvider();
+
+        }
+
+        private static List<SchemeRecord> SchemeRecords(Oauth2Section oauth2Section, List<string> schemes)
+        {
             var authSchemes = oauth2Section.Authorities.Where(c => schemes.Any(c2 => c2 == c.Scheme));
 
             List<SchemeRecord> schemeRecords = new List<SchemeRecord>();
@@ -134,13 +160,9 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                         };
                         options.Events = new JwtBearerEvents
                         {
-                            OnMessageReceived = context =>
-                            {
-                                return Task.CompletedTask;
-                            },
+                            OnMessageReceived = context => { return Task.CompletedTask; },
                             OnTokenValidated = context =>
                             {
-
                                 ClaimsIdentity identity = context.Principal.Identity as ClaimsIdentity;
                                 if (identity != null)
                                 {
@@ -163,26 +185,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                 schemeRecords.Add(schemeRecord);
             }
 
-            services.AddAuthentication("Bearer")
-                .AddMultiAuthorityAuthentication(schemeRecords);
-
-            services.AddHttpContextAccessor();
-            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
-            services.TryAddTransient<IDefaultHttpClientFactory, DefaultHttpClientFactory>();
-
-            // Build the intermediate service provider then return it
-            services.AddSwaggerGen(config =>
-            {
-                config.SwaggerDoc("v1", new Info { Title = "GraphQLPlayTokenExchangeOnlyApp", Version = "v1" });
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                config.IncludeXmlComments(xmlPath);
-                config.OperationFilter<MultiAuthorityOperationFilter>();
-            });
-            return services.BuildServiceProvider();
-
+            return schemeRecords;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

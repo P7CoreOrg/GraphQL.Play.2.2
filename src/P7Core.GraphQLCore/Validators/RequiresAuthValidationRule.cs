@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Language.AST;
 using GraphQL.Types;
 using GraphQL.Validation;
- 
+
 using P7Core.GraphQLCore.Stores;
 
 namespace P7Core.GraphQLCore.Validators
@@ -18,7 +19,7 @@ namespace P7Core.GraphQLCore.Validators
         EnterLeaveListenerState EnterLeaveListenerState { get; }
     }
 
-    public interface IPluginValidationRule: IValidationRule { }
+    public interface IPluginValidationRule : IValidationRule { }
     public class RequiresAuthValidationRule : IPluginValidationRule
     {
         class MyEnterLeaveListenerSink : IEnterLeaveListenerEventSink, ICurrentEnterLeaveListenerState
@@ -70,7 +71,7 @@ namespace P7Core.GraphQLCore.Validators
                 {
                     CurrentFragmentDefinitionRoot = SafeFragmentMapPop(enterLeaveListenerState.FragmentDefinition.Name);
                     FragmentMap.Remove(enterLeaveListenerState.FragmentDefinition.Name);
-                     
+
                 }
                 else
                 {
@@ -84,55 +85,37 @@ namespace P7Core.GraphQLCore.Validators
             }
         }
 
-        private List<IGraphQLAuthorizationCheck> _graphQLAuthorizationChecks;
-        private List<IGraphQLClaimsAuthorizationCheck> _graphQLClaimsAuthorizationChecks;
-        private IGraphQLFieldAuthority _graphQLFieldAuthority;
-       
-        public RequiresAuthValidationRule( IGraphQLFieldAuthority graphQLFieldAuthority)
+        private readonly IGraphQLFieldAuthority _graphQLFieldAuthority;
+
+        public RequiresAuthValidationRule(IGraphQLFieldAuthority graphQLFieldAuthority)
         {
-          
+
             _graphQLFieldAuthority = graphQLFieldAuthority;
         }
-        
+
         public INodeVisitor Validate(ValidationContext context)
         {
             var userContext = context.UserContext.As<GraphQLUserContext>();
             var user = userContext.HttpContextAccessor.HttpContext.User;
 
             IEnumerable<string> claimsEnumerable = (from item in user.Claims
-                let c = item.Type
-                select c).ToList();
-//            IEnumerable<string> claimsEnumerable = query.ToList();
+                                                    let c = item.Type
+                                                    select c).ToList();
+            //            IEnumerable<string> claimsEnumerable = query.ToList();
             var authenticated = user?.Identity.IsAuthenticated ?? false;
 
             var myEnterLeaveListenerSink = new MyEnterLeaveListenerSink();
-            var currentEnterLeaveListenerState = (ICurrentEnterLeaveListenerState) myEnterLeaveListenerSink;
+            var currentEnterLeaveListenerState = (ICurrentEnterLeaveListenerState)myEnterLeaveListenerSink;
             var myEnterLeaveListener = new MyEnterLeaveListener(_ =>
             {
-                
+
                 _.Match<Operation>(op =>
                 {
                     if (!authenticated)
                     {
                         var usages = context.GetRecursiveVariables(op).Select(usage => usage.Node.Name);
-                     
                         var selectionSet = op.SelectionSet;
-                        foreach (var selection in selectionSet.Selections)
-                        {
-                            var d = selection;
-                            var dd = selection.ToString();
-                            
-                        }
-                        /*
-                        var queryQ = from item in selectionSet.Selections
-                            where _settings.Value.Query.OptOut.Contains(item.)
-                            select item;
-                            */
-
                     }
-                    var opType = op.OperationType;
-                    var query = from item in op.SelectionSet.Selections
-                        select ((GraphQL.Language.AST.Field) item).Name;
                     if (op.OperationType == OperationType.Mutation && !authenticated)
                     {
                         context.ReportError(new ValidationError(
@@ -141,9 +124,6 @@ namespace P7Core.GraphQLCore.Validators
                             $"Authorization is required to access {op.Name}.",
                             op));
                     }
-
-
-
                 });
 
                 _.Match<Field>(fieldAst =>
@@ -160,38 +140,12 @@ namespace P7Core.GraphQLCore.Validators
                             canAccess = false;
                         }
                     }
-                   
-                    if (canAccess && 
-                        requiredClaims != null && 
+
+                    if (canAccess &&
+                        requiredClaims != null &&
                         requiredClaims.Value.Any())
                     {
-                        var rcQuery = (from requiredClaim in requiredClaims.Value
-                                       let c = requiredClaim.Type
-                            select c).ToList();
-                        canAccess = requiredClaims.Value.All(x =>
-                        {
-                            foreach (var ce in user.Claims)
-                            {
-                                if (ce.Type == x.Type)
-                                {
-                                    if (string.IsNullOrEmpty(x.Value))
-                                    {
-                                        if (string.IsNullOrEmpty(ce.Value))
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (x.Value == ce.Value)
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                            return false;
-                        });
+                        canAccess = CanAccess(requiredClaims, user);
                     }
 
                     //  var canAccess = rcQuery.All(x => claimsEnumerable?.Contains(x) ?? false);
@@ -228,51 +182,35 @@ namespace P7Core.GraphQLCore.Validators
             myEnterLeaveListener.RegisterEventSink(myEnterLeaveListenerSink);
             return myEnterLeaveListener;
         }
-    }
 
-    public class OldRequiresAuthValidationRule : IValidationRule
-    {
-        public INodeVisitor Validate(ValidationContext context)
+        private static bool CanAccess(FetchRequireClaimsResult<IEnumerable<Claim>> requiredClaims, ClaimsPrincipal user)
         {
-            var userContext = context.UserContext.As<GraphQLUserContext>();
-            var user = userContext.HttpContextAccessor.HttpContext.User;
-
-
-            var authenticated = user?.Identity.IsAuthenticated ?? false;
-
-            return new EnterLeaveListener(_ =>
+            return requiredClaims.Value.All(x =>
             {
-                _.Match<Operation>(op =>
+                foreach (var ce in user.Claims)
                 {
-                    if (op.OperationType == OperationType.Mutation && !authenticated)
+                    if (ce.Type == x.Type)
                     {
-                        context.ReportError(new ValidationError(
-                            context.OriginalQuery,
-                            "auth-required",
-                            $"Authorization is required to access {op.Name}.",
-                            op));
+                        if (string.IsNullOrEmpty(x.Value))
+                        {
+                            if (string.IsNullOrEmpty(ce.Value))
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if (x.Value == ce.Value)
+                            {
+                                return true;
+                            }
+                        }
                     }
-                });
-                /*
-                // this could leak info about hidden fields in error messages
-                // it would be better to implement a filter on the schema so it
-                // acts as if they just don't exist vs. an auth denied error
-                // - filtering the schema is not currently supported
-                _.Match<Field>(fieldAst =>
-                {
-                    var fieldDef = context.TypeInfo.GetFieldDef();
-                    if (fieldDef.RequiresPermissions() &&
-                        (!authenticated || !fieldDef.CanAccess(userContext.User.Claims)))
-                    {
-                        context.ReportError(new ValidationError(
-                            context.OriginalQuery,
-                            "auth-required",
-                            $"You are not authorized to run this query.",
-                            fieldAst));
-                    }
-                });
-                */
+                }
+                return false;
             });
         }
     }
+
+
 }
