@@ -42,6 +42,9 @@ steps:
   - script: dotnet tool install --global dotnet-sonarscanner
     displayName: 'Install dotnet-sonarscanner'
 
+  - script: dotnet tool install --global dotnet-testx
+    displayName: 'Install dotnet-testx'
+
   - script: dotnet restore ./src/GraphQL-AspNetCore-2.2.sln
     displayName: dotnet restore
     
