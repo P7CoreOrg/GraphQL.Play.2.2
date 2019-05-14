@@ -54,7 +54,7 @@ namespace GraphQLPlay.IdentityModelExtras
 
     public class DiscoverCacheContainerFactory
     {
-        private IConfiguration _configuration;
+       
         private IDefaultHttpClientFactory _defaultHttpClientFactory;
         private IOAuth2ConfigurationStore _oAuth2ConfigurationStore;
         private Dictionary<string, DiscoverCacheContainer> _oIDCDiscoverCacheContainers;
