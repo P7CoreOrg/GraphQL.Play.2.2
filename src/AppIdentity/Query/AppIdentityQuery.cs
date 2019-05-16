@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using GraphQL.Validation;
 using TokenExchange.Contracts;
 
 namespace AppIdentity.Query
@@ -124,10 +125,27 @@ namespace AppIdentity.Query
                {
                    try
                    {
+                       string subject = Guid.NewGuid().ToString();
                        var input = context.GetArgument<AppIdentityCreateInputModel>("input");
+                       if (!string.IsNullOrEmpty(input.Subject))
+                       {
+                           GraphQLUserContext userContext = context.UserContext as GraphQLUserContext;
+                           var user = userContext.HttpContextAccessor.HttpContext.User;
+                           
+                           if (!user.Identity.IsAuthenticated || !userContext.HttpContextAccessor.HttpContext.User.HasClaim("scope", "appIdentity"))
+                           {
+                               throw new ValidationError(
+                                   "appIdentityCreate",
+                                   "auth-required",
+                                   $"You are not authorized to run this query.");
+                           }
+                           subject = input.Subject;
+
+
+                       }
                        var identityRequest = new IdentityTokenRequest()
                        {
-                           Subject = Guid.NewGuid().ToString(),
+                           Subject = subject,
                            ArbitraryClaims = new Dictionary<string, List<string>>
                            {
                                 { "appId", new List<string> { input.AppId } },
@@ -159,6 +177,7 @@ namespace AppIdentity.Query
                    return null;
                },
                deprecationReason: null);
+        
         }
     }
 }

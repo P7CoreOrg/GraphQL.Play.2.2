@@ -13,6 +13,9 @@ namespace AppIdentity.Models
         /// The Machine Id
         /// </summary>
         public string MachineId { get; set; }
-
+        /// <summary>
+        /// The Subject, must be authenticated
+        /// </summary>
+        public string Subject { get; set; }
     }
 }
