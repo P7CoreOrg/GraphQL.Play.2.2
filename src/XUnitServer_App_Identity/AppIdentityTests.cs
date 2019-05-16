@@ -909,39 +909,6 @@ namespace XUnitServer_App_Identity
 
                 tokenS.ShouldNotBeNull();
             }
-            /*
-
-            using (var graphQLHttpClient =
-                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
-            {
-                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
-                          appIdentityCreate(input: $input){
-                            authority
-                              expires_in
-                              id_token
-                            }
-                        }")
-                {
-
-                    OperationName = null,
-                    Variables = new
-                    {
-                        input = new
-                        {
-                            appId = "myApp 001",
-                            machineId = "machineId 001",
-                            subject = Guid.NewGuid().ToString()
-                        }
-                    }
-                };
-                graphQLHttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {clientCredentialsResponse.access_token}");
-                graphQLHttpClient.DefaultRequestHeaders.Add("x-authScheme", $"self-testserver");
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
-
-                graphQLResponse.Errors.ShouldNotBeNull();
-
-            }
-            */
-            }
+        }
     }
 }
