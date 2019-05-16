@@ -28,6 +28,13 @@ using TokenExchange.Contracts;
 
 namespace XUnitServer_App_Identity
 {
+    public class ClientCredentialsResponse
+    {
+        public string access_token { get; set; }
+        public int expires_in { get; set; }
+        public string token_type { get; set; }
+
+    }
     class GraphQLDiscoveryModel
     {
         public List<GraphQLEndpoint> graphQLEndpoints { get; set; }
@@ -801,5 +808,140 @@ namespace XUnitServer_App_Identity
 
             }
         }
+        [Fact]
+        public async Task App_identity_bind_missing_unauthorized_subject()
+        {
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            appId = "myApp 001",
+                            machineId = "machineId 001",
+                            subject = Guid.NewGuid().ToString()
+                        }
+                    }
+                };
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+
+                graphQLResponse.Errors.ShouldNotBeNull();
+
+            }
+        }
+
+        async Task<ClientCredentialsResponse> FetchB2BAccessTokenAsync()
+        {
+            var client = _fixture.Client;
+
+            var dict = new Dictionary<string, string>
+            {
+                {"grant_type", "client_credentials"},
+                {"client_id", "b2b-client"},
+                {"client_secret", "secret"}
+            };
+
+
+
+            var req = new HttpRequestMessage(HttpMethod.Post, "connect/token")
+            {
+                Content = new FormUrlEncodedContent(dict)
+            };
+            var response = await client.SendAsync(req);
+         
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+           
+            var clientCredentialsResponse = JsonConvert.DeserializeObject<ClientCredentialsResponse>(jsonString);
+            return clientCredentialsResponse;
+
+           
+        }
+        [Fact]
+        public async Task App_identity_bind_missing_authorized_subject()
+        {
+            var clientCredentialsResponse = await FetchB2BAccessTokenAsync();
+            clientCredentialsResponse.ShouldNotBeNull();
+            clientCredentialsResponse.access_token.ShouldNotBeNull();
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            appId = "myApp 001",
+                            machineId = "machineId 001",
+                            subject = Guid.NewGuid().ToString()
+                        }
+                    }
+                };
+                graphQLHttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {clientCredentialsResponse.access_token}");
+                graphQLHttpClient.DefaultRequestHeaders.Add("x-authScheme", $"self-testserver");
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                graphQLResponse.ShouldNotBeNull();
+                var appIdentityResponse = graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
+                appIdentityResponse.ShouldNotBeNull();
+                var handler = new JwtSecurityTokenHandler();
+                var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
+
+                tokenS.ShouldNotBeNull();
+            }
+            /*
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            appId = "myApp 001",
+                            machineId = "machineId 001",
+                            subject = Guid.NewGuid().ToString()
+                        }
+                    }
+                };
+                graphQLHttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {clientCredentialsResponse.access_token}");
+                graphQLHttpClient.DefaultRequestHeaders.Add("x-authScheme", $"self-testserver");
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+
+                graphQLResponse.Errors.ShouldNotBeNull();
+
+            }
+            */
+            }
     }
 }
