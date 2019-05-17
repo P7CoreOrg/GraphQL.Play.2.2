@@ -1,3 +1,6 @@
+using System;
+using AppIdentity.Extensions;
+using AppIdentity.Models;
 using GraphQLPlayTokenExchangeOnlyApp;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +23,12 @@ namespace XUnitServer_App_Identity
             services.PostConfigure<JwtBearerOptions>("Bearer-self-testserver", options =>
             {
                 options.BackchannelHttpHandler = MessageHandler;
+            });
+            services.AddInMemoryAppIdentityConfiguration(new AppIdentityConfigurationModel()
+            {
+                MaxAppIdLength = Guid.NewGuid().ToString().Length,
+                MaxMachineIdLength = Guid.NewGuid().ToString().Length,
+                MaxSubjectLength = Guid.NewGuid().ToString().Length
             });
         }
     }

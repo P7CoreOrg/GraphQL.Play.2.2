@@ -775,7 +775,7 @@ namespace XUnitServer_App_Identity
             }
         }
         [Fact]
-        public async Task App_identity_bind_missing_argmuments_appid()
+        public async Task App_identity_bind_appId_outofrange()
         {
 
             using (var graphQLHttpClient =
@@ -795,18 +795,104 @@ namespace XUnitServer_App_Identity
                     {
                         input = new
                         {
-
+                            appId = Guid.NewGuid().ToString() + Guid.NewGuid().ToString(),
                             machineId = "machineId 001"
                         }
                     }
                 };
 
-                Should.Throw<GraphQLHttpException>(() =>
-                {
-                    graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
-                });
+                var response = graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
+                response.Errors.ShouldNotBeNull();
 
             }
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            appId = "",
+                            machineId = "machineId 001"
+                        }
+                    }
+                };
+
+                var response = graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
+                response.Errors.ShouldNotBeNull();
+
+            }
+
+        }
+        [Fact]
+        public async Task App_identity_bind_machineId_outofrange()
+        {
+
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            machineId = Guid.NewGuid().ToString() + Guid.NewGuid().ToString(),
+                            appId = Guid.NewGuid().ToString()
+                        }
+                    }
+                };
+
+                var response = graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
+                response.Errors.ShouldNotBeNull();
+
+            }
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            machineId = "",
+                            appId = Guid.NewGuid().ToString()
+                        }
+                    }
+                };
+
+                var response = graphQLHttpClient.PostAsync(appIdentityCreate).GetAwaiter().GetResult();
+                response.Errors.ShouldNotBeNull();
+
+            }
+
         }
         [Fact]
         public async Task App_identity_bind_missing_unauthorized_subject()
@@ -908,6 +994,42 @@ namespace XUnitServer_App_Identity
                 var tokenS = handler.ReadToken(appIdentityResponse.id_token) as JwtSecurityToken;
 
                 tokenS.ShouldNotBeNull();
+            }
+        }
+        [Fact]
+        public async Task App_identity_bind_missing_authorized_subject_outofrange()
+        {
+            var clientCredentialsResponse = await FetchB2BAccessTokenAsync();
+            clientCredentialsResponse.ShouldNotBeNull();
+            clientCredentialsResponse.access_token.ShouldNotBeNull();
+            using (var graphQLHttpClient =
+                new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
+            {
+                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                          appIdentityCreate(input: $input){
+                            authority
+                              expires_in
+                              id_token
+                            }
+                        }")
+                {
+
+                    OperationName = null,
+                    Variables = new
+                    {
+                        input = new
+                        {
+                            appId = Guid.NewGuid().ToString(),
+                            machineId = Guid.NewGuid().ToString(),
+                            subject = Guid.NewGuid().ToString() + Guid.NewGuid().ToString()
+                        }
+                    }
+                };
+                graphQLHttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {clientCredentialsResponse.access_token}");
+                graphQLHttpClient.DefaultRequestHeaders.Add("x-authScheme", $"self-testserver");
+                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                graphQLResponse.Errors.ShouldNotBeNull();
+                
             }
         }
     }

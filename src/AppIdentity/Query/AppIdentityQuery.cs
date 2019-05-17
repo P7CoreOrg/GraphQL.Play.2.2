@@ -8,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using AppIdentity.Contracts;
+using AppIdentity.Extensions;
 using GraphQL.Validation;
 using TokenExchange.Contracts;
 
@@ -17,9 +19,14 @@ namespace AppIdentity.Query
     {
         private readonly ITokenMintingService _tokenMintingService;
         private readonly ITokenValidator _tokenValidator;
+        private IAppIdentityConfiguration _appIdentityConfiguration;
 
-        public AppIdentityQuery(ITokenMintingService tokenMintingService, ITokenValidator tokenValidator)
+        public AppIdentityQuery(
+            IAppIdentityConfiguration appIdentityConfiguration,
+            ITokenMintingService tokenMintingService, 
+            ITokenValidator tokenValidator)
         {
+            _appIdentityConfiguration = appIdentityConfiguration;
             _tokenMintingService = tokenMintingService;
             _tokenValidator = tokenValidator;
         }
@@ -127,6 +134,7 @@ namespace AppIdentity.Query
                    {
                        string subject = Guid.NewGuid().ToString();
                        var input = context.GetArgument<AppIdentityCreateInputModel>("input");
+                       input.ValidateConstraints(_appIdentityConfiguration);
                        if (!string.IsNullOrEmpty(input.Subject))
                        {
                            GraphQLUserContext userContext = context.UserContext as GraphQLUserContext;

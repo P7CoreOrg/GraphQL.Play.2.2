@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AppIdentity.Extensions;
+using AppIdentity.Models;
 using ArbitraryIdentityExtensionGrant;
 using AuthRequiredDemoGraphQL.Extensions;
 using DiscoveryHub.Extensions;
@@ -132,6 +133,12 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 config.IncludeXmlComments(xmlPath);
                 config.OperationFilter<MultiAuthorityOperationFilter>();
+            });
+            services.AddInMemoryAppIdentityConfiguration(new AppIdentityConfigurationModel()
+            {
+                MaxAppIdLength = Guid.NewGuid().ToString().Length * 2,
+                MaxMachineIdLength = Guid.NewGuid().ToString().Length * 2,
+                MaxSubjectLength = Guid.NewGuid().ToString().Length * 2
             });
             return services.BuildServiceProvider();
 
