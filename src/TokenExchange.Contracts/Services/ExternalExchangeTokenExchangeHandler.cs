@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using GraphQLPlay.Contracts;
+using GraphQLPlay.IdentityModelExtras;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
@@ -47,8 +48,10 @@ namespace TokenExchange.Contracts.Services
         private TokenClientOptions _settings;
         private string _name;
         private IDiscoveryCache _discoveryCache;
+        private IDefaultHttpClientFactory _defaultHttpClientFactory;
 
         public ExternalExchangeTokenExchangeHandler(
+            IDefaultHttpClientFactory defaultHttpClientFactory,
             IOptionsSnapshot<TokenClientOptions> optionsSnapshot,
             ITokenMintingService tokenMintingService,
             IMemoryCache memoryCache,
@@ -57,6 +60,7 @@ namespace TokenExchange.Contracts.Services
             ILogger<ExternalExchangeTokenExchangeHandler> logger
             )
         {
+            _defaultHttpClientFactory = defaultHttpClientFactory;
             _cacheKey = "a9c4c7b7-dbb1-4d24-a78d-b8f89cc9ca83";
             _optionsSnapshot = optionsSnapshot;
             _memoryCache = memoryCache;
@@ -67,7 +71,7 @@ namespace TokenExchange.Contracts.Services
         }
         async Task<string> GetTokenAsync()
         {
-            var httpClient = new HttpClient();
+            var httpClient = _defaultHttpClientFactory.HttpClient;
             TokenResponse tokenResponse = null;
             if (!_memoryCache.TryGetValue(_cacheKey, out tokenResponse))
             {
@@ -100,7 +104,7 @@ namespace TokenExchange.Contracts.Services
             {
                 if (_discoveryCache == null)
                 {
-                    var httpClient = new HttpClient();
+                    var httpClient = _defaultHttpClientFactory.HttpClient;
                     DiscoveryPolicy discoveryPolicy = new DiscoveryPolicy()
                     {
                         ValidateIssuerName = false,
@@ -153,25 +157,31 @@ namespace TokenExchange.Contracts.Services
             var passThrough = _externalExchangeRecord.MintType == "passThroughHandler";
             var externalUrl = passThrough ? _externalExchangeRecord.PassThroughHandler.Url : _externalExchangeRecord.ExternalExchangeHandler.Url;
 
-            var externalResponse = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
-                externalUrl,
-                headers,
-                new TokenExchangeRequestPackage(tokenExchangeRequest)
-                {
-                    MapOpaqueKeyValuePairs = mapOpaqueKeyValuePairs
-                },
-                CancellationToken.None);
-            if (externalResponse.statusCode == HttpStatusCode.OK)
+            (string content, HttpStatusCode statusCode) responseBag;
+            using (var httpClient = _defaultHttpClientFactory.HttpClient)
+            {
+                responseBag = await Utils.EfficientApiCalls.HttpClientHelpers.PostStreamAsync(
+                    _defaultHttpClientFactory.HttpClient,
+                    externalUrl,
+                    headers,
+                    new TokenExchangeRequestPackage(tokenExchangeRequest)
+                    {
+                        MapOpaqueKeyValuePairs = mapOpaqueKeyValuePairs
+                    },
+                    CancellationToken.None);
+            }
+            
+            if (responseBag.statusCode == HttpStatusCode.OK)
             {
                 if (passThrough)
                 {
-                    var passThroughResult = JsonConvert.DeserializeObject<List<TokenExchangeResponse>>(externalResponse.content);
+                    var passThroughResult = JsonConvert.DeserializeObject<List<TokenExchangeResponse>>(responseBag.content);
                     return passThroughResult;
                 }
                 else
                 {
                     var tokenExchangeResponses = new List<TokenExchangeResponse>();
-                    var externalExchangeResourceOwnerTokenRequests = JsonConvert.DeserializeObject<List<ExternalExchangeResourceOwnerTokenRequest>>(externalResponse.content);
+                    var externalExchangeResourceOwnerTokenRequests = JsonConvert.DeserializeObject<List<ExternalExchangeResourceOwnerTokenRequest>>(responseBag.content);
 
                     foreach (var externalExchangeResourceOwnerTokenRequest in externalExchangeResourceOwnerTokenRequests)
                     {

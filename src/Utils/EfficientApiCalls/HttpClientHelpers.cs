@@ -17,12 +17,13 @@ namespace Utils.EfficientApiCalls
     public class HttpClientHelpers
     {
         public static async Task<(string content, HttpStatusCode statusCode)> PostBasicAsync<T>(
+            HttpClient httpClient,
             string url,
             List<HttpHeader> additionalHeaders,
             T content,
             CancellationToken cancellationToken)
         {
-            using (var client = new HttpClient())
+          
             using (var request = new HttpRequestMessage(HttpMethod.Post, url))
             {
                 var json = JsonConvert.SerializeObject(content);
@@ -36,7 +37,7 @@ namespace Utils.EfficientApiCalls
                             request.Headers.Add(httpHeader.Name, httpHeader.Value);
                         }
                     }
-                    using (var response = await client
+                    using (var response = await httpClient
                         .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
                         .ConfigureAwait(false))
                     {
@@ -51,45 +52,41 @@ namespace Utils.EfficientApiCalls
                 }
             }
         }
-        public static async Task<(string content, HttpStatusCode statusCode)> PostStreamAsync<T>(string url,
-            List<HttpHeader> additionalHeaders, T content, CancellationToken cancellationToken)
+        public static async Task<(string content, HttpStatusCode statusCode)> PostStreamAsync<T>(
+            HttpClient httpClient,
+            string url,
+            List<HttpHeader> additionalHeaders,
+            T content,
+            CancellationToken cancellationToken)
         {
-            try
+
+            using (var request = new HttpRequestMessage(HttpMethod.Post, url))
+            using (var httpContent = CreateHttpContent(content))
             {
 
-
-                using (var client = new HttpClient())
-                using (var request = new HttpRequestMessage(HttpMethod.Post, url))
-                using (var httpContent = CreateHttpContent(content))
+                request.Content = httpContent;
+                if (additionalHeaders != null)
                 {
-
-                    request.Content = httpContent;
-                    if (additionalHeaders != null)
+                    foreach (var httpHeader in additionalHeaders)
                     {
-                        foreach (var httpHeader in additionalHeaders)
-                        {
-                            request.Headers.Add(httpHeader.Name, httpHeader.Value);
-                        }
-                    }
-
-                    using (var response = await client
-                        .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-                        .ConfigureAwait(false))
-                    {
-                        string c = null;
-                        if (response.IsSuccessStatusCode)
-                        {
-                            c = await response.Content.ReadAsStringAsync();
-                        }
-
-                        return (c, response.StatusCode);
+                        request.Headers.Add(httpHeader.Name, httpHeader.Value);
                     }
                 }
+
+                using (var response = await httpClient
+                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                    .ConfigureAwait(false))
+                {
+                    string c = null;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        c = await response.Content.ReadAsStringAsync();
+                    }
+
+                    return (c, response.StatusCode);
+                }
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
+
         }
 
         private static HttpContent CreateHttpContent(object content)

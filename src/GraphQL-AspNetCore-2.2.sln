@@ -130,11 +130,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitServer_OAuth2", "XUnit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitServer_App_Identity", "XUnitServer_App_Identity\XUnitServer_App_Identity.csproj", "{338E5772-507A-4307-A58A-AB56E6BED6AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitServer_TokenExchange", "XUnitServer_TokenExchange\XUnitServer_TokenExchange.csproj", "{F27F3E23-D0A0-4C08-9FB4-4D3BBFD30C14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitServer_TokenExchange", "XUnitServer_TokenExchange\XUnitServer_TokenExchange.csproj", "{F27F3E23-D0A0-4C08-9FB4-4D3BBFD30C14}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTestApis", "UnitTestApis", "{E1072A23-D6E2-4732-9B06-9F91F343E548}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestApiCollection", "UnitTestApiCollection\UnitTestApiCollection.csproj", "{CE631126-9086-4C40-85EB-3D47B5CCEBC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestApiCollection", "UnitTestApiCollection\UnitTestApiCollection.csproj", "{CE631126-9086-4C40-85EB-3D47B5CCEBC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
