@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>7.3</LangVersion>
-    <DebugType>None</DebugType>
+
   </PropertyGroup>
   <PropertyGroup>
     <!-- Exclude the project from analysis -->

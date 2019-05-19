@@ -90,7 +90,7 @@ namespace XUnitServer_TokenExchange
             var inProcTokenMintingService = new InProcTokenMintingService(fakeConfiguration, null, null);
             var d = inProcTokenMintingService.ToArbitraryIdentityRequest(new IdentityTokenRequest()
             {
-                AccessTokenLifetime = 2,
+                IdentityTokenLifetime = 2,
                 Subject = GuidString,
                 Scope = $"a b c"
             });
@@ -106,7 +106,7 @@ namespace XUnitServer_TokenExchange
             var d = inProcTokenMintingService.ToArbitraryIdentityRequest(new IdentityTokenRequest()
             {
                 ClientId = GuidString,
-                AccessTokenLifetime = 2,
+                IdentityTokenLifetime = 2,
                 Subject = GuidString,
                 Scope = $"a b c"
             });
@@ -124,7 +124,7 @@ namespace XUnitServer_TokenExchange
                 inProcTokenMintingService.ToArbitraryIdentityRequest(new IdentityTokenRequest()
                 {
                     ClientId = null,
-                    AccessTokenLifetime = 2,
+                    IdentityTokenLifetime = 2,
                     Subject = GuidString,
                     Scope = $"a b c"
                 });

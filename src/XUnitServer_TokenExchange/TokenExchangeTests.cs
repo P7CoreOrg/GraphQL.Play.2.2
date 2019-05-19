@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AppIdentity.Models;
 using Castle.Core.Logging;
@@ -15,6 +16,7 @@ using GraphQLPlayTokenExchangeOnlyApp.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using P7Core.GraphQLCore.Validators;
 using Shouldly;
 using Xunit;
@@ -158,14 +160,19 @@ namespace XUnitServer_TokenExchange
                 var graphQlRequest = new GraphQLRequest(
                     @"query q($input: tokenExchange!) {
                             tokenExchange(input: $input){
-			                    authority
-                                access_token
-                                token_type
-                                httpHeaders
-                                {
-                                    name
-                                    value
-                                }
+			                    accessToken{
+                                    hint
+                                    authority
+                                    expires_in
+                                    access_token
+                                    refresh_token
+                                    token_type
+                                    httpHeaders
+                                    {
+	                                    name
+                                        value
+                                    }
+                              }
                             }
                         }")
                 {
@@ -260,14 +267,19 @@ namespace XUnitServer_TokenExchange
                 var graphQlRequest = new GraphQLRequest(
                     @"query q($input: tokenExchange!) {
                             tokenExchange(input: $input){
-			                    authority
-                                access_token
-                                token_type
-                                httpHeaders
-                                {
-                                    name
-                                    value
-                                }
+			                    accessToken{
+                                    hint
+                                    authority
+                                    expires_in
+                                    access_token
+                                    refresh_token
+                                    token_type
+                                    httpHeaders
+                                    {
+	                                    name
+                                        value
+                                    }
+                              }
                             }
                         }")
                 {
@@ -313,14 +325,19 @@ namespace XUnitServer_TokenExchange
                 var graphQlRequest = new GraphQLRequest(
                     @"query q($input: tokenExchange!) {
                             tokenExchange(input: $input){
-			                    authority
-                                access_token
-                                token_type
-                                httpHeaders
-                                {
-                                    name
-                                    value
-                                }
+			                    accessToken{
+                                    hint
+                                    authority
+                                    expires_in
+                                    access_token
+                                    refresh_token
+                                    token_type
+                                    httpHeaders
+                                    {
+	                                    name
+                                        value
+                                    }
+                              }
                             }
                         }")
                 {
@@ -371,14 +388,19 @@ namespace XUnitServer_TokenExchange
                 var graphQlRequest = new GraphQLRequest(
                     @"query q($input: tokenExchange!) {
                             tokenExchange(input: $input){
-			                    authority
-                                access_token
-                                token_type
-                                httpHeaders
-                                {
-                                    name
-                                    value
-                                }
+			                    accessToken{
+                                    hint
+                                    authority
+                                    expires_in
+                                    access_token
+                                    refresh_token
+                                    token_type
+                                    httpHeaders
+                                    {
+	                                    name
+                                        value
+                                    }
+                              }
                             }
                         }")
                 {
@@ -417,14 +439,19 @@ namespace XUnitServer_TokenExchange
                 var graphQlRequest = new GraphQLRequest(
                     @"query q($input: tokenExchange!) {
                             tokenExchange(input: $input){
-			                    authority
-                                access_token
-                                token_type
-                                httpHeaders
-                                {
-                                    name
-                                    value
-                                }
+			                    accessToken{
+                                    hint
+                                    authority
+                                    expires_in
+                                    access_token
+                                    refresh_token
+                                    token_type
+                                    httpHeaders
+                                    {
+	                                    name
+                                        value
+                                    }
+                              }
                             }
                         }")
                 {
@@ -449,5 +476,37 @@ namespace XUnitServer_TokenExchange
             }
 
         }
+        /*
+        [Fact]
+        public async Task Test_Get_Success()
+        {
+            var client = _fixture.Client;
+
+            var endpoint = new UriBuilder(_fixture.Client.BaseAddress.Scheme,
+                _fixture.Client.BaseAddress.Authority);
+            endpoint.Path = "/api/v1/my";
+
+            var req = new HttpRequestMessage(HttpMethod.Get, "/api/v1/my")
+            {
+                // Content = new FormUrlEncodedContent(dict)
+            };
+
+            using (var httpResponseMessage = await client.GetAsync($"{endpoint.Uri}").ConfigureAwait(false))
+            {
+
+                httpResponseMessage.StatusCode.ShouldBe(System.Net.HttpStatusCode.OK);
+                var jsonString = await httpResponseMessage.Content.ReadAsStringAsync();
+                jsonString.ShouldNotBeNullOrWhiteSpace();
+
+                var dogs = JsonConvert.DeserializeObject<string>(jsonString);
+                dogs.ShouldNotBeNull();
+
+            }
+
+
+
+
+        }
+        */
     }
 }

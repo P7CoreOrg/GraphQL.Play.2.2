@@ -1,4 +1,4 @@
-﻿using IdentityTokenExchangeGraphQL.Query; 
+﻿using IdentityTokenExchangeGraphQL.Query;
 using Microsoft.Extensions.DependencyInjection;
 using P7Core.GraphQLCore;
 using TokenExchange.Contracts;
@@ -11,15 +11,19 @@ namespace IdentityTokenExchangeGraphQL.Extensions
         public static void AddGraphQLIdentityTokenExchangeTypes(this IServiceCollection services)
         {
             services.AddSingleton<ITokenValidator, TokenValidator>();
-            
+
             services.AddTokenExchangeContracts();
 
             // Bind Query
-            
+
             services.AddTransient<HttpHeaderType>();
             services.AddTransient<TokenExchangeInput>();
             services.AddTransient<IdentityTokenInput>();
             services.AddTransient<TokenExchangeResponseType>();
+            services.AddTransient<AccessTokenResponseType>();
+            services.AddTransient<IdentityTokenResponseType>();
+            services.AddTransient<CustomResponseType>();
+
             services.AddTransient<IQueryFieldRegistration, TokenExchangeQuery>();
 
         }

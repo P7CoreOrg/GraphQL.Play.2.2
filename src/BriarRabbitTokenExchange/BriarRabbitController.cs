@@ -32,18 +32,23 @@ namespace BriarRabbitTokenExchange
             var result = new List<TokenExchangeResponse>(){
                 new TokenExchangeResponse()
                 {
-                    access_token = $"briar_rabbit_access_token_{Guid.NewGuid().ToString()}",
-                    refresh_token = $"briar_rabbit_refresh_token_{Guid.NewGuid().ToString()}",
-                    expires_in = 1234,
-                    token_type = $"briar_rabbit_Type",
-                    authority =$"https://briar.rabbit.com/authority",
-                    HttpHeaders = new List<HttpHeader>
+                    accessToken = new AccessTokenResponse()
                     {
-                        new HttpHeader()
+                        hint="briar_rabbit/pass-through-handler",
+                        access_token = $"briar_rabbit_access_token_{Guid.NewGuid().ToString()}",
+                        refresh_token = $"briar_rabbit_refresh_token_{Guid.NewGuid().ToString()}",
+                        expires_in = 1234,
+                        token_type = $"briar_rabbit_Type",
+                        authority =$"https://briar.rabbit.com/authority",
+                        HttpHeaders = new List<HttpHeader>
                         {
-                            Name = "x-bunnyAuthScheme",
-                            Value = "BunnyAuthority"
+                            new HttpHeader()
+                            {
+                                Name = "x-bunnyAuthScheme",
+                                Value = "BunnyAuthority"
+                            }
                         }
+
                     }
                 }
             };
@@ -52,30 +57,77 @@ namespace BriarRabbitTokenExchange
         [HttpPost]
         [Authorize]
         [Route("briar_rabbit/token-exchange-validator")]
-        public Task<List<ExternalExchangeResourceOwnerTokenRequest>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
+        public Task<List<ExternalExchangeTokenResponse>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
         {
-            var result = new List<ExternalExchangeResourceOwnerTokenRequest>()
+            var result = new List<ExternalExchangeTokenResponse>()
             {
-                new ExternalExchangeResourceOwnerTokenRequest()
+                new ExternalExchangeTokenResponse()
                 {
-                    AccessTokenLifetime = 3600,
-                    ArbitraryClaims = new Dictionary<string, List<string>>()
+                    CustomTokenResponse = new CustomTokenResponse()
                     {
-                        { "role", new List<string>{ "bigFluffy","fluffyAdmin"} }
+                        authority = Guid.NewGuid().ToString(),
+                        hint = "briar_rabbit/token-exchange-validator/custom",
+                        Type = Guid.NewGuid().ToString(),
+                        Token = Guid.NewGuid().ToString(),
+                         HttpHeaders = new List<HttpHeader>()
+                         {
+                             new HttpHeader()
+                             {
+                                 Name = Guid.NewGuid().ToString(),
+                                 Value = Guid.NewGuid().ToString()
+                             }
+                         }
                     },
-                    Scope = "offline_access graphQLPlay",
-                    Subject = "MrRabbit",
-                    HttpHeaders = new List<HttpHeader>()
+                    ArbitraryIdentityTokenRequest = new ArbitraryIdentityTokenRequest()
                     {
-                        new HttpHeader()
+                        Hint = "briarRabbitHint_Identity",
+                        IdentityTokenLifetime = 3600,
+                        ArbitraryClaims = new Dictionary<string, List<string>>()
                         {
-                            Name = "x-bunnyAuthScheme",
-                            Value = "BunnyAuthority"
+                            { "role", new List<string>{ "bigFluffy","fluffyAdmin"} }
+                        },
+                        Scope = "briar",
+                        Subject = "MrRabbit"
+                    },
+                    ArbitraryResourceOwnerTokenRequest = new ArbitraryResourceOwnerTokenRequest()
+                    {
+                        Hint = "briarRabbitHint_Access",
+                        AccessTokenLifetime = 3600,
+                        ArbitraryClaims = new Dictionary<string, List<string>>()
+                        {
+                            { "role", new List<string>{ "bigFluffy","fluffyAdmin"} }
+                        },
+                        Scope = "offline_access graphQLPlay",
+                        Subject = "MrRabbit",
+                        HttpHeaders = new List<HttpHeader>()
+                        {
+                            new HttpHeader()
+                            {
+                                Name = "x-bunnyAuthScheme",
+                                Value = "BunnyAuthority"
+                            }
                         }
+
                     }
                 }
             };
             return Task.FromResult(result);
+        }
+
+        // GET: api/SomeThing
+        [HttpGet]
+        [Route("testG")]
+        public IEnumerable<string> GetTest()
+        {
+
+            return new string[] { Guid.NewGuid().ToString() };
+        }
+        // POST: api/SomeThing
+        [HttpPost]
+        [Route("test")]
+        public IEnumerable<string> PostTest([FromBody] string value)
+        {
+            return new string[] { $"{value}.{Guid.NewGuid().ToString()}" };
         }
     }
 }

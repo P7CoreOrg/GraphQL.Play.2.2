@@ -538,7 +538,7 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                var graphQlRequest = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
                             authority
                               expires_in
@@ -558,7 +558,7 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
                 appIdentityResponse = (AppIdentityResultModel)graphQLResponse.GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
                 appIdentityResponse.ShouldNotBeNull();
                 var handler = new JwtSecurityTokenHandler();
@@ -575,15 +575,21 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityCreate = new GraphQLRequest(@"query q($input: tokenExchange!) {
+                var graphQlRequest = new GraphQLRequest(@"query q($input: tokenExchange!) {
                                                             tokenExchange(input: $input){
-                                                                authority
-                                                                access_token
-                                                                token_type
-                                                                httpHeaders{
-                                                                    name
-                                                                    value
-                                                                }
+                                                                   accessToken{
+                                                                        hint
+                                                                        authority
+                                                                        expires_in
+                                                                        access_token
+                                                                        refresh_token
+                                                                        token_type
+                                                                        httpHeaders
+                                                                        {
+	                                                                        name
+                                                                            value
+                                                                        }
+                                                                  }
                                                             }
                                                         }")
                 {
@@ -606,13 +612,13 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
                 graphQLResponse.ShouldNotBeNull();
                 var bindResponse = (List<TokenExchangeResponse>)graphQLResponse.GetDataFieldAs<List<TokenExchangeResponse>>("tokenExchange"); //data->appIdentityCreate is casted as AppIdentityResponse
                 bindResponse.ShouldNotBeNull();
                 bindResponse.Count.ShouldBeGreaterThan(0);
                 var handler = new JwtSecurityTokenHandler();
-                var tokenS = handler.ReadToken(bindResponse[0].access_token) as JwtSecurityToken;
+                var tokenS = handler.ReadToken(bindResponse[0].accessToken.access_token) as JwtSecurityToken;
 
                 tokenS.ShouldNotBeNull();
             }
@@ -626,7 +632,7 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityCreate = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
+                var graphQlRequest = new GraphQLRequest(@"query q($input: appIdentityCreate!) {
                           appIdentityCreate(input: $input){
                             authority
                               expires_in
@@ -646,7 +652,7 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
                 appIdentityResponse =
                     (AppIdentityResultModel)graphQLResponse
                         .GetDataFieldAs<AppIdentityResultModel>("appIdentityCreate"); //data->appIdentityCreate is casted as AppIdentityResponse
@@ -666,17 +672,24 @@ namespace XUnitServer_App_Identity
             using (var graphQLHttpClient =
                 new GraphQL.Client.GraphQLClient(_graphQLClientOptions))
             {
-                var appIdentityCreate = new GraphQLRequest(@"query q($input: tokenExchange!) {
+                var graphQlRequest = new GraphQLRequest(@"query q($input: tokenExchange!) {
                                                             tokenExchange(input: $input){
-                                                                authority
-                                                                access_token
-                                                                token_type
-                                                                httpHeaders{
-                                                                    name
-                                                                    value
-                                                                }
+                                                                   accessToken{
+                                                                        hint
+                                                                        authority
+                                                                        expires_in
+                                                                        access_token
+                                                                        refresh_token
+                                                                        token_type
+                                                                        httpHeaders
+                                                                        {
+	                                                                        name
+                                                                            value
+                                                                        }
+                                                                  }
                                                             }
                                                         }")
+
                 {
 
                     OperationName = null,
@@ -699,7 +712,7 @@ namespace XUnitServer_App_Identity
                     }
                 };
 
-                var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
+                var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
                 graphQLResponse.ShouldNotBeNull();
                 var bindResponse =
                     (List<TokenExchangeResponse>)graphQLResponse
@@ -707,10 +720,10 @@ namespace XUnitServer_App_Identity
                 bindResponse.ShouldNotBeNull();
                 bindResponse.Count.ShouldBeGreaterThan(0);
                 var handler = new JwtSecurityTokenHandler();
-                var tokenS = handler.ReadToken(bindResponse[0].access_token) as JwtSecurityToken;
+                var tokenS = handler.ReadToken(bindResponse[0].accessToken.access_token) as JwtSecurityToken;
 
                 tokenS.ShouldNotBeNull();
-                access_token = bindResponse[0].access_token;
+                access_token = bindResponse[0].accessToken.access_token;
 
 
             }
@@ -946,14 +959,14 @@ namespace XUnitServer_App_Identity
                 Content = new FormUrlEncodedContent(dict)
             };
             var response = await client.SendAsync(req);
-         
+
 
             var jsonString = await response.Content.ReadAsStringAsync();
-           
+
             var clientCredentialsResponse = JsonConvert.DeserializeObject<ClientCredentialsResponse>(jsonString);
             return clientCredentialsResponse;
 
-           
+
         }
         [Fact]
         public async Task App_identity_bind_missing_authorized_subject()
@@ -1029,7 +1042,7 @@ namespace XUnitServer_App_Identity
                 graphQLHttpClient.DefaultRequestHeaders.Add("x-authScheme", $"self-testserver");
                 var graphQLResponse = await graphQLHttpClient.PostAsync(appIdentityCreate);
                 graphQLResponse.Errors.ShouldNotBeNull();
-                
+
             }
         }
     }

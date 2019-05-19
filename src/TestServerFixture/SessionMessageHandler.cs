@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace TestServerFixture
 {
-    internal class SessionMessageHandler : DelegatingHandler
+    /// <summary>
+    /// An <see cref="HttpMessageHandler"/> that maintains session consistency between requests.
+    /// </summary>
+    public class SessionMessageHandler : DelegatingHandler
     {
         private string _sessionToken;
 

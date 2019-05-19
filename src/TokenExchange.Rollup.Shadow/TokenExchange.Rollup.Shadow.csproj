@@ -10,7 +10,7 @@
     <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="P7Corp.IdentityServer4ExtensionGrants.RollupShadow" Version="1.0.0-beta-8" />
+    <PackageReference Include="P7Corp.IdentityServer4ExtensionGrants.RollupShadow" Version="1.0.0-beta-9" />
   </ItemGroup>
 
   <ItemGroup>

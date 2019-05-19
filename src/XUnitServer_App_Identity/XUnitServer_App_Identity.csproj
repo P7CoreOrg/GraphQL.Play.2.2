@@ -4,11 +4,11 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
-    <DebugType>None</DebugType>
+
   </PropertyGroup>
 
   <ItemGroup>
-    
+
     <PackageReference Include="FakeItEasy" Version="5.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="OpenCover" Version="4.7.922" />

@@ -7,7 +7,7 @@ namespace TokenExchange.Contracts
         public string Scope { get; set; }
         public Dictionary<string, List<string>> ArbitraryClaims { get; set; }
         public string Subject { get; set; }
-        public int? AccessTokenLifetime { get; set; }
+        public int? IdentityTokenLifetime { get; set; }
         public string ClientId { get; set; }
     }
 }

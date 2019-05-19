@@ -82,16 +82,21 @@ namespace TokenExchange.Contracts.Services
 
             var tokenExchangeResponse = new TokenExchangeResponse()
             {
-                access_token = response.AccessToken,
-                refresh_token = response.RefreshToken,
-                expires_in = response.ExpiresIn,
-                token_type = response.TokenType,
-                authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
-                HttpHeaders = new List<HttpHeader>
-                            {
-                                new HttpHeader() {Name = "x-authScheme", Value = response.Scheme}
-                            }
+                accessToken = new AccessTokenResponse()
+                {
+                    hint = nameof(GoogleMyCustomIdentityTokenExchangeHandler),
+                    access_token = response.AccessToken,
+                    refresh_token = response.RefreshToken,
+                    expires_in = response.ExpiresIn,
+                    token_type = response.TokenType,
+                    authority =
+                        $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
+                    HttpHeaders = new List<HttpHeader>
+                    {
+                        new HttpHeader() {Name = "x-authScheme", Value = response.Scheme}
+                    }
 
+                }
             };
             return new List<TokenExchangeResponse>() { tokenExchangeResponse };
         }

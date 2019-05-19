@@ -35,20 +35,23 @@ namespace TokenExchange.Contracts.Services
             {
                 var tokenExchangeResponse = new TokenExchangeResponse()
                 {
-                    access_token = $"Alien_access_token_{Guid.NewGuid().ToString()}",
-                    refresh_token = $"Alien_refresh_token_{Guid.NewGuid().ToString()}",
-                    expires_in = 1234+i,
-                    token_type = $"Alien_{Guid.NewGuid().ToString()}",
-                    authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}/Alien",
-                    HttpHeaders = new List<HttpHeader>
+                    accessToken = new AccessTokenResponse()
                     {
-                        new HttpHeader() {Name = "x-authScheme", Value = "Alien"}
+                        hint = "Alien Response",
+                        access_token = $"Alien_access_token_{Guid.NewGuid().ToString()}",
+                        refresh_token = $"Alien_refresh_token_{Guid.NewGuid().ToString()}",
+                        expires_in = 1234 + i,
+                        token_type = $"Alien_{Guid.NewGuid().ToString()}",
+                        authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}/Alien",
+                        HttpHeaders = new List<HttpHeader>
+                        {
+                            new HttpHeader() {Name = "x-authScheme", Value = "Alien"}
+                        }
                     }
-
                 };
                 response.Add(tokenExchangeResponse);
             }
-            
+
             return response;
         }
     }

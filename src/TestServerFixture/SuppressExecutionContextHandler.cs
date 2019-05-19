@@ -23,7 +23,10 @@ namespace TestServerFixture
             Task<HttpResponseMessage> t;
             using (ExecutionContext.SuppressFlow())
             {
-                t = Task.Run(() => base.SendAsync(request, cancellationToken));
+                t = Task.Run(() =>
+                {
+                    return base.SendAsync(request, cancellationToken);
+                });
             }
 
             return t;

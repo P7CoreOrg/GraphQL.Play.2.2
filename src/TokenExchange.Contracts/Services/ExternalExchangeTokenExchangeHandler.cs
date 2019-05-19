@@ -23,7 +23,7 @@ namespace TokenExchange.Contracts.Services
     {
         public static IServiceCollection AddPipelineTokenExchangeHandler(this IServiceCollection services, Func<IPipelineTokenExchangeHandler> valueFactory)
         {
-           
+
             services.AddTransient((serviceProvider) =>
             {
                 return new Lazy<IPipelineTokenExchangeHandler>(valueFactory);
@@ -170,7 +170,7 @@ namespace TokenExchange.Contracts.Services
                     },
                     CancellationToken.None);
             }
-            
+
             if (responseBag.statusCode == HttpStatusCode.OK)
             {
                 if (passThrough)
@@ -181,35 +181,90 @@ namespace TokenExchange.Contracts.Services
                 else
                 {
                     var tokenExchangeResponses = new List<TokenExchangeResponse>();
-                    var externalExchangeResourceOwnerTokenRequests = JsonConvert.DeserializeObject<List<ExternalExchangeResourceOwnerTokenRequest>>(responseBag.content);
+                    var externalExchangeTokenRequests = JsonConvert.DeserializeObject<List<ExternalExchangeTokenResponse>>(responseBag.content);
 
-                    foreach (var externalExchangeResourceOwnerTokenRequest in externalExchangeResourceOwnerTokenRequests)
+                    foreach (var externalExchangeResourceOwnerTokenRequest in externalExchangeTokenRequests)
                     {
-                        ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
+                        if (externalExchangeResourceOwnerTokenRequest.CustomTokenResponse != null)
                         {
-                            AccessTokenLifetime = externalExchangeResourceOwnerTokenRequest.AccessTokenLifetime,
-                            ArbitraryClaims = externalExchangeResourceOwnerTokenRequest.ArbitraryClaims,
-                            Scope = externalExchangeResourceOwnerTokenRequest.Scope,
-                            Subject = externalExchangeResourceOwnerTokenRequest.Subject,
-                            ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId // configured value
-                        };
-                       
-                        var response = await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
-                        if (response.IsError)
+                            var tokenExchangeResponse = new TokenExchangeResponse()
+                            {
+                                customToken = externalExchangeResourceOwnerTokenRequest.CustomTokenResponse
+                            };
+                            tokenExchangeResponses.Add(tokenExchangeResponse);
+                        }
+                        if (externalExchangeResourceOwnerTokenRequest.ArbitraryIdentityTokenRequest != null)
                         {
-                            throw new Exception(response.Error);
+                            var arbitraryIdentityTokenRequest = externalExchangeResourceOwnerTokenRequest
+                                .ArbitraryIdentityTokenRequest;
+                            IdentityTokenRequest tokenRequest = new IdentityTokenRequest()
+                            {
+                                IdentityTokenLifetime = arbitraryIdentityTokenRequest.IdentityTokenLifetime,
+                                ArbitraryClaims = arbitraryIdentityTokenRequest.ArbitraryClaims,
+                                Scope = arbitraryIdentityTokenRequest.Scope,
+                                Subject = arbitraryIdentityTokenRequest.Subject,
+                                ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId // configured value
+                            };
+
+                            var response =
+                                await _tokenMintingService.MintIdentityTokenAsync(tokenRequest);
+                            if (response.IsError)
+                            {
+                                throw new Exception(response.Error);
+                            }
+                            var tokenExchangeResponse = new TokenExchangeResponse()
+                            {
+                                IdentityToken = new IdentityTokenResponse()
+                                {
+                                    hint = arbitraryIdentityTokenRequest.Hint,
+                                    id_token = response.IdentityToken,
+                                    expires_in = response.ExpiresIn,
+                                    authority =
+                                        $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
+                                    HttpHeaders = arbitraryIdentityTokenRequest.HttpHeaders
+                                }
+                            };
+                            tokenExchangeResponses.Add(tokenExchangeResponse);
                         }
 
-                        var tokenExchangeResponse = new TokenExchangeResponse()
+                        if (externalExchangeResourceOwnerTokenRequest.ArbitraryResourceOwnerTokenRequest != null)
                         {
-                            access_token = response.AccessToken,
-                            refresh_token = response.RefreshToken,
-                            expires_in = response.ExpiresIn,
-                            token_type = response.TokenType,
-                            authority = $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
-                            HttpHeaders = externalExchangeResourceOwnerTokenRequest.HttpHeaders
-                        };
-                        tokenExchangeResponses.Add(tokenExchangeResponse);
+
+                            var arbitraryResourceOwnerTokenRequest = externalExchangeResourceOwnerTokenRequest
+                                .ArbitraryResourceOwnerTokenRequest;
+                            ResourceOwnerTokenRequest resourceOwnerTokenRequest = new ResourceOwnerTokenRequest()
+                            {
+                                AccessTokenLifetime = arbitraryResourceOwnerTokenRequest.AccessTokenLifetime,
+                                ArbitraryClaims = arbitraryResourceOwnerTokenRequest.ArbitraryClaims,
+                                Scope = arbitraryResourceOwnerTokenRequest.Scope,
+                                Subject = arbitraryResourceOwnerTokenRequest.Subject,
+                                ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId // configured value
+                            };
+
+                            var response =
+                                await _tokenMintingService.MintResourceOwnerTokenAsync(resourceOwnerTokenRequest);
+                            if (response.IsError)
+                            {
+                                throw new Exception(response.Error);
+                            }
+
+                            var tokenExchangeResponse = new TokenExchangeResponse()
+                            {
+                                accessToken = new AccessTokenResponse()
+                                {
+                                    hint = arbitraryResourceOwnerTokenRequest.Hint,
+                                    access_token = response.AccessToken,
+                                    refresh_token = response.RefreshToken,
+                                    expires_in = response.ExpiresIn,
+                                    token_type = response.TokenType,
+                                    authority =
+                                        $"{_httpContextAssessor.HttpContext.Request.Scheme}://{_httpContextAssessor.HttpContext.Request.Host}",
+                                    HttpHeaders = arbitraryResourceOwnerTokenRequest.HttpHeaders
+                                }
+                            };
+                            tokenExchangeResponses.Add(tokenExchangeResponse);
+                        }
+
                     }
                     return tokenExchangeResponses;
                 }
@@ -217,7 +272,7 @@ namespace TokenExchange.Contracts.Services
 
             return null;
         }
-      
+
         public static void RegisterServices(
             IServiceCollection services,
             IExternalExchangeStore tempExternalExchangeStore)
@@ -239,7 +294,7 @@ namespace TokenExchange.Contracts.Services
                         return tokenExchangeHandler;
                     });
                 });
-              
+
             }
         }
     }

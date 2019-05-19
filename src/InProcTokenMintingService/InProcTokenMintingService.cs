@@ -86,7 +86,7 @@ namespace TokenMintingService
                 Scopes = scopesList,
                 Subject = identityTokenRequest.Subject,
                 ArbitraryClaims = identityTokenRequest.ArbitraryClaims,
-                AccessTokenLifetime = identityTokenRequest.AccessTokenLifetime?.ToString()
+                IdentityTokenLifetime = identityTokenRequest.IdentityTokenLifetime?.ToString()
             };
             return extensionGrantRequest;
         }
