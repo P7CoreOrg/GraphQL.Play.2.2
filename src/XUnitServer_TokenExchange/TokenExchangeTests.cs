@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using P7Core.GraphQLCore.Validators;
 using Shouldly;
+using TokenExchange.Contracts;
 using Xunit;
 
 namespace XUnitServer_TokenExchange
@@ -267,7 +268,27 @@ namespace XUnitServer_TokenExchange
                 var graphQlRequest = new GraphQLRequest(
                     @"query q($input: tokenExchange!) {
                             tokenExchange(input: $input){
-			                    accessToken{
+                                identityToken{
+                                  authority
+                                  expires_in
+                                  hint
+                                  httpHeaders{
+                                    name
+                                    value
+                                  }
+                                  id_token
+                                }
+                                customToken{
+                                  authority
+                                  hint
+                                  httpHeaders{
+                                    name
+                                    value
+                                  }
+                                  token
+                                  type
+                                }
+                                accessToken{
                                     hint
                                     authority
                                     expires_in
@@ -289,7 +310,7 @@ namespace XUnitServer_TokenExchange
                     {
                         input = new
                         {
-                            exchange = "google-my-custom",
+                            exchange = "briar-rabbit-inproc",
                             extras = new string[]
                             {
                                 "a", "b", "c"
@@ -309,6 +330,10 @@ namespace XUnitServer_TokenExchange
                 var graphQLResponse = await graphQLHttpClient.PostAsync(graphQlRequest);
                 graphQLResponse.ShouldNotBeNull();
                 graphQLResponse.Errors.ShouldBeNull();
+
+                var bindResponse = (List<TokenExchangeResponse>)graphQLResponse.GetDataFieldAs<List<TokenExchangeResponse>>("tokenExchange");
+                bindResponse.ShouldNotBeNull();
+                bindResponse.Count.ShouldBeGreaterThan(0);
             }
 
         }

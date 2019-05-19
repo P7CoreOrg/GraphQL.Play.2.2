@@ -1,3 +1,4 @@
+using BriarRabbitTokenExchange.Extensions;
 using GraphQLPlayTokenExchangeOnlyApp;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,7 @@ namespace XUnitServer_TokenExchange
                 options.BackchannelHttpHandler = MessageHandler;
             });
             services.AddUnitTestApiCollection();
+            services.AddBriarRabbitInProcTokenExchangeHandler();
         }
     }
 }
