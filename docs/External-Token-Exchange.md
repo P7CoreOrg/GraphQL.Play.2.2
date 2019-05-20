@@ -122,7 +122,7 @@ example;
     }
   ]
 ``` 
-## Resonse
+## Response
 ```
 [
   {
