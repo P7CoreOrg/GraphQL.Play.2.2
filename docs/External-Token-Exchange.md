@@ -311,34 +311,32 @@ query q($input: tokenExchange!) {
 	tokenExchange(input: $input){
     customToken{
       hint
-		  authority  
+      authority  
       token
       type
       httpHeaders
       {
-				name
+	name
         value
- 			}
+      }
     }
     accessToken{
       hint
-			authority
+      authority
       access_token
       expires_in
       token_type
       httpHeaders
       {
-				name
+        name
         value
- 			}
+      }
     }
     identityToken{
       authority
       hint
       expires_in
       id_token
-      
-
     }
   }
 }
