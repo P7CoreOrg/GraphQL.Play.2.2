@@ -45,7 +45,7 @@ Token Exchanges are the cool part of the kit.  In real life you exchange your id
 
 **NOTE:** your id_token doesn't give you access to anything.  It is nothing more than proof of identity that is being vouched for by a third party that is acceptable to an enforcer.  
 
-The kit allows you to author [custom exchanges](./docs/custom-bind-handler.md) and exposes a graphQL bind api to get at any exchange registered with the system.  If the only thing you use GraphQLPlay for is the token exchange feature, then you are one step ahead of everyone else when it comes to security concepts.  
+The kit comes with a pipeline exchange where an external POST handler is all that is needed to be part of the pipeline as the final exchange [External-Token-Exchange](./docs/External-Token-Exchange.md).  The pipeline exchange allows for [in-proc plugins](./src/TokenExchange.Contracts/Services/ValidateAndStripSignatureTokenExchangeHandlerPreProcessor.cs) to be registered as well-known pre-processors but for most things you may not need to extend the core app.
 
 You can use the TokenExchange concept to build out an [Authorization Service](./docs/Authorization-Service.MD).  
 
