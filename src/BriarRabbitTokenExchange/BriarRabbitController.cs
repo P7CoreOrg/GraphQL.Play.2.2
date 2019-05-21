@@ -56,8 +56,8 @@ namespace BriarRabbitTokenExchange
         }
         [HttpPost]
         [Authorize]
-        [Route("briar_rabbit/token-exchange-validator")]
-        public Task<List<ExternalExchangeTokenResponse>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
+        [Route("briar_rabbit/final-pipeline-exchange")]
+        public Task<List<ExternalExchangeTokenResponse>> PostFinalPipelineExchangeAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
         {
             var result = new List<ExternalExchangeTokenResponse>()
             {

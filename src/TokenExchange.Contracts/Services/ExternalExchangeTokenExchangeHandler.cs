@@ -155,7 +155,7 @@ namespace TokenExchange.Contracts.Services
 
             };
             var passThrough = _externalExchangeRecord.MintType == "passThroughHandler";
-            var externalUrl = passThrough ? _externalExchangeRecord.PassThroughHandler.Url : _externalExchangeRecord.ExternalExchangeHandler.Url;
+            var externalUrl = passThrough ? _externalExchangeRecord.PassThroughHandler.Url : _externalExchangeRecord.ExternalFinalExchangeHandler.Url;
 
             (string content, HttpStatusCode statusCode) responseBag;
             using (var httpClient = _defaultHttpClientFactory.HttpClient)
@@ -203,7 +203,7 @@ namespace TokenExchange.Contracts.Services
                                 ArbitraryClaims = arbitraryIdentityTokenRequest.ArbitraryClaims,
                                 Scope = arbitraryIdentityTokenRequest.Scope,
                                 Subject = arbitraryIdentityTokenRequest.Subject,
-                                ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId // configured value
+                                ClientId = _externalExchangeRecord.ExternalFinalExchangeHandler.ClientId // configured value
                             };
 
                             var response =
@@ -238,7 +238,7 @@ namespace TokenExchange.Contracts.Services
                                 ArbitraryClaims = arbitraryResourceOwnerTokenRequest.ArbitraryClaims,
                                 Scope = arbitraryResourceOwnerTokenRequest.Scope,
                                 Subject = arbitraryResourceOwnerTokenRequest.Subject,
-                                ClientId = _externalExchangeRecord.ExternalExchangeHandler.ClientId // configured value
+                                ClientId = _externalExchangeRecord.ExternalFinalExchangeHandler.ClientId // configured value
                             };
 
                             var response =

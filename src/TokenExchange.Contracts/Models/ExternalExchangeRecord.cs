@@ -7,7 +7,7 @@ using Utils.Models;
 namespace TokenExchange.Contracts.Models
 {
 
-    public partial class ExternalExchangeHandler
+    public partial class ExternalFinalExchangeHandler
     {
         [JsonProperty("url")]
         public string Url { get; set; }
@@ -27,8 +27,8 @@ namespace TokenExchange.Contracts.Models
         [JsonProperty("mintType")]
         public string MintType { get; set; }
 
-        [JsonProperty("externalExchangeHandler")]
-        public ExternalExchangeHandler ExternalExchangeHandler { get; set; }
+        [JsonProperty("externalFinalExchangeHandler")]
+        public ExternalFinalExchangeHandler ExternalFinalExchangeHandler { get; set; }
 
         [JsonProperty("passThroughHandler")]
         public PassThroughHandler PassThroughHandler { get; set; }
