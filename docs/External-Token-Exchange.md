@@ -3,8 +3,8 @@ The simplest way to externalize an exchange is to implement a POST endpoint whic
 ```
 [HttpPost]
 [Authorize]
-[Route("briar_rabbit/token-exchange-validator")]
-public Task<List<ExternalExchangeTokenResponse>> PostTokenExchangeValidatorAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
+[Route("briar_rabbit/final-pipeline-exchange")]
+public Task<List<ExternalExchangeTokenResponse>> PostFinalPipelineExchangeAsync(ExternalExchangeTokenExchangeHandler.TokenExchangeRequestPackage tokenExchangeRequest)
 {...}
 ```
 
@@ -12,33 +12,33 @@ The exchange has a pipeline implementation where the simplest configuration tell
 
 ```
 "externalExchanges": [
-  {
-    "exchangeName": "briar_rabbit",
-    "mintType": "externalExchangeHandler",
-    "externalExchangeHandler": {
-      "url": "https://localhost:5001/api/token_exchange/briar_rabbit/token-exchange-validator",
-      "clientId": "arbitrary-resource-owner-client"
-    },
-    "passThroughHandler": {
-      "exchangeUrl": "https://localhost:5001/api/token_exchange/briar_rabbit/pass-through-handler"
-    },
-    "oAuth2_client_credentials": {
-      "clientId": "b2b-client",
-      "clientSecret": "secret",
-      "authority": "https://localhost:5001/",
-      "additionalHeaders": [
-        {
-          "name": "x-authScheme",
-          "value": "self-oidc"
-        }
-      ]
+{
+"exchangeName": "briar_rabbit",
+"mintType": "externalFinalExchangeHandler",
+"externalFinalExchangeHandler": {
+  "url": "https://localhost:5001/api/token_exchange/briar_rabbit/final-pipeline-exchange",
+  "clientId": "arbitrary-resource-owner-client"
+},
+"passThroughHandler": {
+  "url": "https://localhost:5001/api/token_exchange/briar_rabbit/pass-through-handler"
+},
+"oAuth2_client_credentials": {
+  "clientId": "b2b-client",
+  "clientSecret": "secret",
+  "authority": "https://localhost:5001/",
+  "additionalHeaders": [
+    {
+      "name": "x-authScheme",
+      "value": "self-oidc"
     }
-  }
+  ]
+}
+}
 ]
 ....
  "pipelineExchanges": [
   {
-    "exchangeName": "pipeline_briar_rabbit_passThrough",
+    "exchangeName": "pipeline_briar_rabbit_final_exchange",
     "preprocessors": [ ],
     "finalExchange": "briar_rabbit"
   }
