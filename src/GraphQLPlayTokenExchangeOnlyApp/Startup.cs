@@ -46,6 +46,11 @@ using static TokenExchange.Rollup.Extensions.AspNetCoreExtensions;
 
 namespace GraphQLPlayTokenExchangeOnlyApp
 {
+    class OIDCSchemeEnabled
+    {
+        public bool Enabled { get; set; }
+        public string Scheme { get; set; }
+    }
     public class Startup :
         IExtensionGrantsRollupRegistrations,
         IGraphQLRollupRegistrations,
@@ -327,17 +332,19 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             services.AddSelfOIDCTokenValidator();
             var schemes = Configuration
                 .GetSection("oidcSchemes")
-                .Get<List<string>>();
-
+                .Get<List<OIDCSchemeEnabled>>();
+           
             foreach (var scheme in schemes)
             {
-                services.AddSingleton<ISchemeTokenValidator>(x =>
+                if (scheme.Enabled)
                 {
-                    var oidcTokenValidator = x.GetRequiredService<OIDCTokenValidator>();
-                    oidcTokenValidator.TokenScheme = scheme;
-                    return oidcTokenValidator;
-                });
-
+                    services.AddSingleton<ISchemeTokenValidator>(x =>
+                    {
+                        var oidcTokenValidator = x.GetRequiredService<OIDCTokenValidator>();
+                        oidcTokenValidator.TokenScheme = scheme.Scheme;
+                        return oidcTokenValidator;
+                    });
+                }
             }
 
             services.AddInMemoryExternalExchangeStore();

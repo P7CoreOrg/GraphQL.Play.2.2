@@ -7,7 +7,7 @@ namespace UnitTestProject_OAuth2
 {
     public class MyTestServerFixture : TestServerFixture<Startup>
     {
-        protected override string RelativePathToHostProject => @"..\..\..\..\GraphQLPlayTokenExchangeOnlyApp";
+        protected override string RelativePathToHostProject => @"../../../../GraphQLPlayTokenExchangeOnlyApp";
         protected override void ConfigureAppConfiguration(WebHostBuilderContext hostingContext, IConfigurationBuilder config)
         {
             var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
