@@ -1,6 +1,0 @@
-#!/bin/bash
-# dotnet build
-
-echo "dotnet build!"
-
-./bash_build

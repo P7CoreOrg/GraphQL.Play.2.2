@@ -28,6 +28,7 @@ namespace GraphQLPlayApiOnlyApp
                     var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
                     LoadConfigurations(config, environmentName);
                     config.AddEnvironmentVariables();
+                    config.AddUserSecrets<Startup>();
                 })
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging) =>
@@ -43,9 +44,9 @@ namespace GraphQLPlayApiOnlyApp
         public static void LoadConfigurations(IConfigurationBuilder config, string environmentName)
         {
             config
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.graphql.json", optional: false, reloadOnChange: true)
-            .AddUserSecrets<Startup>();
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.graphql.json", optional: false, reloadOnChange: true);
+
         }
     }
 }
