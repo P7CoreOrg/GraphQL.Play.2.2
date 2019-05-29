@@ -23,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MultiAuthority.AccessTokenValidation;
+using Orders.Extensions;
 using P7Core.Extensions;
 using P7Core.GraphQLCore.Extensions;
 using P7Core.GraphQLCore.Stores;
@@ -54,7 +55,7 @@ namespace GraphQLPlayApiOnlyApp
             services.AddOptions();
             services.AddDistributedMemoryCache();
             services.AddGraphQLPlayRollup(this);
-
+            services.AddGraphQLOrders();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
