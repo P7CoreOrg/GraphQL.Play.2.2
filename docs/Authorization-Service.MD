@@ -111,13 +111,13 @@ where the final exchange is an [external backchannel callout](../src/BriarRabbit
     "externalExchanges": [
       {
         "exchangeName": "briar_rabbit",
-        "mintType": "externalExchangeHandler",
-        "externalExchangeHandler": {
-          "url": "https://localhost:5001/api/token_exchange/briar_rabbit/token-exchange-validator",
+        "mintType": "externalFinalExchangeHandler",
+        "externalFinalExchangeHandler": {
+          "url": "https://localhost:5001/api/token_exchange/briar_rabbit/final-pipeline-exchange",
           "clientId": "arbitrary-resource-owner-client"
         },
         "passThroughHandler": {
-          "exchangeUrl": "https://localhost:5001/api/token_exchange/briar_rabbit/pass-through-handler"
+          "url": "https://localhost:5001/api/token_exchange/briar_rabbit/pass-through-handler"
         },
         "oAuth2_client_credentials": {
           "clientId": "b2b-client",
@@ -126,7 +126,7 @@ where the final exchange is an [external backchannel callout](../src/BriarRabbit
           "additionalHeaders": [
             {
               "name": "x-authScheme",
-              "value": "self"
+              "value": "self-oidc"
             }
           ]
         }
@@ -134,7 +134,7 @@ where the final exchange is an [external backchannel callout](../src/BriarRabbit
     ],
     "pipelineExchanges": [
       {
-        "exchangeName": "pipeline_briar_rabbit",
+        "exchangeName": "pipeline_briar_rabbit_final_exchange",
         "preprocessors": [ "validate-strip-signature" ],
         "finalExchange": "briar_rabbit"
       }
