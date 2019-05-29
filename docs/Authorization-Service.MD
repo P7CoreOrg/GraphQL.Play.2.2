@@ -18,26 +18,6 @@ The GraphQL Query to the exchange would look like the following;
 ```
 query q($input: tokenExchange!) {
   tokenExchange(input: $input){
-    identityToken{
-      authority
-      expires_in
-      hint
-      httpHeaders{
-        name
-        value
-      }
-      id_token
-    }
-    customToken{
-      authority
-      hint
-      httpHeaders{
-        name
-        value
-      }
-      token
-      type
-    }
     accessToken{
       hint
       authority
@@ -76,34 +56,8 @@ What we want returned is access_token(s) to the requested services.
 ```
 {
   "data": {
-  "tokenExchange": [{
-      "identityToken": null,
-      "customToken": {
-        "authority": "454d23e2-aff4-4cde-b091-b56062a95174",
-        "hint": "briar_rabbit/token-exchange-validator/custom",
-        "httpHeaders": [{
-          "name": "f7bfaa16-524d-4463-99b4-737683c18ac8",
-          "value": "298cef26-f779-4c35-b121-6e66393636eb"
-        }],
-        "token": "6acdd653-3fed-43f9-81e0-71b9ebeb0ea6",
-        "type": "5fa98272-9a0f-44ea-8182-179fa8f3a3b4"
-      },
-      "accessToken": null
-    },
+  "tokenExchange": [ 
     {
-      "identityToken": {
-        "authority": "https://localhost:5001",
-        "expires_in": 3600,
-        "hint": "briarRabbitHint_Identity",
-        "httpHeaders": null,
-        "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjN2RmOWU1YjBjYzNkZDI1NmE1MWFiNzcwYmM2ZTAzIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTg0NTA3NDQsImV4cCI6MTU1ODQ1NDM0NCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6ImFyYml0cmFyeS1yZXNvdXJjZS1vd25lci1jbGllbnQiLCJpYXQiOjE1NTg0NTA3NDQsImF0X2hhc2giOiJJNXI5SGxRTThPMGZtU2k4TTNCQ1d3Iiwic3ViIjoiTXJSYWJiaXQiLCJhdXRoX3RpbWUiOjE1NTg0NTA3NDQsImlkcCI6IkRlbW8iLCJjbGllbnRfbmFtZXNwYWNlIjoiRGFmZnkgRHVjayIsInJvbGUiOlsiYmlnRmx1ZmZ5IiwiZmx1ZmZ5QWRtaW4iXSwiYW1yIjpbImFyYml0cmFyeV9pZGVudGl0eSJdfQ.FFK-3ZF_u8P0mOBXaQcNSQgmqBIbv7FycWErMumuLnV_C_l2OEmYZ__PDtOX7W28O0lxGP4aozcXaKdDRUXLaXOxK8vLyNKGmY59ElwwFmbq7Doql-pEsAUmHzIonYPqggQI6Ub7G_GGeSUvu3MHZrVcgg9YpEdYMFP4XUxZ90houGMh79iK0vZNijatGp7f-eT6rmuKzsyL5WMkF16baHTmQBhNJLXQp1uLnHIqdKm3psOje6IDEPi8-LbGR1kcE_1kIwhjtNQxLREb6x86hWdhIkEBo1mVzd8D2lFWKcFCfoI5_HpeKPyq6vurokJV90fNg9BVGnQ0iW875C_8tQ"
-      },
-      "customToken": null,
-      "accessToken": null
-    },
-    {
-      "identityToken": null,
-      "customToken": null,
       "accessToken": {
         "hint": "briarRabbitHint_Access",
         "authority": "https://localhost:5001",
