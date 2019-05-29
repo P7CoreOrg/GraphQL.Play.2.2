@@ -18,14 +18,38 @@ The GraphQL Query to the exchange would look like the following;
 ```
 query q($input: tokenExchange!) {
   tokenExchange(input: $input){
-    authority
-    access_token
-    refresh_token
-    token_type
-    httpHeaders
-    {
-      name
-      value
+    identityToken{
+      authority
+      expires_in
+      hint
+      httpHeaders{
+        name
+        value
+      }
+      id_token
+    }
+    customToken{
+      authority
+      hint
+      httpHeaders{
+        name
+        value
+      }
+      token
+      type
+    }
+    accessToken{
+      hint
+      authority
+      expires_in
+      access_token
+      refresh_token
+      token_type
+      httpHeaders
+      {
+        name
+        value
+      }
     }
   }
 }
@@ -34,11 +58,11 @@ query q($input: tokenExchange!) {
 ```
 {
   "input": {
-    "exchange": "pipeline_briar_rabbit",
+    "exchange": "pipeline_briar_rabbit_final_exchange",
     "extras": ["analytics-service", "backup-service", "superadmin-so-I-can-hack-you-service"],
     "tokens": [{
-      "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHBzOi8vcDdrZXl2YWx1dC52YXVsdC5henVyZS5uZXQva2V5cy9QN0lkZW50aXR5U2VydmVyNFNlbGZTaWduZWQvZjdkODdhNDY3MDhjNGYzZDhkZmU2MTFlOTczNzQ1YzMiLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE1NTU3ODAzNDksImV4cCI6MTg3NTc4MDM0OSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6ImFwcC1pZGVudGl0eS1jbGllbnQiLCJpYXQiOjE1NTU3ODAzNDksImF0X2hhc2giOiJBQlFqRHBXV2J5cFFVSHhwNUg4Ukt3Iiwic3ViIjoiYmNkZTM4OGYtOGUxMC00MzY0LWFjZWEtMWJjYmE1Y2I1ZGFiIiwiYXV0aF90aW1lIjoxNTU1NzgwMzQ4LCJpZHAiOiJsb2NhbCIsImNsaWVudF9uYW1lc3BhY2UiOiJhcHAtaWRlbnRpdHktb3JnIiwiYXBwSWQiOiJOSVMiLCJtYWNoaW5lSWQiOiJzb21lIGd1aWQiLCJhbXIiOlsiYXJiaXRyYXJ5X2lkZW50aXR5Il19.a180J543Vky8xdHne7VeU27UEtalePzQ4W3k4fkn0i1NchVoWOW_rqT-oW-25Mh_wlNeIAlc4kWGtfvYCs0TgERwig8_Mk3Q5Ay16vBgx_T8iLl4oGk8G11FtyCn8pdDDuVPsPggeiRKCbb-7p593WGsjDiFUwJO0bYOOtCPGcIsswZPzMZsKWpqzvSM6ibFlYmkMFdWf1dw7hSkPAs4_dbEg8Ab2PjR4pV6yRsHbTihII9edB4-dWqNIZBsYskjZRxIzifEdkuh-ms3IcXelM_4BEls9GlJPzAQRTQc465siffHYNbZRoR_3dIZPVZqn7P5yv5IX5I2wNnDzVIAuA",
-      "tokenScheme": "self"
+      "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjN2RmOWU1YjBjYzNkZDI1NmE1MWFiNzcwYmM2ZTAzIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTgyMjY2NTUsImV4cCI6MTg3ODIyNjY1NSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6ImFwcC1pZGVudGl0eS1jbGllbnQiLCJpYXQiOjE1NTgyMjY2NTUsImF0X2hhc2giOiJHTGNiY0F2S25ibUlfc3RHZ0ZwUUdRIiwic3ViIjoiNGJhMmY2ODAtMjY1NC00ODcwLWI0YTYtMjdjN2ZjMmQwMDk4IiwiYXV0aF90aW1lIjoxNTU4MjI2NjU1LCJpZHAiOiJEZW1vIiwiY2xpZW50X25hbWVzcGFjZSI6ImFwcC1pZGVudGl0eS1vcmciLCJhcHBJZCI6Ik5JUyIsIm1hY2hpbmVJZCI6InNvbWUgZ3VpZCIsImFtciI6WyJhcmJpdHJhcnlfaWRlbnRpdHkiXX0.eCdXVVctM-gFfXpZOY4eRi_xesLu6poLwZp_u8aufYCFM8OAnLdwidkJP9XPE1fmfHSGkRH0G4aYgtaJNpdtzAkChutcafziitui_QLMHdgJWIvzhrZyRa0BiEtTJzkCyrFWawQkTy3mjlA6iwz_DFNDjyQK6Fdb8hOC0HXAGi1xuG2Rn2eBgIlaFFrMxF_ad0_crB-7eaYxxnkx3P045z54_zdSltxQmNpUsbaV2OJr2f56Mm_yYDr8tKAKNofCKBzHnthWIlLmapeAPOguJZLKZPAZan4suIL1DJr6oOygI4ZZIq3BdeNjWOGhfzmpeeGwsHJk1jXo5refnYIG-A",
+      "tokenScheme": "self-oidc"
     }]
   }
 }
@@ -52,19 +76,47 @@ What we want returned is access_token(s) to the requested services.
 ```
 {
   "data": {
-    "tokenExchange": [
-      {
-        "authority": "https://graphqlplay22.azurewebsites.net",
-        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHBzOi8vcDdrZXl2YWx1dC52YXVsdC5henVyZS5uZXQva2V5cy9QN0lkZW50aXR5U2VydmVyNFNlbGZTaWduZWQvZjdkODdhNDY3MDhjNGYzZDhkZmU2MTFlOTczNzQ1YzMiLCJ0eXAiOiJKV1QifQ.eyJuYmYiOjE1NTYxMTU1ODksImV4cCI6MTU1NjExOTE4OSwiaXNzIjoiaHR0cHM6Ly9ncmFwaHFscGxheTIyLmF6dXJld2Vic2l0ZXMubmV0IiwiYXVkIjpbImh0dHBzOi8vZ3JhcGhxbHBsYXkyMi5henVyZXdlYnNpdGVzLm5ldC9yZXNvdXJjZXMiLCJncmFwaFFMUGxheSJdLCJjbGllbnRfaWQiOiJhcmJpdHJhcnktcmVzb3VyY2Utb3duZXItY2xpZW50Iiwic3ViIjoiTXJSYWJiaXQiLCJhdXRoX3RpbWUiOjE1NTYxMTU1ODksImlkcCI6ImxvY2FsIiwiY2xpZW50X25hbWVzcGFjZSI6IkRhZmZ5IER1Y2siLCJyb2xlIjpbImJpZ0ZsdWZmeSIsImZsdWZmeUFkbWluIl0sInNjb3BlIjpbImdyYXBoUUxQbGF5Iiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbImFyYml0cmFyeV9yZXNvdXJjZV9vd25lciJdfQ.EoMyhPq0JnZA5vSlYkhpB1NkqaqajeFaeTZcbzME8dOY-QkMqZUKT44hCScPP1N85LSQ_ey-iSZMYPYXpcDcLkZZeTx0stiSb3N5MbFVZHpEJSkTmc_CDLttvbdYGO2mDRo8tfOKlqBVjBkCxSMi3_v3qfQ28FDd7GLZPsVCU-OvCqjLvyI5WmfwpSZN7GkRjXjS6hHJF1kKt49_sqzWojRKu4-liVYb8F9dPhJkN35j5pbFUGJ5sYFwgXXz61Wp36ZUr0avLjlLT4V25_GFBBY9-vKp-DKh4l32iqUKeH6fZDxaq6d-UhNCUl9h-ZYzYv26uys7ekLGOfDoM04Dng",
-        "refresh_token": "CfDJ8PIPlTwcUFFNqUfBjjZJF0-bYRoKj001l02QK8jRw8W4yGzN51K6m3qJ2-K14UjXtNRfvTxix8C5KJ0eFPgN3252Buftb4gcUVNTI68-ieyY5WaMexT8v1i44eP2i81YQ01dvJQk_l-CFXxXA9iJNedsQFMDt7W1PTWob9xXHQa4ENnFvXwvNukot-yh-iszfd5xzIIP3bbahAQrnOCirLY",
+  "tokenExchange": [{
+      "identityToken": null,
+      "customToken": {
+        "authority": "454d23e2-aff4-4cde-b091-b56062a95174",
+        "hint": "briar_rabbit/token-exchange-validator/custom",
+        "httpHeaders": [{
+          "name": "f7bfaa16-524d-4463-99b4-737683c18ac8",
+          "value": "298cef26-f779-4c35-b121-6e66393636eb"
+        }],
+        "token": "6acdd653-3fed-43f9-81e0-71b9ebeb0ea6",
+        "type": "5fa98272-9a0f-44ea-8182-179fa8f3a3b4"
+      },
+      "accessToken": null
+    },
+    {
+      "identityToken": {
+        "authority": "https://localhost:5001",
+        "expires_in": 3600,
+        "hint": "briarRabbitHint_Identity",
+        "httpHeaders": null,
+        "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjN2RmOWU1YjBjYzNkZDI1NmE1MWFiNzcwYmM2ZTAzIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTg0NTA3NDQsImV4cCI6MTU1ODQ1NDM0NCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6ImFyYml0cmFyeS1yZXNvdXJjZS1vd25lci1jbGllbnQiLCJpYXQiOjE1NTg0NTA3NDQsImF0X2hhc2giOiJJNXI5SGxRTThPMGZtU2k4TTNCQ1d3Iiwic3ViIjoiTXJSYWJiaXQiLCJhdXRoX3RpbWUiOjE1NTg0NTA3NDQsImlkcCI6IkRlbW8iLCJjbGllbnRfbmFtZXNwYWNlIjoiRGFmZnkgRHVjayIsInJvbGUiOlsiYmlnRmx1ZmZ5IiwiZmx1ZmZ5QWRtaW4iXSwiYW1yIjpbImFyYml0cmFyeV9pZGVudGl0eSJdfQ.FFK-3ZF_u8P0mOBXaQcNSQgmqBIbv7FycWErMumuLnV_C_l2OEmYZ__PDtOX7W28O0lxGP4aozcXaKdDRUXLaXOxK8vLyNKGmY59ElwwFmbq7Doql-pEsAUmHzIonYPqggQI6Ub7G_GGeSUvu3MHZrVcgg9YpEdYMFP4XUxZ90houGMh79iK0vZNijatGp7f-eT6rmuKzsyL5WMkF16baHTmQBhNJLXQp1uLnHIqdKm3psOje6IDEPi8-LbGR1kcE_1kIwhjtNQxLREb6x86hWdhIkEBo1mVzd8D2lFWKcFCfoI5_HpeKPyq6vurokJV90fNg9BVGnQ0iW875C_8tQ"
+      },
+      "customToken": null,
+      "accessToken": null
+    },
+    {
+      "identityToken": null,
+      "customToken": null,
+      "accessToken": {
+        "hint": "briarRabbitHint_Access",
+        "authority": "https://localhost:5001",
+        "expires_in": 3600,
+        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImFjN2RmOWU1YjBjYzNkZDI1NmE1MWFiNzcwYmM2ZTAzIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NTg0NTA3NDQsImV4cCI6MTU1ODQ1NDM0NCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyIsImJyaWFyIiwiZ3JhcGhRTFBsYXkiXSwiY2xpZW50X2lkIjoiYXJiaXRyYXJ5LXJlc291cmNlLW93bmVyLWNsaWVudCIsInN1YiI6Ik1yUmFiYml0IiwiYXV0aF90aW1lIjoxNTU4NDUwNzQ0LCJpZHAiOiJsb2NhbCIsImNsaWVudF9uYW1lc3BhY2UiOiJEYWZmeSBEdWNrIiwicm9sZSI6WyJiaWdGbHVmZnkiLCJmbHVmZnlBZG1pbiJdLCJzY29wZSI6WyJicmlhciIsImdyYXBoUUxQbGF5Iiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbImFyYml0cmFyeV9yZXNvdXJjZV9vd25lciJdfQ.OBfkqcY2UjQNt6FAz-oTqNjfW5807hVxtVZIhCX-X2bEicnLuRzhZHauVrmPH2XJps0qrjlNeb2Q3fi48VrX8Ys9Ck1uQeeE1Psuu0aiPVoGd-r2v57zfZvXLplS1rTqVGjnyiaFzh5j8kjjeRhnWg-VpgFqvcg6FmjNqeY9prS_SJacO9CJQq4sa37pus2PSGswb6yvYE93X4cQj1qjZynFsc_7lG0l59e3IZVVNwzqagb2PekUVT-cg77vCGs721tCZutunDGlDMrquyL0FP_0rvBEVR-6yj_B8vHlRMSKYUS8hrQIO5XCffjGKTlUhbDyTN-aDUulEwS32XdX4w",
+        "refresh_token": "CfDJ8GiyAO4NV5xKr2rVHroAkh_NRv-rYmlyVHkXpfAW-Um9gGSeavd-c2ZxfB582E6xv8zza4CEgWDrvrlV2CAEaKbloJ-ETqQWl9Dj6n7SjTYdLKJ7-wzpmgEhMVZbDRSUKy1fgGX8qoMJlv2Dwl7G3sdh6dq3X7RH0hEe14a5sUpVjxUVGc6ab3nO93l-nKIBCzKRY5vfBP_1_3PZivOSWMA",
         "token_type": "Bearer",
-        "httpHeaders": [
-          {
-            "name": "x-authScheme",
-            "value": "self"
-          }
-        ]
+        "httpHeaders": [{
+          "name": "x-bunnyAuthScheme",
+          "value": "BunnyAuthority"
+        }]
       }
+    }
     ]
   }
 }
