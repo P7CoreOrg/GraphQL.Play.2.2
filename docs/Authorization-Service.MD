@@ -67,7 +67,7 @@ query q($input: tokenExchange!) {
   }
 }
 ```  
-In the input you are telling the exchanger to use **pipeline_briar_rabbit**.  
+In the input you are telling the exchanger to use **pipeline_briar_rabbit_final_exchange**.  
 The exchanger can accept additional hints in the form of a string array, which is about as generic as I could come up with.  These hints can be mapped to resources that only mean something to the exchange.  
 The exchanger can accept an array of **tokens** along with the metadata **tokenScheme** which tells the backend what this token is.  Usually the **tokenScheme** maps to a wellknown OAuth2 authority.  
 
