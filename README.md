@@ -1,6 +1,6 @@
 # GraphQL.NET based starter kit
 
-Write GraphQL APIs as plugins.
+Write GraphQL APIs as plugins.  
 Includes a stock OAuth2 Token Exchange which is extensible internally and externally.   
 
 
