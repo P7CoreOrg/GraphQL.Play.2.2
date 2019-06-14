@@ -255,15 +255,10 @@ namespace GraphQLPlayTokenExchangeOnlyApp
 
         public void AddOperationalStore(IServiceCollection services, IIdentityServerBuilder builder)
         {
-            _logger.LogInformation("AddOperationalStore to services");
             bool useRedis = Convert.ToBoolean(Configuration["appOptions:redis:useRedis"]);
             if (useRedis)
             {
-                _logger.LogInformation("AddOperationalStore,Using Redis..");
-
-
                 var redisConnectionString = Configuration["appOptions:redis:redisConnectionString"];
-                _logger.LogInformation($"AddOperationalStore,redisConnectionString:{redisConnectionString.Substring(0, 70)}.....");
                 builder.AddOperationalStore(options =>
                 {
                     options.RedisConnectionString = redisConnectionString;
@@ -282,8 +277,9 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             }
             else
             {
-                _logger.LogInformation("AddOperationalStore,Using AddInMemoryPersistedGrants..");
+                builder.AddInMemoryCaching();
                 builder.AddInMemoryPersistedGrants();
+                services.AddDistributedMemoryCache();
             }
         }
 

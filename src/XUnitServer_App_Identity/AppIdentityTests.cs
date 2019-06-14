@@ -21,7 +21,7 @@ using GraphQL.Client.Http;
 using GraphQL.Types;
 using IdentityModel;
 using IdentityModel.Client;
-using IdentityServer4.Contrib.CosmosDB.Entities;
+
 using IdentityTokenExchangeGraphQL.Models;
 using Xunit;
 using TokenExchange.Contracts;
