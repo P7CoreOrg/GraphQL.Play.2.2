@@ -12,6 +12,7 @@ namespace UnitTestProject_OAuth2
         {
             var environmentName = hostingContext.HostingEnvironment.EnvironmentName;
             Program.LoadConfigurations(config, environmentName);
+            config.AddJsonFile($"appsettings.TestServer.json", optional: false);
         }
     }
 }
