@@ -10,11 +10,13 @@ using AppIdentity.Extensions;
 using AppIdentity.Models;
 using ArbitraryIdentityExtensionGrant;
 using AuthRequiredDemoGraphQL.Extensions;
+using Cosmonaut;
 using DiscoveryHub.Extensions;
 using GraphQLPlay.IdentityModelExtras;
 using GraphQLPlay.IdentityModelExtras.Extensions;
 using GraphQLPlayTokenExchangeOnlyApp.Filter;
 using IdentityServer4.Configuration;
+using IdentityServer4.Contrib.Cosmonaut.Extensions;
 using IdentityServer4ExtensionGrants.Rollup.Extensions;
 using IdentityServer4Extras.Extensions;
 using IdentityServerRequestTracker.Extensions;
@@ -24,6 +26,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Azure.Documents.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -253,10 +256,40 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             builder.AddInMemoryApiResources(apiResources);
         }
 
+        private readonly ConnectionPolicy _connectionPolicy = new ConnectionPolicy
+        {
+            ConnectionProtocol = Protocol.Tcp,
+            ConnectionMode = ConnectionMode.Direct
+        };
         public void AddOperationalStore(IServiceCollection services, IIdentityServerBuilder builder)
         {
             bool useRedis = Convert.ToBoolean(Configuration["appOptions:redis:useRedis"]);
-            if (useRedis)
+            bool useCosmos = Convert.ToBoolean(Configuration["appOptions:cosmos:useCosmos"]);
+            if (useCosmos)
+            {
+                /*
+                 *
+                 "identityServerOperationalStore": {
+                    "database": "identityServer",
+                    "collection": "operational"
+                  }
+                 */
+                var uri = Configuration["appOptions:cosmos:uri"];
+                var primaryKey = Configuration["appOptions:cosmos:primaryKey"];
+                var databaseName = Configuration["appOptions:cosmos:identityServerOperationalStore:database"];
+                var collection = Configuration["appOptions:cosmos:identityServerOperationalStore:collection"];
+                var cosmosStoreSettings = new CosmosStoreSettings(
+                    databaseName,
+                    uri,
+                    primaryKey,
+                    s =>
+                    {
+                        s.ConnectionPolicy = _connectionPolicy;
+                    });
+                builder.AddOperationalStore(cosmosStoreSettings, collection);
+                builder.AddCosmonautIdentityServerCacheStore(cosmosStoreSettings, collection);
+            }
+            else if (useRedis)
             {
                 var redisConnectionString = Configuration["appOptions:redis:redisConnectionString"];
                 builder.AddOperationalStore(options =>
@@ -282,6 +315,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
                 services.AddDistributedMemoryCache();
             }
         }
+
 
         public void AddSigningServices(IServiceCollection services, IIdentityServerBuilder builder)
         {

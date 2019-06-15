@@ -46,6 +46,7 @@ namespace GraphQLPlayTokenExchangeOnlyApp
             config
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile("appsettings.redis.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.cosmos.json", optional: false, reloadOnChange: true)
             .AddJsonFile("appsettings.keyVault.json", optional: false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{environmentName}.json", optional: true)
             .AddJsonFile($"appsettings.{environmentName}.IdentityResources.json", optional: true)
