@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +12,21 @@ using OIDC.ReferenceWebClient.Configuration;
 
 namespace OIDC.ReferenceWebClient.InMemoryIdentity
 {
+    public class MyOpenIdConnectProtocolValidator : OpenIdConnectProtocolValidator
+    {
+
+        public override string GenerateNonce()
+        {
+            string nonce = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + Guid.NewGuid().ToString()));
+            if (RequireTimeStampInNonce)
+            {
+                return DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture) + "." + nonce;
+            }
+
+            return nonce;
+        }
+    }
+
     public static class InMemoryIdentityServiceCollectionExtensions
     {
         public static IdentityBuilder AddAuthentication<TUser>(this IServiceCollection services, IConfiguration configuration)
@@ -36,6 +53,11 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                 var scheme = record.Scheme;
                 authenticationBuilder.P7CoreAddOpenIdConnect(scheme, scheme, options =>
                 {
+                    options.ProtocolValidator = new MyOpenIdConnectProtocolValidator()
+                    {
+                        RequireStateValidation = false,
+                        NonceLifetime = TimeSpan.FromMinutes(15)
+                    };
                     options.Authority = record.Authority;
                     options.CallbackPath = record.CallbackPath;
                     options.RequireHttpsMetadata = false;
