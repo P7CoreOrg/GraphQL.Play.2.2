@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace OIDC.ReferenceWebClient.Controllers
@@ -11,10 +15,19 @@ namespace OIDC.ReferenceWebClient.Controllers
     [Route("")]
     public class OIDCController : ControllerBase
     {
+        private ILogger<OIDCController> _logger;
+        private IAuthorizeRequestValidator _authorizeRequestValidator;
+
+        public OIDCController(ILogger<OIDCController> logger,
+            IAuthorizeRequestValidator authorizeRequestValidator)
+        {
+            _logger = logger;
+            _authorizeRequestValidator = authorizeRequestValidator;
+        }
         // GET: api/OIDC
         [HttpGet]
         [Route(".well-known/openid-configuration")]
-        public Dictionary<string, object> Get()
+        public Dictionary<string, object> GetWellknownOpenIdConfiguration()
         {
             
             var stuff = JsonConvert.DeserializeObject<Dictionary<string,object>>(@"{
@@ -167,10 +180,53 @@ namespace OIDC.ReferenceWebClient.Controllers
 
         // POST: api/OIDC
         [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        [Route("connect/authorize")]
+        public async Task<IActionResult> PostConnectAuthorizeAsync()
         {
-        }
+            /*
+             https://localhost:44305/connect/authorize?
+client_id=mvc
+&redirect_uri=https%3A%2F%2Fp7core.127.0.0.1.xip.io%3A44311%2Fsignin-oidc
+&response_type=id_token&scope=openid%20profile
+&response_mode=form_post
+&nonce=636973229335838266.ZWJhM2U4M2YtYWNiYi00YjZkLTkwMWYtNjRmMjM3MWRiYTk5OWNkNDIzMWUtZmY4OS00YWE0LTk4MGUtMTdiMjYxNmNmZjRk&state=CfDJ8KOz5LEySMhBtqpccMk4UVhA1PvGQQvpqQBUyR-97TDZvaPuNquTLJIUxKMYzF-Ov_HHCnnmcTForzd5RJ4jmLONvcZLY3XCHnrhh9Sc2oR2Lv2HACvPVBMy2oYmmPBtNIoXroQ9WePE_KtPyFw8ntRsHIYMmT5a0fLKGeJcwK3ewoiRHxjKpOr9hXZau9f7CVVqMvtWC2ngWrFsEeh8S0YtRZQFT-7XyjE9dNiyKp_Z-4iBUbbqzVnT4GmEmErZXUjmBhmVsMLz5h9y_F3usRT3lg7LxUNamnJuROnYIqmJzf0fYVJq1mcB5hcUipo2SNcILG3xkUikc84VznSGvD7V_qFjOHVPtOEX02JH9M4ymb3iZtZSE9dDr2RkwTU7StoKgM-x195bBULpwms8weJO-kx5I6UrY_lmWl0SFqYN
+&x-client-SKU=ID_NETSTANDARD2_0
+&x-client-ver=5.4.0.0
 
+             */
+            NameValueCollection values;
+            if (HttpMethods.IsGet(Request.Method))
+            {
+                values = Request.Query.AsNameValueCollection();
+            }
+            else if (HttpMethods.IsPost(Request.Method))
+            {
+                if (!Request.HasFormContentType)
+                {
+                    return new StatusCodeResult((int)HttpStatusCode.UnsupportedMediaType);
+                }
+
+                values = Request.Form.AsNameValueCollection();
+            }
+            else
+            {
+                return new StatusCodeResult((int)HttpStatusCode.MethodNotAllowed);
+            }
+
+            var result = await ProcessAuthorizeRequestAsync(values);
+ 
+            return result;
+        }
+        internal async Task<IActionResult> ProcessAuthorizeRequestAsync(NameValueCollection parameters)
+        {
+            var result = await _authorizeRequestValidator.ValidateAsync(parameters);
+            if (result.IsError)
+            {
+                return BadRequest(result.ErrorDescription);
+            }
+            return Ok();
+        }
         // PUT: api/OIDC/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

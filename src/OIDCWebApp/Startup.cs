@@ -57,6 +57,7 @@ namespace OIDC.ReferenceWebClient
                 options.IdleTimeout = TimeSpan.FromSeconds(3600);
                 options.Cookie.HttpOnly = true;
             });
+            services.AddTransient<IAuthorizeRequestValidator, AuthorizeRequestValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
