@@ -1,0 +1,77 @@
+﻿@page
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    var signedIn = SignInManager.IsSignedIn(User);
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div class="row">
+  
+    @if (signedIn)
+    {
+        <div class="col-md-9">
+            <h2>User</h2>
+            
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var claim in Model.Claims)
+                {
+                    <tr>
+                        <th scope="row">@claim.Type</th>
+                        <td>@claim.Value</td>
+                          
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>
+<div class="row">
+
+    @if (signedIn && Model.OpenIdConnectSessionDetails != null)
+    {
+        <div class="col-md-9">
+            <h2>OIDC</h2>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">@nameof(Model.OpenIdConnectSessionDetails.LoginProider)</th>
+                        <td>@Model.OpenIdConnectSessionDetails.LoginProider</td>
+                    </tr>
+      
+
+                    @foreach (var oidcItem in Model.OpenIdConnectSessionDetails.OIDC)
+                    {
+                        <tr>
+                            <th scope="row">@oidcItem.Key</th>
+                            <td class="word-wrap">@oidcItem.Value</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>
