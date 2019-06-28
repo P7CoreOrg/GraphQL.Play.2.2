@@ -4,11 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using OIDC.ReferenceWebClient.Configuration;
+using OIDC.ReferenceWebClient.Controllers;
 
 namespace OIDC.ReferenceWebClient.InMemoryIdentity
 {
@@ -17,6 +20,19 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
 
         public override string GenerateNonce()
         {
+            var sp = Global.ServiceProvider;
+            var accessor = sp.GetRequiredService<IHttpContextAccessor>();
+
+            var stored = accessor.HttpContext.Request.GetJsonCookie<IdTokenAuthorizationRequest>("idTokenAuthorizationRequest");
+            if (stored != null)
+            {
+              
+                if (!string.IsNullOrWhiteSpace(stored.nonce))
+                {
+                    return stored.nonce;
+                }
+            }
+
             string nonce = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + Guid.NewGuid().ToString()));
             if (RequireTimeStampInNonce)
             {
@@ -55,7 +71,9 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                 {
                     options.ProtocolValidator = new MyOpenIdConnectProtocolValidator()
                     {
+                        RequireTimeStampInNonce = false,
                         RequireStateValidation = false,
+                        RequireNonce = true,
                         NonceLifetime = TimeSpan.FromMinutes(15)
                     };
                     options.Authority = record.Authority;
@@ -70,8 +88,16 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                     options.ClientId = record.ClientId;
                     options.ClientSecret = record.ClientSecret;
                     options.SaveTokens = true;
+                 
                     options.Events.OnRedirectToIdentityProvider = context =>
                     {
+                        var stored = context.Request.GetJsonCookie<IdTokenAuthorizationRequest>("idTokenAuthorizationRequest");
+                        if (stored != null)
+                        {
+                            context.ProtocolMessage.ClientId = stored.client_id;
+                            context.ProtocolMessage.ClientSecret = stored.client_secret;
+                        }
+                      
                         if (record.AdditionalProtocolScopes != null && record.AdditionalProtocolScopes.Any())
                         {
                             string additionalScopes = "";

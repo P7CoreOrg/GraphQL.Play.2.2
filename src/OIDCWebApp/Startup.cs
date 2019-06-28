@@ -16,6 +16,10 @@ using OIDC.ReferenceWebClient.InMemoryIdentity;
 
 namespace OIDC.ReferenceWebClient
 {
+    public static class Global
+    {
+        public static IServiceProvider ServiceProvider { get; set; }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,7 +30,7 @@ namespace OIDC.ReferenceWebClient
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -58,6 +62,9 @@ namespace OIDC.ReferenceWebClient
                 options.Cookie.HttpOnly = true;
             });
             services.AddTransient<IAuthorizeRequestValidator, AuthorizeRequestValidator>();
+            Global.ServiceProvider = services.BuildServiceProvider();
+            
+            return Global.ServiceProvider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
