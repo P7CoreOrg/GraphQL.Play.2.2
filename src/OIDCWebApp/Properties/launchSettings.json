@@ -18,7 +18,7 @@
     "OIDCWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://p7core.127.0.0.1.xip.io:44311",
+      "launchUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

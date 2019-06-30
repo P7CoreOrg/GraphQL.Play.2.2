@@ -83,7 +83,6 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                     {
                         options.ResponseType = record.ResponseType;
                     }
-                    options.ResponseType = OpenIdConnectResponseType.IdToken;
                     options.GetClaimsFromUserInfoEndpoint = record.GetClaimsFromUserInfoEndpoint;
                     options.ClientId = record.ClientId;
                     options.ClientSecret = record.ClientSecret;
