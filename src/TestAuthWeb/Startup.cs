@@ -61,8 +61,7 @@ namespace OIDC.ReferenceWebClient
                 options.IdleTimeout = TimeSpan.FromSeconds(3600);
                 options.Cookie.HttpOnly = true;
             });
-            services.AddTransient<IAuthorizeRequestValidator, AuthorizeRequestValidator>();
-            Global.ServiceProvider = services.BuildServiceProvider();
+             Global.ServiceProvider = services.BuildServiceProvider();
             
             return Global.ServiceProvider;
         }

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,22 +15,29 @@ using OIDC.ReferenceWebClient.Constants;
 using OIDC.ReferenceWebClient.Data;
 using OIDC.ReferenceWebClient.Extensions;
 using OIDC.ReferenceWebClient.Models;
+using OIDCPipeline.Core;
 
 namespace OIDC.ReferenceWebClient.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
+      
+        private readonly IOIDCPipelineStore _oidcPipelineStore;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
         private string[] _possibleNameTypes = new[] { "DisplayName", "preferred_username", "name", ClaimTypes.Name, ClaimTypes.GivenName, ClaimTypes.Email };
 
         public ExternalLoginModel(
+          
+            IOIDCPipelineStore oidcPipelineStore,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<ExternalLoginModel> logger)
         {
+        
+            _oidcPipelineStore = oidcPipelineStore;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
@@ -56,7 +64,7 @@ namespace OIDC.ReferenceWebClient.Areas.Identity.Pages.Account
         {
             return RedirectToPage("./Login");
         }
-
+      
         public IActionResult OnPost(string provider, string returnUrl = null)
         {
             Request.HttpContext.Items.Add("a","b");
@@ -92,11 +100,17 @@ namespace OIDC.ReferenceWebClient.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             var oidc = await HarvestOidcDataAsync();
-            HttpContext.Session.Set(Wellknown.OIDCSessionKey, new OpenIdConnectSessionDetails
+            IdTokenResponse idTokenResponse = new IdTokenResponse
             {
-                LoginProider = info.LoginProvider,
-                OIDC = oidc
-            });
+                access_token = oidc["access_token"],
+                expires_at = oidc["expires_at"],
+                id_token = oidc["id_token"],
+                refresh_token = oidc["refresh_token"],
+                token_type = oidc["token_type"],
+                LoginProvider = info.LoginProvider
+            };
+            await _oidcPipelineStore.StoreDownstreamIdTokenResponse(HttpContext.Session.GetSessionId(), idTokenResponse);
+          
 
             var queryNameId = from claim in info.Principal.Claims
                               where claim.Type == ClaimTypes.NameIdentifier

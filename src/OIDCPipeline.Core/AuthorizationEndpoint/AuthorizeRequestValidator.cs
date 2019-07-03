@@ -5,9 +5,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OIDC.ReferenceWebClient
+namespace OIDCPipeline.Core.AuthorizationEndpoint
 {
-    public class AuthorizeRequestValidator : IAuthorizeRequestValidator
+    internal class AuthorizeRequestValidator : IAuthorizeRequestValidator
     {
         public AuthorizeRequestValidator(ILogger<AuthorizeRequestValidator> logger)
         {
@@ -91,9 +91,9 @@ namespace OIDC.ReferenceWebClient
 
             return Valid();
         }
-        private AuthorizeRequestValidationResult Invalid( string error = OidcConstants.AuthorizeErrors.InvalidRequest, string description = null)
+        private AuthorizeRequestValidationResult Invalid(string error = OidcConstants.AuthorizeErrors.InvalidRequest, string description = null)
         {
-            return new AuthorizeRequestValidationResult( error, description);
+            return new AuthorizeRequestValidationResult(error, description);
         }
 
         private AuthorizeRequestValidationResult Valid()

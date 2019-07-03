@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OIDC.ReferenceWebClient
+namespace OIDCPipeline.Core.AuthorizationEndpoint
 {
     /// <summary>
     ///  Authorize endpoint request validator.

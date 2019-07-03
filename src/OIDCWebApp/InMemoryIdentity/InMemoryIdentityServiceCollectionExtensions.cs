@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using OIDC.ReferenceWebClient.Configuration;
 using OIDC.ReferenceWebClient.Controllers;
+using OIDC.ReferenceWebClient.Extensions;
+using OIDCPipeline.Core;
 
 namespace OIDC.ReferenceWebClient.InMemoryIdentity
 {
@@ -21,15 +23,16 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
         public override string GenerateNonce()
         {
             var sp = Global.ServiceProvider;
-            var accessor = sp.GetRequiredService<IHttpContextAccessor>();
+            var oidcPipelineStore = sp.GetRequiredService<IOIDCPipelineStore>();
+            var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+            var original = oidcPipelineStore.GetOriginalIdTokenRequestAsync(httpContextAccessor.HttpContext.Session.GetSessionId()).GetAwaiter().GetResult();
 
-            var stored = accessor.HttpContext.Request.GetJsonCookie<IdTokenAuthorizationRequest>("idTokenAuthorizationRequest");
-            if (stored != null)
+            if (original != null)
             {
               
-                if (!string.IsNullOrWhiteSpace(stored.nonce))
+                if (!string.IsNullOrWhiteSpace(original.nonce))
                 {
-                    return stored.nonce;
+                    return original.nonce;
                 }
             }
 
@@ -90,7 +93,8 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                  
                     options.Events.OnRedirectToIdentityProvider = context =>
                     {
-                        var stored = context.Request.GetJsonCookie<IdTokenAuthorizationRequest>("idTokenAuthorizationRequest");
+                        var session = context.HttpContext.Session;
+                        var stored = context.Request.GetJsonCookie<IdTokenAuthorizationRequest>(session.GetSessionId());
                         if (stored != null)
                         {
                             context.ProtocolMessage.ClientId = stored.client_id;
@@ -111,6 +115,7 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                             // assuming a relogin trigger, so we will make the user relogin on the IDP
                             context.ProtocolMessage.Prompt = "login";
                         }
+                        context.ProtocolMessage.SetParameter("idp_code", "DT");
                         /*
                         if (context.ProtocolMessage.RequestType == OpenIdConnectRequestType.Authentication)
                         {

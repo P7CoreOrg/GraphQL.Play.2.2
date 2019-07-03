@@ -37,10 +37,10 @@ namespace AuthServer
                         new Secret("secret".Sha256())
                     },
                     // where to redirect to after login
-                    RedirectUris = { "https://p7core.127.0.0.1.xip.io:44311/signin-oidc" },
+                    RedirectUris = { "https://localhost:5001/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://p7core.127.0.0.1.xip.io:44311/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:5001/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {

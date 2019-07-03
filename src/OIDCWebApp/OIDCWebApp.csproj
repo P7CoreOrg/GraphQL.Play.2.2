@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="3.10.10" />
+    <PackageReference Include="IdentityServer4.Storage" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Identity.Contrib.InMemoryStore\Identity.Contrib.InMemoryStore.csproj" />
+    <ProjectReference Include="..\OIDCPipeline.Core\OIDCPipeline.Core.csproj" />
     <ProjectReference Include="..\P7Core.Microsoft.AspNetCore.Authentication.OpenIdConnect\P7Core.Microsoft.AspNetCore.Authentication.OpenIdConnect.csproj" />
   </ItemGroup>
 

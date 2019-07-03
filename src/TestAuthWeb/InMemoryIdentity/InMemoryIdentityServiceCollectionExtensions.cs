@@ -11,37 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using OIDC.ReferenceWebClient.Configuration;
-using OIDC.ReferenceWebClient.Controllers;
+
 
 namespace OIDC.ReferenceWebClient.InMemoryIdentity
 {
-    public class MyOpenIdConnectProtocolValidator : OpenIdConnectProtocolValidator
-    {
-
-        public override string GenerateNonce()
-        {
-            var sp = Global.ServiceProvider;
-            var accessor = sp.GetRequiredService<IHttpContextAccessor>();
-
-            var stored = accessor.HttpContext.Request.GetJsonCookie<IdTokenAuthorizationRequest>("idTokenAuthorizationRequest");
-            if (stored != null)
-            {
-              
-                if (!string.IsNullOrWhiteSpace(stored.nonce))
-                {
-                    return stored.nonce;
-                }
-            }
-
-            string nonce = Convert.ToBase64String(Encoding.UTF8.GetBytes(Guid.NewGuid().ToString() + Guid.NewGuid().ToString()));
-            if (RequireTimeStampInNonce)
-            {
-                return DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture) + "." + nonce;
-            }
-
-            return nonce;
-        }
-    }
+    
 
     public static class InMemoryIdentityServiceCollectionExtensions
     {
@@ -69,13 +43,7 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                 var scheme = record.Scheme;
                 authenticationBuilder.P7CoreAddOpenIdConnect(scheme, scheme, options =>
                 {
-                    options.ProtocolValidator = new MyOpenIdConnectProtocolValidator()
-                    {
-                        RequireTimeStampInNonce = false,
-                        RequireStateValidation = false,
-                        RequireNonce = true,
-                        NonceLifetime = TimeSpan.FromMinutes(15)
-                    };
+                   
                     options.Authority = record.Authority;
                     options.CallbackPath = record.CallbackPath;
                     options.RequireHttpsMetadata = false;
@@ -90,12 +58,7 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                  
                     options.Events.OnRedirectToIdentityProvider = context =>
                     {
-                        var stored = context.Request.GetJsonCookie<IdTokenAuthorizationRequest>("idTokenAuthorizationRequest");
-                        if (stored != null)
-                        {
-                            context.ProtocolMessage.ClientId = stored.client_id;
-                            context.ProtocolMessage.ClientSecret = stored.client_secret;
-                        }
+                       
                       
                         if (record.AdditionalProtocolScopes != null && record.AdditionalProtocolScopes.Any())
                         {

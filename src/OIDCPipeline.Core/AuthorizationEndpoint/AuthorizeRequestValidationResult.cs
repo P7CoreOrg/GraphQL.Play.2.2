@@ -1,4 +1,4 @@
-﻿namespace OIDC.ReferenceWebClient
+﻿namespace OIDCPipeline.Core.AuthorizationEndpoint
 {
     /// <summary>
     /// Validation result for authorize requests
@@ -9,9 +9,9 @@
         /// Initializes a new instance of the <see cref="AuthorizeRequestValidationResult"/> class.
         /// </summary>
         /// <param name="request">The request.</param>
-        public AuthorizeRequestValidationResult( )
+        public AuthorizeRequestValidationResult()
         {
-            
+
             IsError = false;
         }
 
@@ -21,15 +21,15 @@
         /// <param name="request">The request.</param>
         /// <param name="error">The error.</param>
         /// <param name="errorDescription">The error description.</param>
-        public AuthorizeRequestValidationResult(  string error, string errorDescription = null)
+        public AuthorizeRequestValidationResult(string error, string errorDescription = null)
         {
-           
+
             IsError = true;
             Error = error;
             ErrorDescription = errorDescription;
         }
 
-      
-     
+
+
     }
 }

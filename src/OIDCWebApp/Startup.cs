@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OIDC.ReferenceWebClient.Data;
 using OIDC.ReferenceWebClient.InMemoryIdentity;
+using OIDCPipeline.Core.Extensions;
 
 namespace OIDC.ReferenceWebClient
 {
@@ -32,6 +33,9 @@ namespace OIDC.ReferenceWebClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddOIDCSessionPipelineStore();
+            services.AddOIDCPipeline();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -61,7 +65,7 @@ namespace OIDC.ReferenceWebClient
                 options.IdleTimeout = TimeSpan.FromSeconds(3600);
                 options.Cookie.HttpOnly = true;
             });
-            services.AddTransient<IAuthorizeRequestValidator, AuthorizeRequestValidator>();
+            
             Global.ServiceProvider = services.BuildServiceProvider();
             
             return Global.ServiceProvider;

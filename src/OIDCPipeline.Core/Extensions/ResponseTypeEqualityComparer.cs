@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 
 
-namespace OIDC.ReferenceWebClient
+namespace OIDCPipeline.Core.AuthorizationEndpoint
 {
     /// <summary>
     /// Compares resource_type strings, where the order of space-delimited values is insignificant.
@@ -22,7 +22,7 @@ namespace OIDC.ReferenceWebClient
     /// 2.0 Multiple Response Type Encoding Practices draft </see>).
     /// </para>
     /// </remarks>
-    public class ResponseTypeEqualityComparer : IEqualityComparer<string>
+    internal class ResponseTypeEqualityComparer : IEqualityComparer<string>
     {
         /// <summary>
         /// Determines whether the specified values are equal.

@@ -1,4 +1,4 @@
-﻿namespace OIDC.ReferenceWebClient
+﻿namespace OIDCPipeline.Core.AuthorizationEndpoint
 {
     /// <summary>
     /// Minimal validation result class (base-class for more complext validation results)
