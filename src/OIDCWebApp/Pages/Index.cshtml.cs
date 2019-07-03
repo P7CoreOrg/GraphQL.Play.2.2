@@ -6,11 +6,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 using OIDC.ReferenceWebClient.Constants;
 using OIDC.ReferenceWebClient.Controllers;
+using OIDC.ReferenceWebClient.Data;
 using OIDC.ReferenceWebClient.Extensions;
 using OIDC.ReferenceWebClient.Models;
 using OIDCPipeline.Core;
@@ -19,15 +21,15 @@ namespace OIDC.ReferenceWebClient.Pages
 {
     public class IndexModel : PageModel
     {
-        
+        private SignInManager<ApplicationUser> _signInManager;
         private IOIDCResponseGenerator _oidcResponseGenerator;
         private IOIDCPipelineStore _oidcPipelineStore;
 
-        public IndexModel(
+        public IndexModel(SignInManager<ApplicationUser> signInManager,
             IOIDCResponseGenerator oidcResponseGenerator, IOIDCPipelineStore oidcPipelineStore)
         {
-         
-            _oidcResponseGenerator = oidcResponseGenerator;
+            _signInManager = signInManager;
+               _oidcResponseGenerator = oidcResponseGenerator;
             _oidcPipelineStore = oidcPipelineStore;
         }
         public List<Claim> Claims { get; set; }
@@ -51,6 +53,7 @@ namespace OIDC.ReferenceWebClient.Pages
 
             var result = await _oidcResponseGenerator.CreateIdTokenActionResultResponseAsync(
                 HttpContext.Session.GetSessionId(), extras, true);
+            await _signInManager.SignOutAsync();// we don't want our loggin hanging around
             return result;
 
         }
