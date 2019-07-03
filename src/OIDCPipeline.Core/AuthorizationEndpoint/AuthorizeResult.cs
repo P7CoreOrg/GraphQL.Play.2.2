@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OIDCPipeline.Core.Extensions;
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -13,9 +14,12 @@ namespace OIDCPipeline.Core.AuthorizationEndpoint
     {
         public AuthorizeResponse Response { get; }
 
-        public AuthorizeResult(AuthorizeResponse response)
+        private NameValueCollection _extras;
+
+        public AuthorizeResult(AuthorizeResponse response,NameValueCollection extras = null)
         {
             Response = response ?? throw new ArgumentNullException(nameof(response));
+            _extras = extras;
         }
 
         private void Init(HttpContext context)
@@ -104,7 +108,10 @@ namespace OIDCPipeline.Core.AuthorizationEndpoint
         private string BuildRedirectUri()
         {
             var uri = Response.RedirectUri;
-            var query = Response.ToNameValueCollection().ToQueryString();
+            var finalResponse = Response.ToNameValueCollection();
+            finalResponse.Merge(_extras);
+
+            var query = finalResponse.ToQueryString();
 
             if (Response.Request.ResponseMode == OidcConstants.ResponseModes.Query)
             {
@@ -133,7 +140,9 @@ namespace OIDCPipeline.Core.AuthorizationEndpoint
             var url = Response.Request.RedirectUri;
             url = HtmlEncoder.Default.Encode(url);
             html = html.Replace("{uri}", url);
-            html = html.Replace("{body}", Response.ToNameValueCollection().ToFormPost());
+            var finalResponse = Response.ToNameValueCollection();
+            finalResponse.Merge(_extras);
+            html = html.Replace("{body}", finalResponse.ToFormPost());
 
             return html;
         }

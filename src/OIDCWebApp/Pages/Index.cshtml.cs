@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -43,7 +44,13 @@ namespace OIDC.ReferenceWebClient.Pages
         }
         public async Task<IActionResult> OnPostWay2(string data)
         {
-            var result = await _oidcResponseGenerator.CreateIdTokenActionResultResponseAsync(HttpContext.Session.GetSessionId(), true);
+            var extras = new NameValueCollection
+            {
+                ["prodInstance"] = Guid.NewGuid().ToString()
+            };
+
+            var result = await _oidcResponseGenerator.CreateIdTokenActionResultResponseAsync(
+                HttpContext.Session.GetSessionId(), extras, true);
             return result;
 
         }

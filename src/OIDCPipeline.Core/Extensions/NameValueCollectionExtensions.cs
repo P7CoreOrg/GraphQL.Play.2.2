@@ -9,6 +9,15 @@ namespace OIDCPipeline.Core.Extensions
 {
     internal static class NameValueCollectionExtensions
     {
+        public static void Merge(this NameValueCollection collection, NameValueCollection extras)
+        {
+            if (extras == null) return;
+            foreach (string key in extras)
+            {
+                // Overwrite any entry already there    
+                collection[key] = extras[key];
+            }
+        }
         public static string ToQueryString(this NameValueCollection collection)
         {
             if (collection.Count == 0)

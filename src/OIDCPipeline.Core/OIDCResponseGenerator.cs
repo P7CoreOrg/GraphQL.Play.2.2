@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OIDCPipeline.Core.AuthorizationEndpoint;
+using System.Collections.Specialized;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,8 +15,12 @@ namespace OIDCPipeline.Core
         {
             _oidcPipelineStore = oidcPipelineStore;
         }
-        public async Task<IActionResult> CreateIdTokenActionResultResponseAsync(string key, bool delete)
+        public async Task<IActionResult> CreateIdTokenActionResultResponseAsync(
+            string key, 
+            NameValueCollection extras = null, 
+            bool delete = true)
         {
+       
             var original = await _oidcPipelineStore.GetOriginalIdTokenRequestAsync(key);
             var downstream = await _oidcPipelineStore.GetDownstreamIdTokenResponse(key);
 
@@ -39,7 +44,7 @@ namespace OIDCPipeline.Core
                 AccessToken = downstream.access_token,
                 Scope = scope?.Value
             };
-            var authorizeResult = new AuthorizeResult(authResponse);
+            var authorizeResult = new AuthorizeResult(authResponse,extras);
 
             if (delete)
             {
@@ -47,5 +52,7 @@ namespace OIDCPipeline.Core
             }
             return authorizeResult;
         }
+
+        
     }
 }
