@@ -12,6 +12,8 @@ using OIDCPipeline.Core;
 using OIDCPipeline.Core.AuthorizationEndpoint;
 using System;
 using OIDC.ReferenceWebClient.Extensions;
+using Microsoft.AspNetCore.Identity;
+using OIDC.ReferenceWebClient.Data;
 
 namespace OIDC.ReferenceWebClient.Controllers
 {
@@ -20,19 +22,19 @@ namespace OIDC.ReferenceWebClient.Controllers
     [Route("")]
     public class OIDCController : ControllerBase
     {
-       
+        private SignInManager<ApplicationUser> _signInManager;
         private ILogger<OIDCController> _logger;
         private IOIDCPipelineStore _oidcPipelineStore;
         private IAuthorizeRequestValidator _authorizeRequestValidator;
 
         public OIDCController(
-         
+         SignInManager<ApplicationUser> signInManager,
             IOIDCPipelineStore oidcPipelineStore,
             IAuthorizeRequestValidator authorizeRequestValidator,
             ILogger<OIDCController> logger)
         {
-           
-            _logger = logger;
+            _signInManager = signInManager;
+             _logger = logger;
             _oidcPipelineStore = oidcPipelineStore;
             _authorizeRequestValidator = authorizeRequestValidator;
         }
@@ -107,7 +109,11 @@ client_id=mvc
             };
            
             await _oidcPipelineStore.StoreOriginalIdTokenRequestAsync(HttpContext.Session.GetSessionId(), idTokenAuthorizationRequest);
-      
+            if (User.Identity.IsAuthenticated)
+            {
+                await _signInManager.SignOutAsync();
+            }
+              
             return Redirect("~/");
 
         //    return result;

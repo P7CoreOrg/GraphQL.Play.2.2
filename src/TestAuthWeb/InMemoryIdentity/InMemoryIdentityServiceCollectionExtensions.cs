@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using OIDC.ReferenceWebClient.Configuration;
-
+using OpenIdConntectModels;
 
 namespace OIDC.ReferenceWebClient.InMemoryIdentity
 {
@@ -55,11 +55,18 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                     options.ClientId = record.ClientId;
                     options.ClientSecret = record.ClientSecret;
                     options.SaveTokens = true;
-                 
+                    
+                    options.Events.OnMessageReceived = context =>
+                    {
+                        var key = context.HttpContext.Request.GetJsonCookie<string>(".oidc.memoryCacheKey");
+                        var dc = context.HttpContext.RequestServices.GetRequiredService<IMemoryCache>();
+                        dc.Set<OpenIdConnectMessage>(key, context.ProtocolMessage);
+                        return Task.CompletedTask;
+                    };
                     options.Events.OnRedirectToIdentityProvider = context =>
                     {
-                       
-                      
+
+                        context.Response.SetJsonCookie<string>(".oidc.memoryCacheKey", Guid.NewGuid().ToString(), 60);
                         if (record.AdditionalProtocolScopes != null && record.AdditionalProtocolScopes.Any())
                         {
                             string additionalScopes = "";

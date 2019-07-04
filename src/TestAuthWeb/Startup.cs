@@ -87,7 +87,9 @@ namespace OIDC.ReferenceWebClient
 
             app.UseAuthentication();
             app.UseSession();
+           
             app.UseMvc();
+          
         }
     }
 }

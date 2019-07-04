@@ -1,10 +1,10 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace OIDC.ReferenceWebClient.Configuration
-{
+namespace OpenIdConntectModels
+{ 
     /*
      Managed Secrets
         {
@@ -23,7 +23,6 @@ namespace OIDC.ReferenceWebClient.Configuration
         }
     ]
     */
-
     public class OAuth2SchemeRecord
     {
         public string Scheme { get; set; }
@@ -33,8 +32,9 @@ namespace OIDC.ReferenceWebClient.Configuration
         public string CallbackPath { get; set; }
         public List<string> AdditionalEndpointBaseAddresses { get; set; }
         public List<string> AdditionalProtocolScopes { get; set; }
-        
+
         public string ResponseType { get; set; }
         public bool GetClaimsFromUserInfoEndpoint { get; set; }
+        
     }
 }

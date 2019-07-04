@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 
 namespace Microsoft.AspNetCore.Mvc
@@ -28,6 +29,11 @@ namespace Microsoft.AspNetCore.Mvc
         {
             controllerBase.Response.SetJsonCookie<T>(key,value,expireTime);
         }
+        public static void SetJsonCookie<T>(this PageModel pageModel, string key, T value, int? expireTime)
+        {
+            pageModel.Response.SetJsonCookie<T>(key, value, expireTime);
+        }
+        
         public static T GetJsonCookie<T>(this HttpRequest request, string key) where T : class
         {
             //read cookie from Request object  
@@ -44,6 +50,12 @@ namespace Microsoft.AspNetCore.Mvc
             //read cookie from Request object  
             return controllerBase.Request.GetJsonCookie<T>(key);
         }
-      
+        public static T GetJsonCookie<T>(this PageModel pageModel, string key) where T : class
+        {
+            //read cookie from Request object  
+            return pageModel.Request.GetJsonCookie<T>(key);
+        }
+        
+
     }
 }

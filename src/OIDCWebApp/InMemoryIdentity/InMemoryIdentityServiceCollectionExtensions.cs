@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using OIDC.ReferenceWebClient.Configuration;
 using OIDC.ReferenceWebClient.Controllers;
 using OIDC.ReferenceWebClient.Extensions;
 using OIDCPipeline.Core;
+using OpenIdConntectModels;
 
 namespace OIDC.ReferenceWebClient.InMemoryIdentity
 {
