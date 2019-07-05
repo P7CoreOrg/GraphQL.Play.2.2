@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OIDC.ReferenceWebClient.Data;
+using OIDC.ReferenceWebClient.Discovery;
 using OIDC.ReferenceWebClient.InMemoryIdentity;
 using OIDCPipeline.Core.Extensions;
 
@@ -33,6 +34,8 @@ namespace OIDC.ReferenceWebClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+            services.AddGoogleDiscoveryCache();
             services.AddOIDCSessionPipelineStore();
             services.AddOIDCPipeline();
 

@@ -43,7 +43,8 @@ namespace OIDC.ReferenceWebClient.InMemoryIdentity
                 var scheme = record.Scheme;
                 authenticationBuilder.P7CoreAddOpenIdConnect(scheme, scheme, options =>
                 {
-                   
+                    options.TokenValidationParameters.ValidateAudience = false;
+                    options.TokenValidationParameters.ValidateIssuer = false;
                     options.Authority = record.Authority;
                     options.CallbackPath = record.CallbackPath;
                     options.RequireHttpsMetadata = false;

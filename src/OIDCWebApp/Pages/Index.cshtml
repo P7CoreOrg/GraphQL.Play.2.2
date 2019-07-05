@@ -7,43 +7,47 @@
     var signedIn = SignInManager.IsSignedIn(User);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <p>Discovery <a href="~/.well-known/openid-configuration">openid-configuration</a>.</p>
+    </div>
+
+
+
 <div class="row">
 
     @if (signedIn)
     {
-        <form method = "POST" class="form-horizontal">
+        <form method="POST" class="form-horizontal">
             <button type="submit" asp-route-data="foo" asp-page-handler="Way2">Way 2</button>
         </form>
 
-   
 
-    <div class="col-md-9">
-        <h2>User</h2>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Type</th>
-                    <th scope="col">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var claim in Model.Claims)
-                {
+        <div class="col-md-9">
+            <h2>User</h2>
+
+            <table class="table">
+                <thead>
                     <tr>
-                        <th scope="row">@claim.Type</th>
-                        <td>@claim.Value</td>
-
+                        <th scope="col">Type</th>
+                        <th scope="col">Value</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+                </thead>
+                <tbody>
+                    @foreach (var claim in Model.Claims)
+                    {
+                        <tr>
+                            <th scope="row">@claim.Type</th>
+                            <td>@claim.Value</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 
 </div>
 <div class="row">
@@ -85,7 +89,7 @@
                         <th scope="row">@nameof(Model.IdTokenResponse.expires_at)</th>
                         <td>@Model.IdTokenResponse.expires_at</td>
                     </tr>
-                   
+
                 </tbody>
             </table>
         </div>
