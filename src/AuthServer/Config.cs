@@ -31,7 +31,7 @@ namespace AuthServer
                     Enabled = true,
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
