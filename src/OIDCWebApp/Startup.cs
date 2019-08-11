@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OIDC.ReferenceWebClient.Data;
-using OIDC.ReferenceWebClient.Discovery;
 using OIDC.ReferenceWebClient.InMemoryIdentity;
 using OIDCPipeline.Core.Extensions;
 
@@ -35,7 +34,6 @@ namespace OIDC.ReferenceWebClient
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddGoogleDiscoveryCache();
             services.AddOIDCSessionPipelineStore();
             services.AddOIDCPipeline();
 

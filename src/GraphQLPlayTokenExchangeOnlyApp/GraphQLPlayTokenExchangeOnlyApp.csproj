@@ -15,7 +15,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="IdentityServer4.Contrib.Cosmonaut.Rollup" Version="1.0.0-beta-11" />
+    <PackageReference Include="IdentityServer4.Contrib.Cosmonaut.Rollup" Version="1.0.0-beta-12" />
 
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
