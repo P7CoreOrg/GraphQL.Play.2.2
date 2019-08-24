@@ -7,11 +7,11 @@
     var signedIn = SignInManager.IsSignedIn(User);
 }
 
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-        <p>Discovery <a href="~/.well-known/openid-configuration">openid-configuration</a>.</p>
-    </div>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Discovery <a href="~/.well-known/openid-configuration">openid-configuration</a>.</p>
+</div>
 
 
 
@@ -71,15 +71,16 @@
                     </tr>
                     <tr>
                         <th scope="row">@nameof(Model.IdTokenResponse.id_token)</th>
-                        <td>@Model.IdTokenResponse.id_token</td>
+                       
+                        <td><input type="button" value="Copy" onclick="updateClipboard('@Model.IdTokenResponse.id_token')">@Model.IdTokenResponse.id_token</td>
                     </tr>
                     <tr>
                         <th scope="row">@nameof(Model.IdTokenResponse.access_token)</th>
-                        <td>@Model.IdTokenResponse.access_token</td>
+                        <td><input type="button" value="Copy" onclick="updateClipboard('@Model.IdTokenResponse.access_token')">@Model.IdTokenResponse.access_token</td>
                     </tr>
                     <tr>
                         <th scope="row">@nameof(Model.IdTokenResponse.refresh_token)</th>
-                        <td>@Model.IdTokenResponse.refresh_token</td>
+                        <td><input type="button" value="Copy" onclick="updateClipboard('@Model.IdTokenResponse.refresh_token')">@Model.IdTokenResponse.refresh_token</td>
                     </tr>
                     <tr>
                         <th scope="row">@nameof(Model.IdTokenResponse.token_type)</th>
@@ -96,3 +97,21 @@
     }
 
 </div>
+
+@section Scripts {
+    <script>
+
+          function updateClipboard(newClip) {
+          navigator.clipboard.writeText(newClip).then(function() {
+            /* clipboard successfully set */
+          }, function() {
+            /* clipboard write failed */
+          });
+        }
+       function dosomething(val){
+           console.log(val);
+           updateClipboard(val);
+        }
+
+    </script>
+}
